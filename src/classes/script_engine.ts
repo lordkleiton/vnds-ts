@@ -5,6 +5,7 @@ import {
   IScriptInterpreter,
   IVNDS,
 } from "~/interfaces";
+import { SCRIPT_READ_BUFFER_SIZE } from "~/consts";
 
 export default class ScriptEngine implements IScriptEngine {
   private _interpreter: IScriptInterpreter;
@@ -14,7 +15,7 @@ export default class ScriptEngine implements IScriptEngine {
   private _textSkip: number = 0;
 
   private _eof: boolean = false;
-  private _readBuffer: string = "\0";
+  private _readBuffer: Uint8Array = new Uint8Array();
   private _readBufferL: number = 0;
   private _readBufferOffset: number = 0;
 
@@ -45,7 +46,7 @@ export default class ScriptEngine implements IScriptEngine {
 
     this._eof = false;
 
-    this._readBuffer = "\0";
+    this._readBuffer = new Uint8Array();
 
     this._readBufferL = 0;
 
@@ -148,7 +149,44 @@ export default class ScriptEngine implements IScriptEngine {
     return this._textSkip;
   }
 
-  setScriptFile(file: File): void {
-    throw new Error("Method not implemented.");
+  async setScriptFile(file: File): Promise<void> {
+    this.reset();
+
+    const buffer = await file.arrayBuffer();
+
+    const slice = buffer.slice(this._readBufferOffset, SCRIPT_READ_BUFFER_SIZE);
+
+    this._readBuffer = new Uint8Array(slice);
+
+    this._readBufferL = this._readBuffer.length;
+
+    const first = this._readBuffer[0];
+    const second = this._readBuffer[1];
+    const third = this._readBuffer[2];
+
+    if (this._readBufferL >= 2 && first == 0xfe && second == 0xff) {
+      console.log("Script encoding is UTF-16 BE. Only UTF-8 is supported.");
+
+      return;
+    }
+
+    if (this._readBufferL >= 2 && first == 0xff && second == 0xfe) {
+      console.log("Script encoding is UTF-16 LE. Only UTF-8 is supported.");
+
+      return;
+    }
+
+    this._file = file;
+
+    console.log("script set", file.name);
+
+    if (
+      this._readBufferL >= 3 &&
+      first == 0xef &&
+      second == 0xbb &&
+      third == 0xbf
+    ) {
+      this._readBufferOffset += 3;
+    }
   }
 }
