@@ -8,6 +8,8 @@ import {
 
 export default class ScriptEngine implements IScriptEngine {
   private _interpreter: IScriptInterpreter;
+
+  private _file?: File;
   private _filePath?: string;
   private _fileLine: number = 0;
   private _textSkip: number = 0;
