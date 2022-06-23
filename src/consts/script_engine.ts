@@ -11,3 +11,5 @@ export const CMD_TEXT_LENGTH = 500;
 export const CMD_OPTIONS_MAX_OPTIONS = 32;
 
 export const CMD_OPTIONS_BUFFER_LENGTH = 500;
+
+export const READ_BUFFER_SIZE = 1024;
