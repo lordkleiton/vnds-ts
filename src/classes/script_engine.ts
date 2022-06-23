@@ -6,19 +6,23 @@ import {
 } from "~interfaces";
 
 export default class ScriptEngine implements IScriptEngine {
-  private scriptInterpreter?: IScriptInterpreter;
-  private filePath?: string;
-  private fileLine?: number;
-  private textSkip?: number;
+  private _interpreter: IScriptInterpreter;
+  private _filePath?: string;
+  private _fileLine?: number;
+  private _textSkip?: number;
 
-  private eof?: boolean;
-  private readBuffer?: string;
-  private readBufferL?: number;
-  private readBufferOffset?: number;
+  private _eof?: boolean;
+  private _readBuffer?: string;
+  private _readBufferL?: number;
+  private _readBufferOffset?: number;
 
-  private eofCommand?: ICommand;
+  private _eofCommand?: ICommand;
 
-  constructor(private readonly vnds: IVNDS) {}
+  constructor(private readonly vnds: IVNDS) {
+    this._interpreter = {} as IScriptInterpreter;
+
+    this.reset();
+  }
 
   private _readNextCommand(): void {
     throw new Error("Method not implemented.");
