@@ -49,7 +49,13 @@ export default class ScriptEngine implements IScriptEngine {
   }
 
   skipCommands(num: number): void {
-    throw new Error("Method not implemented.");
+    while (this._commands.length <= num) {
+      this._readNextCommand();
+    }
+
+    this._fileLine += num;
+
+    this._commands.splice(0, num);
   }
 
   skipTextCommands(num: number): void {
