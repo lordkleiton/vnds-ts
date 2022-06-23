@@ -16,6 +16,7 @@ export default class ScriptEngine implements IScriptEngine {
   private _readBufferL?: number;
   private _readBufferOffset?: number;
 
+  private _commands: ICommand[] = [];
   private _eofCommand?: ICommand;
 
   constructor(private readonly vnds: IVNDS) {
@@ -59,7 +60,11 @@ export default class ScriptEngine implements IScriptEngine {
   }
 
   getCommand(offset: number): ICommand {
-    throw new Error("Method not implemented.");
+    while (this._commands.length <= offset) {
+      this._readNextCommand();
+    }
+
+    return this._commands[offset];
   }
 
   getOpenFile(): number {
