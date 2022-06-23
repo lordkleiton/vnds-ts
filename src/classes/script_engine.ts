@@ -9,8 +9,7 @@ import {
 export default class ScriptEngine implements IScriptEngine {
   private _interpreter: IScriptInterpreter;
 
-  private _file?: FileReader;
-  private _filePath?: string;
+  private _file?: File;
   private _fileLine: number = 0;
   private _textSkip: number = 0;
 
@@ -38,12 +37,6 @@ export default class ScriptEngine implements IScriptEngine {
   /* interface stuff */
 
   reset(): void {
-    if (this._file) this._file.abort();
-
-    this._file = undefined;
-
-    this._filePath = "\0";
-
     this._fileLine = 0;
 
     this._textSkip = 0;
