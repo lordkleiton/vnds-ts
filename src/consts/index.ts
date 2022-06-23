@@ -6,6 +6,7 @@ import {
   VAR_NAME_LENGTH,
   VAR_OP_LENGTH,
   VAR_STRING_LENGTH,
+  READ_BUFFER_SIZE,
 } from "./script_engine";
 
 export {
@@ -16,4 +17,5 @@ export {
   VAR_NAME_LENGTH,
   VAR_OP_LENGTH,
   VAR_STRING_LENGTH,
+  READ_BUFFER_SIZE,
 };
