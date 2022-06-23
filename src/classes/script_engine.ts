@@ -9,18 +9,17 @@ import {
 export default class ScriptEngine implements IScriptEngine {
   private _interpreter: IScriptInterpreter;
 
-  private _file?: File;
+  private _file?: FileReader;
   private _filePath?: string;
   private _fileLine: number = 0;
   private _textSkip: number = 0;
 
-  private _eof?: boolean;
-  private _readBuffer?: string;
-  private _readBufferL?: number;
-  private _readBufferOffset?: number;
+  private _eof: boolean = false;
+  private _readBuffer: string = "\0";
+  private _readBufferL: number = 0;
+  private _readBufferOffset: number = 0;
 
   private _commands: ICommand[] = [];
-  private _eofCommand?: ICommand;
 
   constructor(private readonly _vnds: IVNDS) {
     this._interpreter = {} as IScriptInterpreter;
@@ -39,7 +38,25 @@ export default class ScriptEngine implements IScriptEngine {
   /* interface stuff */
 
   reset(): void {
-    throw new Error("Method not implemented.");
+    if (this._file) this._file.abort();
+
+    this._file = undefined;
+
+    this._filePath = "\0";
+
+    this._fileLine = 0;
+
+    this._textSkip = 0;
+
+    this._eof = false;
+
+    this._readBuffer = "\0";
+
+    this._readBufferL = 0;
+
+    this._readBufferOffset = 0;
+
+    this._commands = [];
   }
 
   executeNextCommand(quickread: boolean): void {
