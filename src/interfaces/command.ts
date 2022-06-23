@@ -1,4 +1,4 @@
-import { CommandType } from "~enums";
+import { CommandType } from "~/enums";
 
 export default interface ICommand {
   id: CommandType;

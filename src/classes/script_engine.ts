@@ -1,10 +1,10 @@
-import { CommandType } from "~enums";
+import { CommandType } from "~/enums";
 import {
   ICommand,
   IScriptEngine,
   IScriptInterpreter,
   IVNDS,
-} from "~interfaces";
+} from "~/interfaces";
 
 export default class ScriptEngine implements IScriptEngine {
   private _interpreter: IScriptInterpreter;
