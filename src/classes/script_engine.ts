@@ -37,6 +37,8 @@ export default class ScriptEngine implements IScriptEngine {
   /* interface stuff */
 
   reset(): void {
+    this._file = undefined;
+
     this._fileLine = 0;
 
     this._textSkip = 0;
@@ -132,8 +134,10 @@ export default class ScriptEngine implements IScriptEngine {
     return this._commands[offset];
   }
 
-  getOpenFile(): string {
-    throw new Error("Method not implemented.");
+  getOpenFile(): File {
+    if (this._file) return this._file;
+
+    throw new Error("no file loaded");
   }
 
   getCurrentLine(): number {
@@ -144,7 +148,7 @@ export default class ScriptEngine implements IScriptEngine {
     return this._textSkip;
   }
 
-  setScriptFile(filename: string): void {
+  setScriptFile(file: File): void {
     throw new Error("Method not implemented.");
   }
 }
