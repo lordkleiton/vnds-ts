@@ -9,8 +9,8 @@ import {
 export default class ScriptEngine implements IScriptEngine {
   private _interpreter: IScriptInterpreter;
   private _filePath?: string;
-  private _fileLine: number = -1;
-  private _textSkip: number = -1;
+  private _fileLine: number = 0;
+  private _textSkip: number = 0;
 
   private _eof?: boolean;
   private _readBuffer?: string;
@@ -107,11 +107,11 @@ export default class ScriptEngine implements IScriptEngine {
   }
 
   getCurrentLine(): number {
-    throw new Error("Method not implemented.");
+    return this._fileLine;
   }
 
   getTextSkip(): number {
-    throw new Error("Method not implemented.");
+    return this._textSkip;
   }
 
   setScriptFile(filename: string): void {
