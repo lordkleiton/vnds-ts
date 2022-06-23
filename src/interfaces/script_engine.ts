@@ -9,7 +9,7 @@ export default interface IScriptEngine {
   jumpToLabel(lbl: number): boolean;
 
   getCommand(offset: number): ICommand;
-  getOpenFile(): number;
+  getOpenFile(): string;
   getCurrentLine(): number;
   getTextSkip(): number;
 
