@@ -5,7 +5,7 @@ import {
   IScriptInterpreter,
   IVNDS,
 } from "~/interfaces";
-import { SCRIPT_READ_BUFFER_SIZE } from "~/consts";
+import { READ_BUFFER_SIZE, SCRIPT_READ_BUFFER_SIZE } from "~/consts";
 
 export default class ScriptEngine implements IScriptEngine {
   private _interpreter: IScriptInterpreter;
@@ -19,6 +19,7 @@ export default class ScriptEngine implements IScriptEngine {
   private _readBufferL: number = 0;
   private _readBufferOffset: number = 0;
 
+  private _eofCommand: ICommand = { id: CommandType.END_OF_FILE } as ICommand;
   private _commands: ICommand[] = [];
 
   constructor(private readonly _vnds: IVNDS) {
@@ -27,8 +28,87 @@ export default class ScriptEngine implements IScriptEngine {
     this.reset();
   }
 
-  private _readNextCommand(): void {
+  private async _readNextCommand(): Promise<void> {
+    if (this._eof || !this._file) {
+      this._commands.push(this._eofCommand);
+
+      return;
+    }
+
+    const buffer = await this._file.arrayBuffer();
+
+    const max_read = READ_BUFFER_SIZE - 1;
+
+    let t = 0;
+    let overflow = false;
+
+    while (t < max_read) {
+      if (this._readBufferOffset >= this._readBufferL) {
+        this._readBufferOffset = 0;
+
+        const slice = buffer.slice(
+          this._readBufferOffset,
+          SCRIPT_READ_BUFFER_SIZE
+        );
+
+        this._readBuffer = new Uint8Array(slice);
+
+        this._readBufferL = this._readBuffer.length;
+
+        if (this._readBufferL <= 0) {
+          this._eof = true;
+
+          break;
+        }
+      }
+    }
+
     throw new Error("Method not implemented.");
+
+    // while (t < maxRead) {
+    //   char* newlineIndex = (char*)memchr(readBuffer+readBufferOffset, '\n', readBufferL-readBufferOffset);
+    //   int wantToCopy;
+    //   if (!newlineIndex) {
+    //     wantToCopy = readBufferL-readBufferOffset;
+    //   } else {
+    //     wantToCopy = (newlineIndex-readBuffer)-readBufferOffset;
+    //   }
+
+    //   int copyL = MIN(maxRead-t, wantToCopy);
+    //   memcpy(buffer+t, readBuffer+readBufferOffset, copyL);
+    //   t += copyL;
+    //   readBufferOffset += copyL;
+
+    //   if (wantToCopy > copyL) {
+    //     t = 0;
+    //     overflow = true;
+    //   } else {
+    //     if (newlineIndex) {
+    //       readBufferOffset++; //move past newline
+    //       break;
+    //     }
+    //   }
+    // }
+    // if (t < maxRead) {
+    //   buffer[t] = '\0';
+    // } else {
+    //   buffer[maxRead] = '\0';
+    // }
+
+    // if (overflow) {
+    //   vnLog(EL_error, COM_SCRIPT, "Command line is too long (> %d characters)", READ_BUFFER_SIZE);
+
+    //   Command command;
+    //   command.id = SKIP;
+    //   commands.push_back(command);
+    //   return;
+    // }
+
+    // trimString(buffer);
+
+    // Command command;
+    // ParseCommand(&command, buffer);
+    // commands.push_back(command);
   }
 
   private _parseCommand(cmd: ICommand, data: string): void {
