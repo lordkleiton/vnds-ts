@@ -61,6 +61,31 @@ export default class ScriptEngine implements IScriptEngine {
           break;
         }
       }
+
+      const new_line = "\n";
+      const new_line_char = new_line.charCodeAt(0);
+
+      const array_buffer = new Uint8Array(buffer);
+      const current_buffer_index = array_buffer.findIndex(
+        el => el == this._readBuffer[0]
+      );
+      const newline_index = new Uint8Array(
+        buffer.slice(
+          current_buffer_index + this._readBufferOffset,
+          this._readBufferL - this._readBufferOffset
+        )
+      ).findIndex(el => el == new_line_char);
+
+      let wantToCopy: number;
+
+      if (!newline_index) {
+        wantToCopy = this._readBufferL - this._readBufferOffset;
+      } else {
+        wantToCopy =
+          newline_index - current_buffer_index - this._readBufferOffset;
+      }
+
+      const copyL = Math.min(max_read - t, wantToCopy);
     }
 
     throw new Error("Method not implemented.");
