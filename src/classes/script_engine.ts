@@ -1,3 +1,4 @@
+import { CommandType } from "~enums";
 import {
   ICommand,
   IScriptEngine,
@@ -9,7 +10,7 @@ export default class ScriptEngine implements IScriptEngine {
   private _interpreter: IScriptInterpreter;
   private _filePath?: string;
   private _fileLine?: number;
-  private _textSkip?: number;
+  private _textSkip: number = -1;
 
   private _eof?: boolean;
   private _readBuffer?: string;
@@ -19,7 +20,7 @@ export default class ScriptEngine implements IScriptEngine {
   private _commands: ICommand[] = [];
   private _eofCommand?: ICommand;
 
-  constructor(private readonly vnds: IVNDS) {
+  constructor(private readonly _vnds: IVNDS) {
     this._interpreter = {} as IScriptInterpreter;
 
     this.reset();
@@ -56,7 +57,25 @@ export default class ScriptEngine implements IScriptEngine {
   }
 
   jumpToLabel(lbl: number): boolean {
-    throw new Error("Method not implemented.");
+    this.setScriptFile(this._vnds.scriptEngine.getOpenFile());
+
+    let c: ICommand;
+
+    while (true) {
+      c = this._vnds.scriptEngine.getCommand(0);
+
+      if (c.id == CommandType.LABEL && c.label?.label == lbl) {
+        return true;
+      } else if (c.id == CommandType.TEXT) {
+        this._textSkip++;
+      } else if (c.id == CommandType.END_OF_FILE) {
+        console.log("goto cannot find label", lbl);
+
+        return false;
+      }
+
+      this.skipCommands(1);
+    }
   }
 
   getCommand(offset: number): ICommand {
@@ -67,7 +86,7 @@ export default class ScriptEngine implements IScriptEngine {
     return this._commands[offset];
   }
 
-  getOpenFile(): number {
+  getOpenFile(): string {
     throw new Error("Method not implemented.");
   }
 
