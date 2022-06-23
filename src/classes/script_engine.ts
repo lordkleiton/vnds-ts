@@ -9,7 +9,7 @@ import {
 export default class ScriptEngine implements IScriptEngine {
   private _interpreter: IScriptInterpreter;
   private _filePath?: string;
-  private _fileLine?: number;
+  private _fileLine: number = -1;
   private _textSkip: number = -1;
 
   private _eof?: boolean;
@@ -53,7 +53,23 @@ export default class ScriptEngine implements IScriptEngine {
   }
 
   skipTextCommands(num: number): void {
-    throw new Error("Method not implemented.");
+    while (this._textSkip < num) {
+      if (this._commands.length <= 0) {
+        this._readNextCommand();
+      }
+
+      const c = this._commands.shift();
+
+      this._fileLine++;
+
+      if (!c || c.id == CommandType.END_OF_FILE) {
+        return;
+      } else if (c.id == CommandType.TEXT) {
+        this._textSkip++;
+
+        this._interpreter.execute(c, true);
+      }
+    }
   }
 
   jumpToLabel(lbl: number): boolean {
