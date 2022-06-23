@@ -40,8 +40,20 @@ export default class ScriptEngine implements IScriptEngine {
     throw new Error("Method not implemented.");
   }
 
-  executeNextCommand(): void {
-    throw new Error("Method not implemented.");
+  executeNextCommand(quickread: boolean): void {
+    if (!this._commands.length) {
+      this._readNextCommand();
+    }
+
+    const c = this._commands.shift();
+
+    if (!c) throw new Error("no command was found");
+
+    this._fileLine++;
+
+    if (c.id == CommandType.TEXT) this._textSkip++;
+
+    this._interpreter.execute(c, quickread);
   }
 
   quickRead(): void {
