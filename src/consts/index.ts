@@ -1,3 +1,4 @@
+import { CC_NEW_LINE, CC_NUL } from "./char_codes";
 import {
   CMD_OPTIONS_BUFFER_LENGTH,
   CMD_OPTIONS_MAX_OPTIONS,
@@ -8,6 +9,7 @@ import {
   VAR_STRING_LENGTH,
   READ_BUFFER_SIZE,
 } from "./script_engine";
+import { SC_NEW_LINE, SC_NUL } from "./special_chars";
 
 export {
   CMD_OPTIONS_BUFFER_LENGTH,
@@ -18,4 +20,8 @@ export {
   VAR_OP_LENGTH,
   VAR_STRING_LENGTH,
   READ_BUFFER_SIZE,
+  SC_NEW_LINE,
+  CC_NEW_LINE,
+  SC_NUL,
+  CC_NUL,
 };
