@@ -5,7 +5,13 @@ import {
   IScriptInterpreter,
   IVNDS,
 } from "~/interfaces";
-import { READ_BUFFER_SIZE, SCRIPT_READ_BUFFER_SIZE } from "~/consts";
+import {
+  CC_NEW_LINE,
+  CC_NUL,
+  READ_BUFFER_SIZE,
+  SCRIPT_READ_BUFFER_SIZE,
+} from "~/consts";
+import { FileReaderUtils } from "~/utils";
 
 export default class ScriptEngine implements IScriptEngine {
   private _interpreter: IScriptInterpreter;
@@ -16,16 +22,31 @@ export default class ScriptEngine implements IScriptEngine {
 
   private _eof: boolean = false;
   private _readBuffer: Uint8Array = new Uint8Array();
-  private _readBufferL: number = 0;
   private _readBufferOffset: number = 0;
 
   private _eofCommand: ICommand = { id: CommandType.END_OF_FILE } as ICommand;
   private _commands: ICommand[] = [];
 
+  private _timesRead: number = 0;
+
   constructor(private readonly _vnds: IVNDS) {
     this._interpreter = {} as IScriptInterpreter;
 
     this.reset();
+  }
+
+  private get _readBufferL(): number {
+    return this._readBuffer.length;
+  }
+
+  private async _readFile(): Promise<ArrayBuffer> {
+    if (!this._file) throw new Error("no file to read");
+
+    return await FileReaderUtils.read(
+      this._file,
+      this._readBufferOffset,
+      this._readBufferOffset + SCRIPT_READ_BUFFER_SIZE
+    );
   }
 
   private async _readNextCommand(): Promise<void> {
@@ -35,7 +56,7 @@ export default class ScriptEngine implements IScriptEngine {
       return;
     }
 
-    const buffer = new ArrayBuffer(READ_BUFFER_SIZE);
+    const buffer = new Uint8Array(READ_BUFFER_SIZE);
     const maxRead = READ_BUFFER_SIZE - 1;
 
     let t = 0;
@@ -43,44 +64,17 @@ export default class ScriptEngine implements IScriptEngine {
     let counter = 0;
 
     while (counter < maxRead && t < maxRead) {
+      console.log(t);
       counter++;
 
       if (this._readBufferOffset >= this._readBufferL) {
         this._readBufferOffset = 0;
 
-        const file = await this._file.arrayBuffer();
+        const read = await this._readFile();
 
-        //this._readBuffer =
-      }
-    }
-  }
+        this._timesRead++;
 
-  private async _readNextCommand2(): Promise<void> {
-    if (this._eof || !this._file) {
-      this._commands.push(this._eofCommand);
-
-      return;
-    }
-
-    const buffer = await this._file.arrayBuffer();
-
-    const max_read = READ_BUFFER_SIZE - 1;
-
-    let t = 0;
-    let overflow = false;
-
-    while (t < max_read) {
-      if (this._readBufferOffset >= this._readBufferL) {
-        this._readBufferOffset = 0;
-
-        const slice = buffer.slice(
-          this._readBufferOffset,
-          SCRIPT_READ_BUFFER_SIZE
-        );
-
-        this._readBuffer = new Uint8Array(slice);
-
-        this._readBufferL = this._readBuffer.length;
+        this._readBuffer = new Uint8Array(read);
 
         if (this._readBufferL <= 0) {
           this._eof = true;
@@ -89,52 +83,49 @@ export default class ScriptEngine implements IScriptEngine {
         }
       }
 
-      const new_line = "\n";
-      const new_line_char = new_line.charCodeAt(0);
+      const current_head = this._readBufferOffset * this._timesRead;
 
-      const array_buffer = new Uint8Array(buffer);
-      const current_buffer_index = array_buffer.findIndex(
-        el => el == this._readBuffer[0]
-      );
-      const newline_index = new Uint8Array(
-        buffer.slice(
-          current_buffer_index + this._readBufferOffset,
-          this._readBufferL - this._readBufferOffset
-        )
-      ).findIndex(el => el == new_line_char);
+      const newline_index = this._readBuffer.find(el => el == CC_NEW_LINE);
 
       let wantToCopy: number;
 
       if (!newline_index) {
         wantToCopy = this._readBufferL - this._readBufferOffset;
       } else {
-        wantToCopy =
-          newline_index - current_buffer_index - this._readBufferOffset;
+        wantToCopy = newline_index - current_head - this._readBufferOffset;
       }
 
-      const copyL = Math.min(max_read - t, wantToCopy);
+      const copyL = Math.min(maxRead - t, wantToCopy);
+
+      const begin = current_head + this._readBufferOffset;
 
       for (let i = 0; i < copyL; i++) {
-        const position = current_buffer_index + i;
+        const current = begin + i;
 
-        //   memcpy(buffer+t, readBuffer+readBufferOffset, copyL);
+        buffer[t + i] = this._readBuffer[current];
+      }
 
-        t += copyL;
+      t += copyL;
 
-        this._readBufferOffset += copyL;
+      this._readBufferOffset += copyL;
 
-        if (wantToCopy > copyL) {
-          t = 0;
+      if (wantToCopy > copyL) {
+        t = 0;
 
-          overflow = true;
-        } else {
-          if (newline_index) {
-            this._readBufferOffset++;
+        overflow = true;
+      } else {
+        if (newline_index) {
+          this._readBufferOffset++;
 
-            break;
-          }
+          break;
         }
       }
+    }
+
+    if (t < maxRead) {
+      buffer[t] = CC_NUL;
+    } else {
+      buffer[maxRead] = CC_NUL;
     }
 
     if (overflow) {
@@ -150,11 +141,17 @@ export default class ScriptEngine implements IScriptEngine {
       return;
     }
 
-    const command = {} as ICommand;
+    const command = { id: CommandType.SKIP } as ICommand;
 
     // ParseCommand(&command, buffer);
 
     this._commands.push(command);
+
+    console.log(this._commands);
+
+    console.log(this._readBuffer);
+
+    console.log(this._eof);
   }
 
   private _parseCommand(cmd: ICommand, data: string): void {
@@ -174,11 +171,11 @@ export default class ScriptEngine implements IScriptEngine {
 
     this._readBuffer = new Uint8Array();
 
-    this._readBufferL = 0;
-
     this._readBufferOffset = 0;
 
     this._commands = [];
+
+    this._timesRead = 0;
   }
 
   executeNextCommand(quickread: boolean): void {
@@ -283,8 +280,6 @@ export default class ScriptEngine implements IScriptEngine {
     const slice = buffer.slice(this._readBufferOffset, SCRIPT_READ_BUFFER_SIZE);
 
     this._readBuffer = new Uint8Array(slice);
-
-    this._readBufferL = this._readBuffer.length;
 
     const first = this._readBuffer[0];
     const second = this._readBuffer[1];
