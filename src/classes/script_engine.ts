@@ -35,6 +35,33 @@ export default class ScriptEngine implements IScriptEngine {
       return;
     }
 
+    const buffer = new ArrayBuffer(READ_BUFFER_SIZE);
+    const maxRead = READ_BUFFER_SIZE - 1;
+
+    let t = 0;
+    let overflow = false;
+    let counter = 0;
+
+    while (counter < maxRead && t < maxRead) {
+      counter++;
+
+      if (this._readBufferOffset >= this._readBufferL) {
+        this._readBufferOffset = 0;
+
+        const file = await this._file.arrayBuffer();
+
+        //this._readBuffer =
+      }
+    }
+  }
+
+  private async _readNextCommand2(): Promise<void> {
+    if (this._eof || !this._file) {
+      this._commands.push(this._eofCommand);
+
+      return;
+    }
+
     const buffer = await this._file.arrayBuffer();
 
     const max_read = READ_BUFFER_SIZE - 1;
@@ -86,54 +113,48 @@ export default class ScriptEngine implements IScriptEngine {
       }
 
       const copyL = Math.min(max_read - t, wantToCopy);
+
+      for (let i = 0; i < copyL; i++) {
+        const position = current_buffer_index + i;
+
+        //   memcpy(buffer+t, readBuffer+readBufferOffset, copyL);
+
+        t += copyL;
+
+        this._readBufferOffset += copyL;
+
+        if (wantToCopy > copyL) {
+          t = 0;
+
+          overflow = true;
+        } else {
+          if (newline_index) {
+            this._readBufferOffset++;
+
+            break;
+          }
+        }
+      }
     }
 
-    throw new Error("Method not implemented.");
+    if (overflow) {
+      console.log(
+        "Command line is too long (> %d characters)",
+        READ_BUFFER_SIZE
+      );
 
-    // while (t < maxRead) {
-    //   char* newlineIndex = (char*)memchr(readBuffer+readBufferOffset, '\n', readBufferL-readBufferOffset);
-    //   int wantToCopy;
-    //   if (!newlineIndex) {
-    //     wantToCopy = readBufferL-readBufferOffset;
-    //   } else {
-    //     wantToCopy = (newlineIndex-readBuffer)-readBufferOffset;
-    //   }
+      const command = { id: CommandType.SKIP } as ICommand;
 
-    //   int copyL = MIN(maxRead-t, wantToCopy);
-    //   memcpy(buffer+t, readBuffer+readBufferOffset, copyL);
-    //   t += copyL;
-    //   readBufferOffset += copyL;
+      this._commands.push(command);
 
-    //   if (wantToCopy > copyL) {
-    //     t = 0;
-    //     overflow = true;
-    //   } else {
-    //     if (newlineIndex) {
-    //       readBufferOffset++; //move past newline
-    //       break;
-    //     }
-    //   }
-    // }
-    // if (t < maxRead) {
-    //   buffer[t] = '\0';
-    // } else {
-    //   buffer[maxRead] = '\0';
-    // }
+      return;
+    }
 
-    // if (overflow) {
-    //   vnLog(EL_error, COM_SCRIPT, "Command line is too long (> %d characters)", READ_BUFFER_SIZE);
+    const command = {} as ICommand;
 
-    //   Command command;
-    //   command.id = SKIP;
-    //   commands.push_back(command);
-    //   return;
-    // }
-
-    // trimString(buffer);
-
-    // Command command;
     // ParseCommand(&command, buffer);
-    // commands.push_back(command);
+
+    this._commands.push(command);
   }
 
   private _parseCommand(cmd: ICommand, data: string): void {
