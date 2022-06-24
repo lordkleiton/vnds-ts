@@ -5,7 +5,28 @@ import {
   IScriptInterpreter,
   IVNDS,
 } from "~/interfaces";
-import { CC_NEW_LINE, SCRIPT_READ_BUFFER_SIZE, SC_NEW_LINE } from "~/consts";
+import {
+  CC_NEW_LINE,
+  COMMAND_BGLOAD,
+  COMMAND_CHOICE,
+  COMMAND_CLEARTEXT,
+  COMMAND_DELAY,
+  COMMAND_ENDSCRIPT,
+  COMMAND_FI,
+  COMMAND_GOTO,
+  COMMAND_GSETVAR,
+  COMMAND_IF,
+  COMMAND_JUMP,
+  COMMAND_LABEL,
+  COMMAND_MUSIC,
+  COMMAND_RANDOM,
+  COMMAND_SETIMG,
+  COMMAND_SETVAR,
+  COMMAND_SOUND,
+  COMMAND_TEXT,
+  SCRIPT_READ_BUFFER_SIZE,
+  SC_NEW_LINE,
+} from "~/consts";
 import { FileReaderUtils } from "~/utils";
 
 export default class ScriptEngine implements IScriptEngine {
@@ -75,54 +96,55 @@ export default class ScriptEngine implements IScriptEngine {
   }
 
   private _parseCommand(data: string): ICommand {
-    if (data[0] == "#" || data[0] == "/") return { id: CommandType.SKIP };
+    if (!data || data[0] == "#" || data[0] == "/")
+      return { id: CommandType.SKIP };
 
-    if (data.match("bgload ")) {
+    if (data.match(COMMAND_BGLOAD)) {
     }
 
-    if (data.match("setimg ")) {
+    if (data.match(COMMAND_SETIMG)) {
     }
 
-    if (data.match("sound ")) {
+    if (data.match(COMMAND_SOUND)) {
     }
 
-    if (data.match("music ")) {
+    if (data.match(COMMAND_MUSIC)) {
     }
 
-    if (data.match("text ")) {
+    if (data.match(COMMAND_TEXT)) {
     }
 
-    if (data.match("choice ")) {
+    if (data.match(COMMAND_CHOICE)) {
     }
 
-    if (data.match("setvar ") || data.match("gsetvar ")) {
+    if (data.match(COMMAND_SETVAR) || data.match(COMMAND_GSETVAR)) {
     }
 
-    if (data.match("if ")) {
+    if (data.match(COMMAND_IF)) {
     }
 
-    if (data.match("fi ")) {
+    if (data.match(COMMAND_FI)) {
     }
 
-    if (data.match("jump ")) {
+    if (data.match(COMMAND_JUMP)) {
     }
 
-    if (data.match("delay ")) {
+    if (data.match(COMMAND_DELAY)) {
     }
 
-    if (data.match("random ")) {
+    if (data.match(COMMAND_RANDOM)) {
     }
 
-    if (data.match("label ")) {
+    if (data.match(COMMAND_LABEL)) {
     }
 
-    if (data.match("goto ")) {
+    if (data.match(COMMAND_GOTO)) {
     }
 
-    if (data.match("cleartext ")) {
+    if (data.match(COMMAND_CLEARTEXT)) {
     }
 
-    if (data.match("endscript ")) {
+    if (data.match(COMMAND_ENDSCRIPT)) {
     }
 
     console.log("unknow method", data);
