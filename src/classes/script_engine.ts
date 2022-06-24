@@ -5,12 +5,7 @@ import {
   IScriptInterpreter,
   IVNDS,
 } from "~/interfaces";
-import {
-  CC_NEW_LINE,
-  CC_NUL,
-  READ_BUFFER_SIZE,
-  SCRIPT_READ_BUFFER_SIZE,
-} from "~/consts";
+import { CC_NEW_LINE, SCRIPT_READ_BUFFER_SIZE } from "~/consts";
 import { FileReaderUtils } from "~/utils";
 
 export default class ScriptEngine implements IScriptEngine {
@@ -25,8 +20,6 @@ export default class ScriptEngine implements IScriptEngine {
 
   private _eofCommand: ICommand = { id: CommandType.END_OF_FILE } as ICommand;
   private _commands: ICommand[] = [];
-
-  private _timesRead: number = 0;
 
   private _eof: boolean = false;
 
@@ -72,108 +65,7 @@ export default class ScriptEngine implements IScriptEngine {
     this._readBufferOffset += this._readBufferLength;
   }
 
-  private async _readNextCommand(): Promise<void> {
-    if (this._eof || !this._file) {
-      this._commands.push(this._eofCommand);
-
-      return;
-    }
-
-    const buffer = new Uint8Array(READ_BUFFER_SIZE);
-    const maxRead = READ_BUFFER_SIZE - 1;
-
-    let t = 0;
-    let overflow = false;
-    let counter = 0;
-
-    while (counter < maxRead && t < maxRead) {
-      console.log(t);
-      counter++;
-
-      if (this._readBufferOffset >= this._readBufferLength) {
-        this._readBufferOffset = 0;
-
-        const read = await this._readFileChunk();
-
-        this._timesRead++;
-
-        this._readBuffer = new Uint8Array(read);
-
-        if (this._readBufferLength <= 0) {
-          break;
-        }
-      }
-
-      const current_head = this._readBufferOffset * this._timesRead;
-
-      const newline_index = this._readBuffer.find(el => el == CC_NEW_LINE);
-
-      let wantToCopy: number;
-
-      if (!newline_index) {
-        wantToCopy = this._readBufferLength - this._readBufferOffset;
-      } else {
-        wantToCopy = newline_index - current_head - this._readBufferOffset;
-      }
-
-      const copyL = Math.min(maxRead - t, wantToCopy);
-
-      const begin = current_head + this._readBufferOffset;
-
-      for (let i = 0; i < copyL; i++) {
-        const current = begin + i;
-
-        buffer[t + i] = this._readBuffer[current];
-      }
-
-      t += copyL;
-
-      this._readBufferOffset += copyL;
-
-      if (wantToCopy > copyL) {
-        t = 0;
-
-        overflow = true;
-      } else {
-        if (newline_index) {
-          this._readBufferOffset++;
-
-          break;
-        }
-      }
-    }
-
-    if (t < maxRead) {
-      buffer[t] = CC_NUL;
-    } else {
-      buffer[maxRead] = CC_NUL;
-    }
-
-    if (overflow) {
-      console.log(
-        "Command line is too long (> %d characters)",
-        READ_BUFFER_SIZE
-      );
-
-      const command = { id: CommandType.SKIP } as ICommand;
-
-      this._commands.push(command);
-
-      return;
-    }
-
-    const command = { id: CommandType.SKIP } as ICommand;
-
-    // ParseCommand(&command, buffer);
-
-    this._commands.push(command);
-
-    console.log(this._commands);
-
-    console.log(this._readBuffer);
-
-    console.log(this._eof);
-  }
+  private async _readNextCommand(): Promise<void> {}
 
   private _parseCommand(cmd: ICommand, data: string): void {
     throw new Error("Method not implemented.");
@@ -194,7 +86,7 @@ export default class ScriptEngine implements IScriptEngine {
 
     this._commands = [];
 
-    this._timesRead = 0;
+    this._eof = false;
   }
 
   executeNextCommand(quickread: boolean): void {
