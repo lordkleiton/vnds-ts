@@ -65,8 +65,6 @@ export default class ScriptEngine implements IScriptEngine {
     this._readBufferOffset += this._readBufferLength;
   }
 
-  private async _readNextCommand(): Promise<void> {}
-
   private _parseCommand(cmd: ICommand, data: string): void {
     throw new Error("Method not implemented.");
   }
@@ -91,7 +89,7 @@ export default class ScriptEngine implements IScriptEngine {
 
   executeNextCommand(quickread: boolean): void {
     if (!this._commands.length) {
-      this._readNextCommand();
+      this._readNextCommands();
     }
 
     const c = this._commands.shift();
@@ -111,7 +109,7 @@ export default class ScriptEngine implements IScriptEngine {
 
   skipCommands(num: number): void {
     while (this._commands.length <= num) {
-      this._readNextCommand();
+      this._readNextCommands();
     }
 
     this._fileLine += num;
@@ -122,7 +120,7 @@ export default class ScriptEngine implements IScriptEngine {
   skipTextCommands(num: number): void {
     while (this._textSkip < num) {
       if (this._commands.length <= 0) {
-        this._readNextCommand();
+        this._readNextCommands();
       }
 
       const c = this._commands.shift();
@@ -163,7 +161,7 @@ export default class ScriptEngine implements IScriptEngine {
 
   getCommand(offset: number): ICommand {
     while (this._commands.length <= offset) {
-      this._readNextCommand();
+      this._readNextCommands();
     }
 
     return this._commands[offset];
