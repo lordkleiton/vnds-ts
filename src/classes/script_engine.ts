@@ -74,8 +74,60 @@ export default class ScriptEngine implements IScriptEngine {
     console.log(commands);
   }
 
-  private _parseCommand(cmd: ICommand, data: string): void {
-    throw new Error("Method not implemented.");
+  private _parseCommand(data: string): ICommand {
+    if (data[0] == "#" || data[0] == "/") return { id: CommandType.SKIP };
+
+    if (data.match("bgload ")) {
+    }
+
+    if (data.match("setimg ")) {
+    }
+
+    if (data.match("sound ")) {
+    }
+
+    if (data.match("music ")) {
+    }
+
+    if (data.match("text ")) {
+    }
+
+    if (data.match("choice ")) {
+    }
+
+    if (data.match("setvar ") || data.match("gsetvar ")) {
+    }
+
+    if (data.match("if ")) {
+    }
+
+    if (data.match("fi ")) {
+    }
+
+    if (data.match("jump ")) {
+    }
+
+    if (data.match("delay ")) {
+    }
+
+    if (data.match("random ")) {
+    }
+
+    if (data.match("label ")) {
+    }
+
+    if (data.match("goto ")) {
+    }
+
+    if (data.match("cleartext ")) {
+    }
+
+    if (data.match("endscript ")) {
+    }
+
+    console.log("unknow method", data);
+
+    return { id: CommandType.SKIP };
   }
 
   /* interface stuff */
