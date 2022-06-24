@@ -28,18 +28,16 @@ export default class ScriptEngine implements IScriptEngine {
 
   private _timesRead: number = 0;
 
+  private _eof: boolean = false;
+
   constructor(private readonly _vnds: IVNDS) {
     this._interpreter = {} as IScriptInterpreter;
 
     this.reset();
   }
 
-  private get _readBufferL(): number {
+  private get _readBufferLength(): number {
     return this._readBuffer.length;
-  }
-
-  private get _eof(): boolean {
-    return this._readBufferL < SCRIPT_READ_BUFFER_SIZE;
   }
 
   private async _readFileChunk(): Promise<ArrayBuffer> {
@@ -50,6 +48,28 @@ export default class ScriptEngine implements IScriptEngine {
       this._readBufferOffset,
       this._readBufferOffset + SCRIPT_READ_BUFFER_SIZE
     );
+  }
+
+  private async _readNextCommands(): Promise<void> {
+    if (this._eof || !this._file) {
+      console.log("eof reached");
+
+      this._commands.push(this._eofCommand);
+
+      return;
+    }
+
+    const read = await this._readFileChunk();
+    const buffer = new Uint8Array(read);
+    const last_line_index = Array.from(buffer)
+      .reverse()
+      .findIndex(el => el == CC_NEW_LINE);
+
+    if (buffer.length < SCRIPT_READ_BUFFER_SIZE) this._eof = true;
+
+    this._readBuffer = buffer.slice(0, buffer.length - last_line_index);
+
+    this._readBufferOffset += this._readBufferLength;
   }
 
   private async _readNextCommand(): Promise<void> {
@@ -70,7 +90,7 @@ export default class ScriptEngine implements IScriptEngine {
       console.log(t);
       counter++;
 
-      if (this._readBufferOffset >= this._readBufferL) {
+      if (this._readBufferOffset >= this._readBufferLength) {
         this._readBufferOffset = 0;
 
         const read = await this._readFileChunk();
@@ -79,7 +99,7 @@ export default class ScriptEngine implements IScriptEngine {
 
         this._readBuffer = new Uint8Array(read);
 
-        if (this._readBufferL <= 0) {
+        if (this._readBufferLength <= 0) {
           break;
         }
       }
@@ -91,7 +111,7 @@ export default class ScriptEngine implements IScriptEngine {
       let wantToCopy: number;
 
       if (!newline_index) {
-        wantToCopy = this._readBufferL - this._readBufferOffset;
+        wantToCopy = this._readBufferLength - this._readBufferOffset;
       } else {
         wantToCopy = newline_index - current_head - this._readBufferOffset;
       }
@@ -284,13 +304,13 @@ export default class ScriptEngine implements IScriptEngine {
     const second = this._readBuffer[1];
     const third = this._readBuffer[2];
 
-    if (this._readBufferL >= 2 && first == 0xfe && second == 0xff) {
+    if (this._readBufferLength >= 2 && first == 0xfe && second == 0xff) {
       console.log("Script encoding is UTF-16 BE. Only UTF-8 is supported.");
 
       return;
     }
 
-    if (this._readBufferL >= 2 && first == 0xff && second == 0xfe) {
+    if (this._readBufferLength >= 2 && first == 0xff && second == 0xfe) {
       console.log("Script encoding is UTF-16 LE. Only UTF-8 is supported.");
 
       return;
@@ -301,7 +321,7 @@ export default class ScriptEngine implements IScriptEngine {
     console.log("script set", file.name);
 
     if (
-      this._readBufferL >= 3 &&
+      this._readBufferLength >= 3 &&
       first == 0xef &&
       second == 0xbb &&
       third == 0xbf
