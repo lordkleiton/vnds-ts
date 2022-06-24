@@ -20,7 +20,6 @@ export default class ScriptEngine implements IScriptEngine {
   private _fileLine: number = 0;
   private _textSkip: number = 0;
 
-  private _eof: boolean = false;
   private _readBuffer: Uint8Array = new Uint8Array();
   private _readBufferOffset: number = 0;
 
@@ -39,7 +38,11 @@ export default class ScriptEngine implements IScriptEngine {
     return this._readBuffer.length;
   }
 
-  private async _readFile(): Promise<ArrayBuffer> {
+  private get _eof(): boolean {
+    return this._readBufferL < SCRIPT_READ_BUFFER_SIZE;
+  }
+
+  private async _readFileChunk(): Promise<ArrayBuffer> {
     if (!this._file) throw new Error("no file to read");
 
     return await FileReaderUtils.read(
@@ -70,15 +73,13 @@ export default class ScriptEngine implements IScriptEngine {
       if (this._readBufferOffset >= this._readBufferL) {
         this._readBufferOffset = 0;
 
-        const read = await this._readFile();
+        const read = await this._readFileChunk();
 
         this._timesRead++;
 
         this._readBuffer = new Uint8Array(read);
 
         if (this._readBufferL <= 0) {
-          this._eof = true;
-
           break;
         }
       }
@@ -166,8 +167,6 @@ export default class ScriptEngine implements IScriptEngine {
     this._fileLine = 0;
 
     this._textSkip = 0;
-
-    this._eof = false;
 
     this._readBuffer = new Uint8Array();
 
