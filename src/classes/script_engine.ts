@@ -5,7 +5,7 @@ import {
   IScriptInterpreter,
   IVNDS,
 } from "~/interfaces";
-import { CC_NEW_LINE, SCRIPT_READ_BUFFER_SIZE } from "~/consts";
+import { CC_NEW_LINE, SCRIPT_READ_BUFFER_SIZE, SC_NEW_LINE } from "~/consts";
 import { FileReaderUtils } from "~/utils";
 
 export default class ScriptEngine implements IScriptEngine {
@@ -60,9 +60,18 @@ export default class ScriptEngine implements IScriptEngine {
 
     if (buffer.length < SCRIPT_READ_BUFFER_SIZE) this._eof = true;
 
-    this._readBuffer = buffer.slice(0, buffer.length - last_line_index);
+    const current_commands = buffer.slice(0, buffer.length - last_line_index);
 
-    this._readBufferOffset += this._readBufferLength;
+    this._readBufferOffset += current_commands.length;
+
+    const decoder = new TextDecoder();
+    const decoded = decoder.decode(current_commands);
+    const commands = decoded
+      .split(RegExp(SC_NEW_LINE, "gi"))
+      .map(command => command.trim())
+      .filter(command => !!command);
+
+    console.log(commands);
   }
 
   private _parseCommand(cmd: ICommand, data: string): void {
