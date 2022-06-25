@@ -65,8 +65,8 @@ export default interface ICommand {
   };
 
   random?: {
-    name?: string;
-    low?: number;
-    high?: number;
+    name: string;
+    low: number;
+    high: number;
   };
 }

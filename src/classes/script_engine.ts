@@ -269,7 +269,7 @@ export default class ScriptEngine implements IScriptEngine {
     if (line.match(COMMAND_RANDOM)) {
       const split = splitLine(line, COMMAND_RANDOM);
       const data = toData(split[1]);
-      const name = data.shift();
+      const name = data.shift()!;
 
       return {
         id: CommandType.RANDOM,

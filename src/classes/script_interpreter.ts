@@ -7,6 +7,7 @@ import {
   SC_RIGHT_BRACE,
 } from "~/consts";
 import Variable from "./variable";
+import { NumberUtils } from "~/utils";
 
 export default class ScriptInterpreter implements IScriptInterpreter {
   constructor(private readonly _vnds: IVNDS) {}
@@ -169,12 +170,22 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
   private _cmd_random(cmd: ICommand, quickread: boolean = false): void {
     if (!cmd.random) return;
+
+    const high = cmd.random.high + 1;
+    const low = cmd.random.low;
+    const value = NumberUtils.randomInt(low, high);
+
+    this._vnds.setVariable(cmd.random.name, "=", value.toString());
   }
 
-  private _cmd_endscript(cmd: ICommand, quickread: boolean = false): void {}
+  private _cmd_endscript(cmd: ICommand, quickread: boolean = false): void {
+    //this._vnds.scriptEngine.setScriptFile("script/main.scr")
+  }
 
   private _cmd_label(cmd: ICommand, quickread: boolean = false): void {
     if (!cmd.label) return;
+
+    // noop
   }
 
   private _cmd_goto(cmd: ICommand, quickread: boolean = false): void {
@@ -185,7 +196,9 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     if (!cmd.clearText) return;
   }
 
-  private _cmd_eof(cmd: ICommand, quickread: boolean = false): void {}
+  private _cmd_eof(cmd: ICommand, quickread: boolean = false): void {
+    //this._vnds.scriptEngine.setScriptFile("script/main.scr")
+  }
 
   private _evaluateIf(expr1: string, op: string, expr2: string): boolean {
     const left_var = this._getVariables(expr1);
