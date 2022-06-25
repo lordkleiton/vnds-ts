@@ -32,9 +32,9 @@ export default interface ICommand {
   };
 
   setvar?: {
-    name?: string;
-    op?: string;
-    value?: string;
+    name: string;
+    op: string;
+    value: string;
   };
 
   vif?: {
