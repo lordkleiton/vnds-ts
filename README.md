@@ -1,5 +1,8 @@
-# TS-Webpack-Boilerplate
+# VNDS-TS
 
-Este é um projeto que serve como base para a criação de aplicações em TS com bundle via Webpack
+port em TS de
+[VNDS](https://github.com/ds-homebrew/vnds), tentando manter o maximo de logica original
 
-Vem com eslint e prettier configurados
+# Modificações
+
+- ScriptEngine.\_readNextCommands
