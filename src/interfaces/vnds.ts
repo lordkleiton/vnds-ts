@@ -1,13 +1,14 @@
 import IGraphicsEngine from "./graphics_engine";
 import IScriptEngine from "./script_engine";
 import ISoundEngine from "./sound_engine";
+import ITextEngine from "./text_engine";
 import IVariable from "./variable";
 
 export default interface IVNDS {
   globals: Record<string, IVariable>;
   variables: Record<string, IVariable>;
 
-  textEngine: ITextWriter;
+  textEngine: ITextEngine;
   graphicsEngine: IGraphicsEngine;
   scriptEngine: IScriptEngine;
   soundEngine: ISoundEngine;
