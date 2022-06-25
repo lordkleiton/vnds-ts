@@ -1,8 +1,19 @@
 import { CommandType, Operations } from "~/enums";
 import { ICommand, IScriptInterpreter, IVariable, IVNDS } from "~interfaces";
+import Variable from "./variable";
 
 export default class ScriptInterpreter implements IScriptInterpreter {
   constructor(private readonly _vnds: IVNDS) {}
+
+  private _getVariables(name: string): IVariable | undefined {
+    const local = this._vnds.variables[name];
+
+    if (local) return local;
+
+    const global = this._vnds.globals[name];
+
+    if (global) return global;
+  }
 
   private _cmd_setimg(cmd: ICommand, quickread: boolean = false): void {}
 
@@ -41,8 +52,13 @@ export default class ScriptInterpreter implements IScriptInterpreter {
   private _cmd_eof(cmd: ICommand, quickread: boolean = false): void {}
 
   private _evaluateIf(expr1: string, op: string, expr2: string): boolean {
-    let left: IVariable = {} as IVariable;
-    let right: IVariable = {} as IVariable;
+    const left_var = this._getVariables(expr1);
+    const right_var = this._getVariables(expr2);
+
+    const left: IVariable = left_var ? left_var : new Variable(expr1);
+    const right: IVariable = right_var ? right_var : new Variable(expr2);
+
+    console.log("eval_if ", expr1, op, expr2);
 
     switch (op) {
       case Operations.EQUAL:
