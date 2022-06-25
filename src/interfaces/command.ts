@@ -38,9 +38,9 @@ export default interface ICommand {
   };
 
   vif?: {
-    expr1?: string;
-    op?: string;
-    expr2?: string;
+    expr1: string;
+    op: string;
+    expr2: string;
   };
 
   jump?: {
