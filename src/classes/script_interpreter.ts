@@ -128,7 +128,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     let wait_input: boolean;
 
     if (first_char == "~") {
-      output = "";
+      output = "espaço vazio";
 
       wait_input = false;
     } else {
