@@ -176,10 +176,15 @@ export default class ScriptEngine implements IScriptEngine {
       const split = splitLine(line, COMMAND_CHOICE);
       const data = toChoiceData(split[1]);
 
-      if (
-        data.length >= CMD_OPTIONS_MAX_OPTIONS ||
-        data.some(c => c.length > CMD_OPTIONS_BUFFER_LENGTH)
-      ) {
+      if (data.length >= CMD_OPTIONS_MAX_OPTIONS) {
+        console.log("too many choices", line);
+
+        return { id: CommandType.SKIP };
+      }
+
+      if (data.some(c => c.length > CMD_OPTIONS_BUFFER_LENGTH)) {
+        console.log("choices are too large", line);
+
         return { id: CommandType.SKIP };
       }
 
