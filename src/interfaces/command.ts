@@ -16,11 +16,11 @@ export default interface ICommand {
 
   sound?: {
     repeats?: number;
-    path?: string;
+    path: string;
   };
 
   music?: {
-    path?: string;
+    path: string;
   };
 
   text?: {
@@ -44,7 +44,7 @@ export default interface ICommand {
   };
 
   jump?: {
-    path?: string;
+    path: string;
     label?: string;
   };
 
