@@ -140,7 +140,7 @@ export default class ScriptEngine implements IScriptEngine {
     if (line.match(COMMAND_SOUND)) {
       const split = splitLine(line, COMMAND_SOUND);
       const data = toData(split[1]);
-      const path = data.shift();
+      const path = data.shift()!;
 
       return {
         id: CommandType.SOUND,
@@ -154,7 +154,7 @@ export default class ScriptEngine implements IScriptEngine {
     if (line.match(COMMAND_MUSIC)) {
       const split = splitLine(line, COMMAND_MUSIC);
       const data = toData(split[1]);
-      const path = data.shift();
+      const path = data.shift()!;
 
       return {
         id: CommandType.MUSIC,
@@ -243,7 +243,7 @@ export default class ScriptEngine implements IScriptEngine {
     if (line.match(COMMAND_JUMP)) {
       const split = splitLine(line, COMMAND_JUMP);
       const data = toData(split[1]);
-      const path = data.shift();
+      const path = data.shift()!;
 
       return {
         id: CommandType.JUMP,
