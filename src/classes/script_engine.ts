@@ -345,9 +345,9 @@ export default class ScriptEngine implements IScriptEngine {
     this._eof = false;
   }
 
-  executeNextCommand(quickread: boolean): void {
+  async executeNextCommand(quickread: boolean): Promise<void> {
     if (!this._commands.length) {
-      this._readNextCommands();
+      await this._readNextCommands();
     }
 
     const c = this._commands.shift();
@@ -365,7 +365,7 @@ export default class ScriptEngine implements IScriptEngine {
     throw new Error("Method not implemented.");
   }
 
-  skipCommands(num: number): void {
+  async skipCommands(num: number): Promise<void> {
     while (this._commands.length <= num) {
       this._readNextCommands();
     }
@@ -375,7 +375,7 @@ export default class ScriptEngine implements IScriptEngine {
     this._commands.splice(0, num);
   }
 
-  skipTextCommands(num: number): void {
+  async skipTextCommands(num: number): Promise<void> {
     while (this._textSkip < num) {
       if (this._commands.length <= 0) {
         this._readNextCommands();
@@ -395,13 +395,13 @@ export default class ScriptEngine implements IScriptEngine {
     }
   }
 
-  jumpToLabel(lbl: string): boolean {
+  async jumpToLabel(lbl: string): Promise<boolean> {
     this.setScriptFile(this._vnds.scriptEngine.getOpenFile());
 
     let c: ICommand;
 
     while (true) {
-      c = this._vnds.scriptEngine.getCommand(0);
+      c = await this._vnds.scriptEngine.getCommand(0);
 
       if (c.id == CommandType.LABEL && c.label?.label == lbl) {
         return true;
@@ -417,9 +417,9 @@ export default class ScriptEngine implements IScriptEngine {
     }
   }
 
-  getCommand(offset: number): ICommand {
+  async getCommand(offset: number): Promise<ICommand> {
     while (this._commands.length <= offset) {
-      this._readNextCommands();
+      await this._readNextCommands();
     }
 
     return this._commands[offset];
