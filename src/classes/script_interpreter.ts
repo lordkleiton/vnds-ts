@@ -143,7 +143,11 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
   /* interface stuff */
 
-  cmdText(cmd: ICommand, quickread: boolean, skipread: boolean): void {
+  cmdText(
+    cmd: ICommand,
+    quickread: boolean = false,
+    skipread: boolean = false
+  ): void {
     if (!cmd.text) return;
 
     if (!skipread) {
