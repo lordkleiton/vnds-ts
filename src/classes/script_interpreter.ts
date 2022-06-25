@@ -190,10 +190,24 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
   private _cmd_goto(cmd: ICommand, quickread: boolean = false): void {
     if (!cmd.lgoto) return;
+
+    const label = this._replaceVars(cmd.lgoto.label);
+
+    this._vnds.scriptEngine.jumpToLabel(label);
   }
 
   private _cmd_cleartext(cmd: ICommand, quickread: boolean = false): void {
     if (!cmd.clearText) return;
+
+    if (cmd.clearText.clearType == "!") {
+      this._vnds.textEngine.reset();
+    } else {
+      const max_lines = this._vnds.textEngine.getTextPane().getVisibleItems();
+
+      for (let i = 0; i <= max_lines; i++) {
+        this._vnds.textEngine.getTextPane().appendText("");
+      }
+    }
   }
 
   private _cmd_eof(cmd: ICommand, quickread: boolean = false): void {
