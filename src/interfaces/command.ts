@@ -4,7 +4,7 @@ export default interface ICommand {
   id: CommandType;
 
   bgload?: {
-    path?: string;
+    path: string;
     fadeTime?: number;
   };
 
