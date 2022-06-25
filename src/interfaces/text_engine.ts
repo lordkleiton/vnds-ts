@@ -12,4 +12,9 @@ export default interface ITextEngine {
   onButtonPressed(button: any): void;
   drawBackground(): void;
   drawForeground(): void;
+
+  getTextPane(): any;
+  getChoiceView(): any;
+
+  setBackgroundColor(c: number): void;
 }
