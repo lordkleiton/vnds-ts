@@ -95,6 +95,8 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
   private _cmd_setvar(cmd: ICommand, quickread: boolean = false): void {
     if (!cmd.setvar) return;
+
+    this._vnds.setVariable(cmd.setvar.name, cmd.setvar.op, cmd.setvar.value);
   }
 
   private _cmd_gsetvar(cmd: ICommand, quickread: boolean = false): void {
