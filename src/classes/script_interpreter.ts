@@ -183,8 +183,6 @@ export default class ScriptInterpreter implements IScriptInterpreter {
   }
 
   private _cmd_label(cmd: ICommand, quickread: boolean = false): void {
-    if (!cmd.label) return;
-
     // noop
   }
 
