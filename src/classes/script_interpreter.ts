@@ -141,6 +141,20 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
   private _cmd_jump(cmd: ICommand, quickread: boolean = false): void {
     if (!cmd.jump) return;
+
+    const path = this._replaceVars(cmd.jump.path);
+    const full_path = `script/${path}`;
+
+    //this._vnds.scriptEngine.setScriptFile(full_path);
+
+    if (cmd.jump.label) {
+      const command = {
+        id: CommandType.GOTO,
+        lgoto: { label: cmd.jump.label },
+      } as ICommand;
+
+      this._cmd_goto(command, quickread);
+    }
   }
 
   private _cmd_delay(cmd: ICommand, quickread: boolean = false): void {

@@ -57,7 +57,7 @@ export default interface ICommand {
   };
 
   lgoto?: {
-    label?: string;
+    label: string;
   };
 
   clearText?: {
