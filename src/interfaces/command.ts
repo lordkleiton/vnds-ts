@@ -51,7 +51,7 @@ export default interface ICommand {
   };
 
   delay?: {
-    time?: string;
+    time?: number;
   };
 
   label?: {
