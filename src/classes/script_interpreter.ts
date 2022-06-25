@@ -31,9 +31,42 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
   private _cmd_gsetvar(cmd: ICommand, quickread: boolean = false): void {}
 
-  private _cmd_if(cmd: ICommand, quickread: boolean = false): void {}
+  private async _cmd_if(
+    cmd: ICommand,
+    quickread: boolean = false
+  ): Promise<void> {
+    if (!cmd.vif) return;
 
-  private _cmd_fi(cmd: ICommand, quickread: boolean = false): void {}
+    if (!this._evaluateIf(cmd.vif.expr1, cmd.vif.op, cmd.vif.expr2)) {
+      let nesting = 1;
+
+      let next_cmd: ICommand;
+
+      do {
+        next_cmd = await this._vnds.scriptEngine.getCommand(0);
+
+        if (next_cmd.id == CommandType.IF) {
+          nesting++;
+        } else {
+          if (next_cmd.id == CommandType.FI) {
+            nesting--;
+          }
+
+          this._vnds.scriptEngine.skipCommands(1);
+        }
+      } while (nesting > 0 && cmd.id != CommandType.END_OF_FILE);
+
+      if (nesting > 0) {
+        console.log(
+          "Invalid nesting of if's. Reached the end of the file before encountering the required number of fi's"
+        );
+      }
+    }
+  }
+
+  private _cmd_fi(cmd: ICommand, quickread: boolean = false): void {
+    // noop
+  }
 
   private _cmd_jump(cmd: ICommand, quickread: boolean = false): void {}
 
