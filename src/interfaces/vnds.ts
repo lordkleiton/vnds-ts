@@ -22,6 +22,6 @@ export default interface IVNDS {
   getDelay(): number;
   setDelay(d: number): void;
   setWaitForInput(b: boolean): void;
-  setVariable(name: string, op: number, value: string): void;
-  setGlobal(name: string, op: number, value: string): void;
+  setVariable(name: string, op: string, value: string): void;
+  setGlobal(name: string, op: string, value: string): void;
 }
