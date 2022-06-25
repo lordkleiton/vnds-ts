@@ -145,14 +145,27 @@ export default class ScriptEngine implements IScriptEngine {
     }
 
     if (line.match(COMMAND_MUSIC)) {
+      const split = splitLine(line, COMMAND_MUSIC);
+      const data = toData(split[1]);
+      const path = data.shift();
+
       return {
         id: CommandType.MUSIC,
+        music: {
+          path,
+        },
       };
     }
 
     if (line.match(COMMAND_TEXT)) {
+      const split = splitLine(line, COMMAND_TEXT);
+      const text = split[1];
+
       return {
         id: CommandType.TEXT,
+        text: {
+          text,
+        },
       };
     }
 
@@ -297,7 +310,7 @@ export default class ScriptEngine implements IScriptEngine {
     }
   }
 
-  jumpToLabel(lbl: number): boolean {
+  jumpToLabel(lbl: string): boolean {
     this.setScriptFile(this._vnds.scriptEngine.getOpenFile());
 
     let c: ICommand;
