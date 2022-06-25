@@ -1,5 +1,11 @@
 import { CommandType, Operations } from "~/enums";
 import { ICommand, IScriptInterpreter, IVariable, IVNDS } from "~/interfaces";
+import {
+  REGEX_MATCH_VAR_CURLY_BRACES,
+  REGEX_MATCH_VAR_SIMPLE,
+  SC_LEFT_BRACE,
+  SC_RIGHT_BRACE,
+} from "~/consts";
 import Variable from "./variable";
 
 export default class ScriptInterpreter implements IScriptInterpreter {
@@ -110,7 +116,30 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     }
   }
 
-  private _replaceVars(text: string): void {}
+  private _replaceVars(text: string): string {
+    let result = text;
+
+    const braces_matches = text.match(
+      RegExp(REGEX_MATCH_VAR_CURLY_BRACES, "gi")
+    );
+
+    braces_matches?.forEach(m => {
+      const name = m.replace(SC_LEFT_BRACE, "").replace(SC_RIGHT_BRACE, "");
+      const variable = this._getVariables(name);
+
+      if (variable) result = result.replace(m, variable.strval);
+    });
+
+    const normal_matches = text.match(RegExp(REGEX_MATCH_VAR_SIMPLE, "gi"));
+
+    normal_matches?.forEach(m => {
+      const variable = this._getVariables(m);
+
+      if (variable) result = result.replace(m, variable.strval);
+    });
+
+    return result;
+  }
 
   /* interface stuff */
 
