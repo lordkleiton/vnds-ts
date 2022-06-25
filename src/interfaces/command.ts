@@ -63,11 +63,11 @@ export default interface ICommand {
   };
 
   clearText?: {
-    clearType?: number;
+    clearType?: string;
   };
 
   random?: {
-    name?: number;
+    name?: string;
     low?: number;
     high?: number;
   };
