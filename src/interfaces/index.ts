@@ -4,6 +4,9 @@ import IScriptInterpreter from "./script_interpreter";
 import INovelInfo from "./novel_info";
 import IVariable from "./variable";
 import IVNDS from "./vnds";
+import ITextEngine from "./text_engine";
+import IGraphicsEngine from "./graphics_engine";
+import ISoundEngine from "./sound_engine";
 
 export {
   ICommand,
@@ -12,4 +15,7 @@ export {
   INovelInfo,
   IVariable,
   IVNDS,
+  ITextEngine,
+  IGraphicsEngine,
+  ISoundEngine,
 };
