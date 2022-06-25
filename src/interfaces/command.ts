@@ -9,9 +9,9 @@ export default interface ICommand {
   };
 
   setimg?: {
-    x?: number;
-    y?: number;
-    path?: string;
+    x: number;
+    y: number;
+    path: string;
   };
 
   sound?: {
