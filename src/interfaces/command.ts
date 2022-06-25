@@ -4,71 +4,71 @@ export default interface ICommand {
   id: CommandType;
 
   bgload?: {
-    path: number;
-    fadeTime: number;
+    path?: string;
+    fadeTime?: number;
   };
 
   setimg?: {
-    x: number;
-    y: number;
-    path: number;
+    x?: number;
+    y?: number;
+    path?: number;
   };
 
   sound?: {
-    repeats: number;
-    path: number;
+    repeats?: number;
+    path?: number;
   };
 
   music?: {
-    path: number;
+    path?: number;
   };
 
   text?: {
-    text: number;
+    text?: number;
   };
 
   choice?: {
-    optionsL: number;
-    optionsOffset: number;
-    optionsBuffer: number;
+    optionsL?: number;
+    optionsOffset?: number;
+    optionsBuffer?: number;
   };
 
   setvar?: {
-    name: number;
-    op: number;
-    value: number;
+    name?: number;
+    op?: number;
+    value?: number;
   };
 
   vif?: {
-    expr1: number;
-    op: number;
-    expr2: number;
+    expr1?: number;
+    op?: number;
+    expr2?: number;
   };
 
   jump?: {
-    path: number;
-    label: number;
+    path?: number;
+    label?: number;
   };
 
   delay?: {
-    time: number;
+    time?: number;
   };
 
   label?: {
-    label: number;
+    label?: number;
   };
 
   lgoto?: {
-    label: number;
+    label?: number;
   };
 
   clearText?: {
-    clearType: number;
+    clearType?: number;
   };
 
   random?: {
-    name: number;
-    low: number;
-    high: number;
+    name?: number;
+    low?: number;
+    high?: number;
   };
 }
