@@ -8,6 +8,7 @@ import {
   IVNDS,
 } from "~/interfaces";
 import { SC_TILDE } from "~consts";
+import { VarType } from "~enums";
 import Variable from "./variable";
 
 export default class VNDS implements IVNDS {
@@ -35,6 +36,92 @@ export default class VNDS implements IVNDS {
 
       return;
     }
+
+    let left: Variable;
+
+    if (this.variables[value]) {
+      left = this.variables[value];
+    } else {
+      if (this.globals[value]) {
+        left = this.globals[value];
+      } else {
+        left = new Variable(value);
+      }
+    }
+
+    let right: Variable;
+
+    if (obj[name]) {
+      right = obj[name];
+    } else {
+      const aux = new Variable("");
+      const type_str = left.type == VarType.VT_string;
+
+      aux.type = left.type;
+
+      aux.intval = type_str ? undefined : 0;
+      aux.strval = type_str ? "" : aux.intval!.toString();
+
+      right = aux;
+    }
+
+    switch (right.type) {
+      case VarType.VT_int:
+        switch (op) {
+          case "+":
+            right.intval! += left.intval!;
+            break;
+          case "-":
+            right.intval! -= left.intval!;
+            break;
+          case "=":
+            right.intval! = left.intval!;
+            break;
+          default:
+            console.log(
+              "setvar :: Unsupported operator '%c' for target type int",
+              op
+            );
+
+            return;
+        }
+
+        right.strval = right.intval!.toString();
+
+        break;
+      case VarType.VT_string:
+        switch (op) {
+          case "+":
+            right.strval += left.strval;
+
+            break;
+          case "=":
+            right.strval = left.strval;
+
+            break;
+          default:
+            console.log(
+              "setvar :: Unsupported operator '%c' for target type string",
+              op
+            );
+
+            return;
+        }
+
+        const parsed = parseInt(right.strval);
+
+        right.intval = isNaN(parsed) ? undefined : parsed;
+
+        break;
+      case VarType.VT_null:
+        // noop
+
+        break;
+    }
+
+    console.log("(g)setvar %s %c %s", name, op, right.strval);
+
+    obj[name] = right;
   }
 
   /* interface stuff */
