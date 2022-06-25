@@ -32,15 +32,15 @@ export default interface ICommand {
   };
 
   setvar?: {
-    name?: number;
-    op?: number;
-    value?: number;
+    name?: string;
+    op?: string;
+    value?: string;
   };
 
   vif?: {
-    expr1?: number;
-    op?: number;
-    expr2?: number;
+    expr1?: string;
+    op?: string;
+    expr2?: string;
   };
 
   jump?: {
