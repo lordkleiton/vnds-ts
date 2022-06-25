@@ -31,10 +31,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
   private _cmd_gsetvar(cmd: ICommand, quickread: boolean = false): void {}
 
-  private async _cmd_if(
-    cmd: ICommand,
-    quickread: boolean = false
-  ): Promise<void> {
+  private async _cmd_if(cmd: ICommand): Promise<void> {
     if (!cmd.vif) return;
 
     if (!this._evaluateIf(cmd.vif.expr1, cmd.vif.op, cmd.vif.expr2)) {
@@ -151,7 +148,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
         this._cmd_gsetvar(cmd, quickread);
         return;
       case CommandType.IF:
-        this._cmd_if(cmd, quickread);
+        this._cmd_if(cmd);
         return;
       case CommandType.FI:
         this._cmd_fi(cmd, quickread);
