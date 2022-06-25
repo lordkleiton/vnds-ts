@@ -222,26 +222,53 @@ export default class ScriptEngine implements IScriptEngine {
     }
 
     if (line.match(COMMAND_RANDOM)) {
+      const split = splitLine(line, COMMAND_RANDOM);
+      const data = toData(split[1]);
+      const name = data.shift();
+
       return {
         id: CommandType.RANDOM,
+        random: {
+          name,
+          low: parseFloat(data[0]),
+          high: parseFloat(data[1]),
+        },
       };
     }
 
     if (line.match(COMMAND_LABEL)) {
+      const split = splitLine(line, COMMAND_DELAY);
+      const label = split[1];
+
       return {
         id: CommandType.LABEL,
+        label: {
+          label,
+        },
       };
     }
 
     if (line.match(COMMAND_GOTO)) {
+      const split = splitLine(line, COMMAND_DELAY);
+      const label = split[1];
+
       return {
         id: CommandType.GOTO,
+        lgoto: {
+          label,
+        },
       };
     }
 
     if (line.match(COMMAND_CLEARTEXT)) {
+      const split = splitLine(line, COMMAND_DELAY);
+      const type = split[1];
+
       return {
         id: CommandType.CLEARTEXT,
+        clearText: {
+          clearType: type,
+        },
       };
     }
 
