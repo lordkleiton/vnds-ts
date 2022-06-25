@@ -7,6 +7,8 @@ import {
 } from "~/interfaces";
 import {
   CC_NEW_LINE,
+  CMD_OPTIONS_BUFFER_LENGTH,
+  CMD_OPTIONS_MAX_OPTIONS,
   COMMAND_BGLOAD,
   COMMAND_CHOICE,
   COMMAND_CLEARTEXT,
@@ -170,8 +172,22 @@ export default class ScriptEngine implements IScriptEngine {
     }
 
     if (line.match(COMMAND_CHOICE)) {
+      const toChoiceData = (s: string) => s.split(/\|/gi);
+      const split = splitLine(line, COMMAND_CHOICE);
+      const data = toChoiceData(split[1]);
+
+      if (
+        data.length >= CMD_OPTIONS_MAX_OPTIONS ||
+        data.some(c => c.length > CMD_OPTIONS_BUFFER_LENGTH)
+      ) {
+        return { id: CommandType.SKIP };
+      }
+
       return {
         id: CommandType.CHOICE,
+        choice: {
+          options: data,
+        },
       };
     }
 
