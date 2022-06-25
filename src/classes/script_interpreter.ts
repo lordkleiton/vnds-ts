@@ -1,6 +1,10 @@
 import { CommandType, Operations } from "~/enums";
 import { ICommand, IScriptInterpreter, IVariable, IVNDS } from "~/interfaces";
 import {
+  FOLDER_BG,
+  FOLDER_FG,
+  FOLDER_SCRIPTS,
+  FOLDER_SOUND,
   REGEX_MATCH_VAR_CURLY_BRACES,
   REGEX_MATCH_VAR_SIMPLE,
   SC_AT,
@@ -29,7 +33,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     if (!cmd.setimg) return;
 
     const path = this._replaceVars(cmd.setimg.path);
-    const full_path = `foreground/${path}`;
+    const full_path = `${FOLDER_FG}/${path}`;
 
     this._vnds.graphicsEngine.setForeground(
       full_path,
@@ -46,7 +50,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     }
 
     const path = this._replaceVars(cmd.bgload.path);
-    const full_path = `background/${path}`;
+    const full_path = `${FOLDER_BG}/${path}`;
 
     this._vnds.graphicsEngine.setBackground(full_path, cmd.bgload.fadeTime);
   }
@@ -56,7 +60,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
     if (!quickread) {
       const path = this._replaceVars(cmd.sound.path);
-      const full_path = `sound/${path}`;
+      const full_path = `${FOLDER_SOUND}/${path}`;
 
       this._vnds.soundEngine.playSound(full_path, cmd.sound.repeats);
     }
@@ -66,7 +70,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     if (!cmd.music) return;
 
     const path = this._replaceVars(cmd.music.path);
-    const full_path = `sound/${path}`;
+    const full_path = `${FOLDER_SOUND}/${path}`;
 
     this._vnds.soundEngine.setMusic(full_path);
   }
@@ -147,7 +151,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     if (!cmd.jump) return;
 
     const path = this._replaceVars(cmd.jump.path);
-    const full_path = `script/${path}`;
+    const full_path = `${FOLDER_SCRIPTS}/${path}`;
 
     //this._vnds.scriptEngine.setScriptFile(full_path);
 
