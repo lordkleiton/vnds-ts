@@ -29,7 +29,12 @@ import {
   VAR_STRING_LENGTH,
   READ_BUFFER_SIZE,
 } from "./script_engine";
-import { SC_NEW_LINE, SC_NUL } from "./special_chars";
+import {
+  SC_LEFT_BRACE,
+  SC_NEW_LINE,
+  SC_NUL,
+  SC_RIGHT_BRACE,
+} from "./special_chars";
 
 export { CMD_OPTIONS_BUFFER_LENGTH, CMD_OPTIONS_MAX_OPTIONS, CMD_TEXT_LENGTH };
 
@@ -66,3 +71,5 @@ export {
 };
 
 export { REGEX_MATCH_VAR_CURLY_BRACES, REGEX_MATCH_VAR_SIMPLE };
+
+export { SC_LEFT_BRACE, SC_RIGHT_BRACE };
