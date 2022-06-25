@@ -80,10 +80,14 @@ export default class ScriptEngine implements IScriptEngine {
     const last_line_index = Array.from(buffer)
       .reverse()
       .findIndex(el => el == CC_NEW_LINE);
-
-    if (buffer.length < SCRIPT_READ_BUFFER_SIZE) this._eof = true;
-
     const current_commands = buffer.slice(0, buffer.length - last_line_index);
+    const eof =
+      current_commands.length == buffer.length &&
+      buffer.length < SCRIPT_READ_BUFFER_SIZE;
+
+    if (eof) {
+      this._eof = true;
+    }
 
     this._readBufferOffset += current_commands.length;
 
