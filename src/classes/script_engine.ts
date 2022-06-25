@@ -95,12 +95,12 @@ export default class ScriptEngine implements IScriptEngine {
     console.log(commands);
   }
 
-  private _parseCommand(data: string): ICommand {
-    if (!data || data[0] == "#" || data[0] == "/")
+  private _parseCommand(line: string): ICommand {
+    if (!line || line[0] == "#" || line[0] == "/")
       return { id: CommandType.SKIP };
 
-    if (data.match(COMMAND_BGLOAD)) {
-      const split = data.split(COMMAND_BGLOAD, 2);
+    if (line.match(COMMAND_BGLOAD)) {
+      const split = line.split(COMMAND_BGLOAD, 2);
 
       return {
         id: CommandType.BGLOAD,
@@ -108,99 +108,101 @@ export default class ScriptEngine implements IScriptEngine {
       };
     }
 
-    if (data.match(COMMAND_SETIMG)) {
+    if (line.match(COMMAND_SETIMG)) {
+      const split = line.split(COMMAND_SETIMG, 2);
+
       return {
         id: CommandType.SETIMG,
       };
     }
 
-    if (data.match(COMMAND_SOUND)) {
+    if (line.match(COMMAND_SOUND)) {
       return {
         id: CommandType.SOUND,
       };
     }
 
-    if (data.match(COMMAND_MUSIC)) {
+    if (line.match(COMMAND_MUSIC)) {
       return {
         id: CommandType.MUSIC,
       };
     }
 
-    if (data.match(COMMAND_TEXT)) {
+    if (line.match(COMMAND_TEXT)) {
       return {
         id: CommandType.TEXT,
       };
     }
 
-    if (data.match(COMMAND_CHOICE)) {
+    if (line.match(COMMAND_CHOICE)) {
       return {
         id: CommandType.CHOICE,
       };
     }
 
-    if (data.match(COMMAND_SETVAR) || data.match(COMMAND_GSETVAR)) {
+    if (line.match(COMMAND_SETVAR) || line.match(COMMAND_GSETVAR)) {
       return {
-        id: data.match(COMMAND_SETVAR)
+        id: line.match(COMMAND_SETVAR)
           ? CommandType.SETVAR
           : CommandType.GSETVAR,
       };
     }
 
-    if (data.match(COMMAND_IF)) {
+    if (line.match(COMMAND_IF)) {
       return {
         id: CommandType.IF,
       };
     }
 
-    if (data.match(COMMAND_FI)) {
+    if (line.match(COMMAND_FI)) {
       return {
         id: CommandType.FI,
       };
     }
 
-    if (data.match(COMMAND_JUMP)) {
+    if (line.match(COMMAND_JUMP)) {
       return {
         id: CommandType.JUMP,
       };
     }
 
-    if (data.match(COMMAND_DELAY)) {
+    if (line.match(COMMAND_DELAY)) {
       return {
         id: CommandType.DELAY,
       };
     }
 
-    if (data.match(COMMAND_RANDOM)) {
+    if (line.match(COMMAND_RANDOM)) {
       return {
         id: CommandType.RANDOM,
       };
     }
 
-    if (data.match(COMMAND_LABEL)) {
+    if (line.match(COMMAND_LABEL)) {
       return {
         id: CommandType.LABEL,
       };
     }
 
-    if (data.match(COMMAND_GOTO)) {
+    if (line.match(COMMAND_GOTO)) {
       return {
         id: CommandType.GOTO,
       };
     }
 
-    if (data.match(COMMAND_CLEARTEXT)) {
+    if (line.match(COMMAND_CLEARTEXT)) {
       return {
         id: CommandType.CLEARTEXT,
       };
     }
 
-    if (data.match(COMMAND_ENDSCRIPT)) {
+    if (line.match(COMMAND_ENDSCRIPT)) {
       return {
         id: CommandType.ENDSCRIPT,
       };
     }
 
-    console.log("unknow method", data);
+    console.log("unknow method", line);
 
     return { id: CommandType.SKIP };
   }
