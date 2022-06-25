@@ -1,5 +1,5 @@
 import { IVariable } from "~/interfaces";
-import { VarType } from "~enums";
+import { VarType } from "~/enums";
 
 export default class Variable implements IVariable {
   type: VarType = VarType.VT_null;

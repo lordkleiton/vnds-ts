@@ -1,5 +1,5 @@
 import { CommandType, Operations } from "~/enums";
-import { ICommand, IScriptInterpreter, IVariable, IVNDS } from "~interfaces";
+import { ICommand, IScriptInterpreter, IVariable, IVNDS } from "~/interfaces";
 import Variable from "./variable";
 
 export default class ScriptInterpreter implements IScriptInterpreter {
