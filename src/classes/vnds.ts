@@ -12,6 +12,7 @@ import { VarType } from "~/enums";
 import Variable from "./variable";
 import ScriptEngine from "./script_engine";
 import GraphicsEngine from "./graphics_engine";
+import TextEngine from "./text_engine";
 
 export default class VNDS implements IVNDS {
   private _quit: boolean = false;
@@ -20,7 +21,7 @@ export default class VNDS implements IVNDS {
 
   globals: Record<string, IVariable> = {};
   variables: Record<string, IVariable> = {};
-  textEngine: ITextEngine = {} as ITextEngine;
+  textEngine: ITextEngine;
   graphicsEngine: IGraphicsEngine;
   scriptEngine: IScriptEngine;
   soundEngine: ISoundEngine = {} as ISoundEngine;
@@ -29,6 +30,8 @@ export default class VNDS implements IVNDS {
     this.scriptEngine = new ScriptEngine(this);
 
     this.graphicsEngine = new GraphicsEngine();
+
+    this.textEngine = new TextEngine();
   }
 
   private _setVariable(
