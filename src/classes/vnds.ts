@@ -7,9 +7,10 @@ import {
   IVariable,
   IVNDS,
 } from "~/interfaces";
-import { SC_TILDE } from "~consts";
-import { VarType } from "~enums";
+import { SC_TILDE } from "~/consts";
+import { VarType } from "~/enums";
 import Variable from "./variable";
+import ScriptEngine from "./script_engine";
 
 export default class VNDS implements IVNDS {
   private _quit: boolean = false;
@@ -20,10 +21,12 @@ export default class VNDS implements IVNDS {
   variables: Record<string, IVariable> = {};
   textEngine: ITextEngine = {} as ITextEngine;
   graphicsEngine: IGraphicsEngine = {} as IGraphicsEngine;
-  scriptEngine: IScriptEngine = {} as IScriptEngine;
+  scriptEngine: IScriptEngine;
   soundEngine: ISoundEngine = {} as ISoundEngine;
 
-  constructor(novelInfo: INovelInfo) {}
+  constructor(novelInfo: INovelInfo) {
+    this.scriptEngine = new ScriptEngine(this);
+  }
 
   private _setVariable(
     obj: Record<string, IVariable>,
