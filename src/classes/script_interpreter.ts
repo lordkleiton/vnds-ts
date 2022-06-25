@@ -3,8 +3,11 @@ import { ICommand, IScriptInterpreter, IVariable, IVNDS } from "~/interfaces";
 import {
   REGEX_MATCH_VAR_CURLY_BRACES,
   REGEX_MATCH_VAR_SIMPLE,
+  SC_AT,
+  SC_EXCLAMATION,
   SC_LEFT_BRACE,
   SC_RIGHT_BRACE,
+  SC_TILDE,
 } from "~/consts";
 import Variable from "./variable";
 import { NumberUtils } from "~/utils";
@@ -285,19 +288,19 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     let output: string | undefined;
     let wait_input: boolean;
 
-    if (first_char == "~") {
+    if (first_char == SC_TILDE) {
       output = "";
 
       wait_input = false;
     } else {
-      if (first_char == "!") {
+      if (first_char == SC_EXCLAMATION) {
         output = undefined;
 
         wait_input = true;
       } else {
         output = text;
 
-        wait_input = first_char != "@";
+        wait_input = first_char != SC_AT;
       }
     }
 

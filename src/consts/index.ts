@@ -34,6 +34,9 @@ import {
   SC_NEW_LINE,
   SC_NUL,
   SC_RIGHT_BRACE,
+  SC_AT,
+  SC_EXCLAMATION,
+  SC_TILDE,
 } from "./special_chars";
 
 export { CMD_OPTIONS_BUFFER_LENGTH, CMD_OPTIONS_MAX_OPTIONS, CMD_TEXT_LENGTH };
@@ -48,6 +51,9 @@ export {
   CC_NEW_LINE,
   SC_NUL,
   CC_NUL,
+  SC_AT,
+  SC_EXCLAMATION,
+  SC_TILDE,
 };
 
 export {
