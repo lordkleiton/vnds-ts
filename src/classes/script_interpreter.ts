@@ -114,14 +114,42 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
   /* interface stuff */
 
-  cmdText(cmd: ICommand, quickread: boolean, skipread: boolean): void {
-    throw new Error("Method not implemented.");
+  cmdText(cmd: ICommand, skipread: boolean): void {
+    if (!cmd.text) return;
+
+    if (!skipread) {
+      //this._vnds.graphicsEngine.flush(quickread);
+    }
+
+    const text = cmd.text.text;
+    const first_char = text[0];
+
+    let output: string | undefined;
+    let wait_input: boolean;
+
+    if (first_char == "~") {
+      output = "";
+
+      wait_input = false;
+    } else {
+      if (first_char == "!") {
+        output = undefined;
+
+        wait_input = true;
+      } else {
+        output = text;
+
+        wait_input = first_char != "@";
+      }
+    }
+
+    console.log(output, wait_input);
   }
 
   execute(cmd: ICommand, quickread: boolean): void {
     switch (cmd.id) {
       case CommandType.TEXT:
-        this.cmdText(cmd, quickread, false);
+        this.cmdText(cmd, false);
         return;
       case CommandType.SETIMG:
         this._cmd_setimg(cmd, quickread);
