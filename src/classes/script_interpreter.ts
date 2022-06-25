@@ -1,5 +1,5 @@
-import { CommandType } from "~enums";
-import { ICommand, IScriptInterpreter, IVNDS } from "~interfaces";
+import { CommandType, Operations } from "~/enums";
+import { ICommand, IScriptInterpreter, IVariable, IVNDS } from "~interfaces";
 
 export default class ScriptInterpreter implements IScriptInterpreter {
   constructor(private readonly _vnds: IVNDS) {}
@@ -41,7 +41,27 @@ export default class ScriptInterpreter implements IScriptInterpreter {
   private _cmd_eof(cmd: ICommand, quickread: boolean = false): void {}
 
   private _evaluateIf(expr1: string, op: string, expr2: string): boolean {
-    return false;
+    let left: IVariable = {} as IVariable;
+    let right: IVariable = {} as IVariable;
+
+    switch (op) {
+      case Operations.EQUAL:
+        return left.equal(right);
+      case Operations.DIFF:
+        return left.diff(right);
+      case Operations.GTE:
+        return left.gte(right);
+      case Operations.LTE:
+        return left.lte(right);
+      case Operations.GT:
+        return left.gt(right);
+      case Operations.LT:
+        return left.lt(right);
+      default:
+        console.log("unknown operator", op);
+
+        return false;
+    }
   }
 
   private _replaceVars(text: string): void {}
