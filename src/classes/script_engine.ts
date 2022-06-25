@@ -196,14 +196,28 @@ export default class ScriptEngine implements IScriptEngine {
     }
 
     if (line.match(COMMAND_JUMP)) {
+      const split = splitLine(line, COMMAND_JUMP);
+      const data = toData(split[1]);
+      const path = data.shift();
+
       return {
         id: CommandType.JUMP,
+        jump: {
+          path,
+          label: data[0],
+        },
       };
     }
 
     if (line.match(COMMAND_DELAY)) {
+      const split = splitLine(line, COMMAND_DELAY);
+      const time = parseInt(split[1]);
+
       return {
         id: CommandType.DELAY,
+        delay: {
+          time,
+        },
       };
     }
 
