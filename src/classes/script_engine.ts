@@ -125,7 +125,7 @@ export default class ScriptEngine implements IScriptEngine {
     if (line.match(COMMAND_SETIMG)) {
       const split = splitLine(line, COMMAND_SETIMG);
       const data = toData(split[1]);
-      const path = data.shift();
+      const path = data.shift()!;
 
       return {
         id: CommandType.SETIMG,
