@@ -101,18 +101,23 @@ export default class ScriptEngine implements IScriptEngine {
     if (!line || line[0] == "#" || line[0] == "/")
       return { id: CommandType.SKIP };
 
+    const splitLine = (l: string, c: string) => l.split(c, 2);
+    const toData = (s: string) => s.split(/\s/gi);
+
     if (line.match(COMMAND_BGLOAD)) {
-      const split = line.split(COMMAND_BGLOAD, 2);
+      const split = splitLine(line, COMMAND_BGLOAD);
+      const data = toData(split[1]);
+      const path = data.shift();
 
       return {
         id: CommandType.BGLOAD,
-        bgload: { path: split[1] },
+        bgload: { path, fadeTime: parseInt(data[0]) || 16 },
       };
     }
 
     if (line.match(COMMAND_SETIMG)) {
-      const split = line.split(COMMAND_SETIMG, 2);
-      const data = split[1].split(/\s/gi);
+      const split = splitLine(line, COMMAND_SETIMG);
+      const data = toData(split[1]);
       const path = data.shift();
 
       return {
@@ -126,8 +131,16 @@ export default class ScriptEngine implements IScriptEngine {
     }
 
     if (line.match(COMMAND_SOUND)) {
+      const split = splitLine(line, COMMAND_SOUND);
+      const data = toData(split[1]);
+      const path = data.shift();
+
       return {
         id: CommandType.SOUND,
+        sound: {
+          path,
+          repeats: parseInt(data[0]) || 1,
+        },
       };
     }
 
