@@ -151,7 +151,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     if (!cmd.text) return;
 
     if (!skipread) {
-      //this._vnds.graphicsEngine.flush(quickread);
+      this._vnds.graphicsEngine.flush(quickread);
     }
 
     const text = cmd.text.text;
@@ -178,7 +178,9 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
     const result = this._replaceVars(output || "");
 
-    console.log(result, wait_input);
+    this._vnds.textEngine.getTextPane().appendText(result);
+
+    this._vnds.setWaitForInput(wait_input);
   }
 
   execute(cmd: ICommand, quickread: boolean): void {
