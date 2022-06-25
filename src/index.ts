@@ -1,5 +1,6 @@
 import { ScriptEngine } from "~/classes";
 import { IVNDS } from "~/interfaces";
+import { CommandType } from "~/enums";
 
 const button = document.querySelector("#botao") as HTMLButtonElement;
 
@@ -13,6 +14,10 @@ button.onclick = () => {
     const file_handle = files[0];
     const file = await file_handle.getFile();
 
-    engine.setScriptFile(file);
+    await engine.setScriptFile(file);
+
+    do {
+      await engine.executeNextCommand(false);
+    } while (engine["_commands"].length > 1);
   });
 };
