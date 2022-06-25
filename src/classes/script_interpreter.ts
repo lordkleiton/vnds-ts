@@ -22,7 +22,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     if (global) return global;
   }
 
-  private _cmd_setimg(cmd: ICommand, quickread: boolean = false): void {
+  private _cmd_setimg(cmd: ICommand): void {
     if (!cmd.setimg) return;
 
     const path = this._replaceVars(cmd.setimg.path);
@@ -59,7 +59,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     }
   }
 
-  private _cmd_music(cmd: ICommand, quickread: boolean = false): void {
+  private _cmd_music(cmd: ICommand): void {
     if (!cmd.music) return;
 
     const path = this._replaceVars(cmd.music.path);
@@ -68,7 +68,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     this._vnds.soundEngine.setMusic(full_path);
   }
 
-  private _cmd_skip(cmd: ICommand, quickread: boolean = false): void {
+  private _cmd_skip(): void {
     // noop
   }
 
@@ -94,13 +94,13 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     cv.setScroll(0);
   }
 
-  private _cmd_setvar(cmd: ICommand, quickread: boolean = false): void {
+  private _cmd_setvar(cmd: ICommand): void {
     if (!cmd.setvar) return;
 
     this._vnds.setVariable(cmd.setvar.name, cmd.setvar.op, cmd.setvar.value);
   }
 
-  private _cmd_gsetvar(cmd: ICommand, quickread: boolean = false): void {
+  private _cmd_gsetvar(cmd: ICommand): void {
     if (!cmd.setvar) return;
 
     this._vnds.setGlobal(cmd.setvar.name, cmd.setvar.op, cmd.setvar.value);
@@ -136,11 +136,11 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     }
   }
 
-  private _cmd_fi(cmd: ICommand, quickread: boolean = false): void {
+  private _cmd_fi(): void {
     // noop
   }
 
-  private _cmd_jump(cmd: ICommand, quickread: boolean = false): void {
+  private _cmd_jump(cmd: ICommand): void {
     if (!cmd.jump) return;
 
     const path = this._replaceVars(cmd.jump.path);
@@ -154,7 +154,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
         lgoto: { label: cmd.jump.label },
       } as ICommand;
 
-      this._cmd_goto(command, quickread);
+      this._cmd_goto(command);
     }
   }
 
@@ -168,7 +168,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     }
   }
 
-  private _cmd_random(cmd: ICommand, quickread: boolean = false): void {
+  private _cmd_random(cmd: ICommand): void {
     if (!cmd.random) return;
 
     const high = cmd.random.high + 1;
@@ -178,15 +178,15 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     this._vnds.setVariable(cmd.random.name, "=", value.toString());
   }
 
-  private _cmd_endscript(cmd: ICommand, quickread: boolean = false): void {
+  private _cmd_endscript(): void {
     //this._vnds.scriptEngine.setScriptFile("script/main.scr")
   }
 
-  private _cmd_label(cmd: ICommand, quickread: boolean = false): void {
+  private _cmd_label(): void {
     // noop
   }
 
-  private _cmd_goto(cmd: ICommand, quickread: boolean = false): void {
+  private _cmd_goto(cmd: ICommand): void {
     if (!cmd.lgoto) return;
 
     const label = this._replaceVars(cmd.lgoto.label);
@@ -194,7 +194,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     this._vnds.scriptEngine.jumpToLabel(label);
   }
 
-  private _cmd_cleartext(cmd: ICommand, quickread: boolean = false): void {
+  private _cmd_cleartext(cmd: ICommand): void {
     if (!cmd.clearText) return;
 
     if (cmd.clearText.clearType == "!") {
@@ -208,7 +208,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     }
   }
 
-  private _cmd_eof(cmd: ICommand, quickread: boolean = false): void {
+  private _cmd_eof(): void {
     //this._vnds.scriptEngine.setScriptFile("script/main.scr")
   }
 
@@ -314,7 +314,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
         this.cmdText(cmd, quickread, false);
         return;
       case CommandType.SETIMG:
-        this._cmd_setimg(cmd, quickread);
+        this._cmd_setimg(cmd);
         return;
       case CommandType.BGLOAD:
         this._cmd_bgload(cmd, quickread);
@@ -323,49 +323,49 @@ export default class ScriptInterpreter implements IScriptInterpreter {
         this._cmd_sound(cmd, quickread);
         return;
       case CommandType.MUSIC:
-        this._cmd_music(cmd, quickread);
+        this._cmd_music(cmd);
         return;
       case CommandType.SKIP:
-        this._cmd_skip(cmd, quickread);
+        this._cmd_skip();
         return;
       case CommandType.CHOICE:
         this._cmd_choice(cmd, quickread);
         return;
       case CommandType.SETVAR:
-        this._cmd_setvar(cmd, quickread);
+        this._cmd_setvar(cmd);
         return;
       case CommandType.GSETVAR:
-        this._cmd_gsetvar(cmd, quickread);
+        this._cmd_gsetvar(cmd);
         return;
       case CommandType.IF:
         this._cmd_if(cmd);
         return;
       case CommandType.FI:
-        this._cmd_fi(cmd, quickread);
+        this._cmd_fi();
         return;
       case CommandType.JUMP:
-        this._cmd_jump(cmd, quickread);
+        this._cmd_jump(cmd);
         return;
       case CommandType.DELAY:
         this._cmd_delay(cmd, quickread);
         return;
       case CommandType.RANDOM:
-        this._cmd_random(cmd, quickread);
+        this._cmd_random(cmd);
         return;
       case CommandType.LABEL:
-        this._cmd_label(cmd, quickread);
+        this._cmd_label();
         return;
       case CommandType.GOTO:
-        this._cmd_goto(cmd, quickread);
+        this._cmd_goto(cmd);
         return;
       case CommandType.CLEARTEXT:
-        this._cmd_cleartext(cmd, quickread);
+        this._cmd_cleartext(cmd);
         return;
       case CommandType.ENDSCRIPT:
-        this._cmd_endscript(cmd, quickread);
+        this._cmd_endscript();
         return;
       case CommandType.END_OF_FILE:
-        this._cmd_eof(cmd, quickread);
+        this._cmd_eof();
         return;
     }
   }
