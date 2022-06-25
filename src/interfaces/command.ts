@@ -24,7 +24,7 @@ export default interface ICommand {
   };
 
   text?: {
-    text?: string;
+    text: string;
   };
 
   choice?: {
