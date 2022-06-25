@@ -34,19 +34,42 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     );
   }
 
-  private _cmd_bgload(cmd: ICommand, quickread: boolean = false): void {}
+  private _cmd_bgload(cmd: ICommand, quickread: boolean = false): void {
+    if (!cmd.bgload) return;
 
-  private _cmd_sound(cmd: ICommand, quickread: boolean = false): void {}
+    if (this._vnds.graphicsEngine.isBackgroundChanged()) {
+      this._vnds.graphicsEngine.flush(quickread);
+    }
 
-  private _cmd_music(cmd: ICommand, quickread: boolean = false): void {}
+    const path = this._replaceVars(cmd.bgload.path);
+    const full_path = `background/${path}`;
 
-  private _cmd_skip(cmd: ICommand, quickread: boolean = false): void {}
+    this._vnds.graphicsEngine.setBackground(full_path, cmd.bgload.fadeTime);
+  }
 
-  private _cmd_choice(cmd: ICommand, quickread: boolean = false): void {}
+  private _cmd_sound(cmd: ICommand, quickread: boolean = false): void {
+    if (!cmd.sound) return;
+  }
 
-  private _cmd_setvar(cmd: ICommand, quickread: boolean = false): void {}
+  private _cmd_music(cmd: ICommand, quickread: boolean = false): void {
+    if (!cmd.music) return;
+  }
 
-  private _cmd_gsetvar(cmd: ICommand, quickread: boolean = false): void {}
+  private _cmd_skip(cmd: ICommand, quickread: boolean = false): void {
+    // noop
+  }
+
+  private _cmd_choice(cmd: ICommand, quickread: boolean = false): void {
+    if (!cmd.choice) return;
+  }
+
+  private _cmd_setvar(cmd: ICommand, quickread: boolean = false): void {
+    if (!cmd.setvar) return;
+  }
+
+  private _cmd_gsetvar(cmd: ICommand, quickread: boolean = false): void {
+    if (!cmd.setvar) return;
+  }
 
   private async _cmd_if(cmd: ICommand): Promise<void> {
     if (!cmd.vif) return;
@@ -82,19 +105,31 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     // noop
   }
 
-  private _cmd_jump(cmd: ICommand, quickread: boolean = false): void {}
+  private _cmd_jump(cmd: ICommand, quickread: boolean = false): void {
+    if (!cmd.jump) return;
+  }
 
-  private _cmd_delay(cmd: ICommand, quickread: boolean = false): void {}
+  private _cmd_delay(cmd: ICommand, quickread: boolean = false): void {
+    if (!cmd.delay) return;
+  }
 
-  private _cmd_random(cmd: ICommand, quickread: boolean = false): void {}
+  private _cmd_random(cmd: ICommand, quickread: boolean = false): void {
+    if (!cmd.random) return;
+  }
 
   private _cmd_endscript(cmd: ICommand, quickread: boolean = false): void {}
 
-  private _cmd_label(cmd: ICommand, quickread: boolean = false): void {}
+  private _cmd_label(cmd: ICommand, quickread: boolean = false): void {
+    if (!cmd.label) return;
+  }
 
-  private _cmd_goto(cmd: ICommand, quickread: boolean = false): void {}
+  private _cmd_goto(cmd: ICommand, quickread: boolean = false): void {
+    if (!cmd.lgoto) return;
+  }
 
-  private _cmd_cleartext(cmd: ICommand, quickread: boolean = false): void {}
+  private _cmd_cleartext(cmd: ICommand, quickread: boolean = false): void {
+    if (!cmd.clearText) return;
+  }
 
   private _cmd_eof(cmd: ICommand, quickread: boolean = false): void {}
 
