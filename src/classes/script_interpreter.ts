@@ -60,6 +60,11 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
   private _cmd_music(cmd: ICommand, quickread: boolean = false): void {
     if (!cmd.music) return;
+
+    const path = this._replaceVars(cmd.music.path);
+    const full_path = `sound/${path}`;
+
+    this._vnds.soundEngine.setMusic(full_path);
   }
 
   private _cmd_skip(cmd: ICommand, quickread: boolean = false): void {
