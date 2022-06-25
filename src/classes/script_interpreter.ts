@@ -101,6 +101,8 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
   private _cmd_gsetvar(cmd: ICommand, quickread: boolean = false): void {
     if (!cmd.setvar) return;
+
+    this._vnds.setGlobal(cmd.setvar.name, cmd.setvar.op, cmd.setvar.value);
   }
 
   private async _cmd_if(cmd: ICommand): Promise<void> {
