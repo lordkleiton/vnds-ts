@@ -100,51 +100,104 @@ export default class ScriptEngine implements IScriptEngine {
       return { id: CommandType.SKIP };
 
     if (data.match(COMMAND_BGLOAD)) {
+      const split = data.split(COMMAND_BGLOAD, 2);
+
+      return {
+        id: CommandType.BGLOAD,
+        bgload: { path: split[1] },
+      };
     }
 
     if (data.match(COMMAND_SETIMG)) {
+      return {
+        id: CommandType.SETIMG,
+      };
     }
 
     if (data.match(COMMAND_SOUND)) {
+      return {
+        id: CommandType.SOUND,
+      };
     }
 
     if (data.match(COMMAND_MUSIC)) {
+      return {
+        id: CommandType.MUSIC,
+      };
     }
 
     if (data.match(COMMAND_TEXT)) {
+      return {
+        id: CommandType.TEXT,
+      };
     }
 
     if (data.match(COMMAND_CHOICE)) {
+      return {
+        id: CommandType.CHOICE,
+      };
     }
 
     if (data.match(COMMAND_SETVAR) || data.match(COMMAND_GSETVAR)) {
+      return {
+        id: data.match(COMMAND_SETVAR)
+          ? CommandType.SETVAR
+          : CommandType.GSETVAR,
+      };
     }
 
     if (data.match(COMMAND_IF)) {
+      return {
+        id: CommandType.IF,
+      };
     }
 
     if (data.match(COMMAND_FI)) {
+      return {
+        id: CommandType.FI,
+      };
     }
 
     if (data.match(COMMAND_JUMP)) {
+      return {
+        id: CommandType.JUMP,
+      };
     }
 
     if (data.match(COMMAND_DELAY)) {
+      return {
+        id: CommandType.DELAY,
+      };
     }
 
     if (data.match(COMMAND_RANDOM)) {
+      return {
+        id: CommandType.RANDOM,
+      };
     }
 
     if (data.match(COMMAND_LABEL)) {
+      return {
+        id: CommandType.LABEL,
+      };
     }
 
     if (data.match(COMMAND_GOTO)) {
+      return {
+        id: CommandType.GOTO,
+      };
     }
 
     if (data.match(COMMAND_CLEARTEXT)) {
+      return {
+        id: CommandType.CLEARTEXT,
+      };
     }
 
     if (data.match(COMMAND_ENDSCRIPT)) {
+      return {
+        id: CommandType.ENDSCRIPT,
+      };
     }
 
     console.log("unknow method", data);
