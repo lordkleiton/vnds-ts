@@ -24,14 +24,14 @@ export default class ScriptInterpreter implements IScriptInterpreter {
   private _cmd_setimg(cmd: ICommand, quickread: boolean = false): void {
     if (!cmd.setimg) return;
 
+    const path = this._replaceVars(cmd.setimg.path);
+    const full_path = `foreground/${path}`;
 
-    const path = cmd.setimg.path
-
-
-    char path[MAXPATHLEN];
-    ReplaceVars(rtext, cmd->setimg.path);
-	sprintf(path, "foreground/%s", rtext);
-	vnds->graphicsEngine->SetForeground(path, cmd->setimg.x, cmd->setimg.y);
+    this._vnds.graphicsEngine.setForeground(
+      full_path,
+      cmd.setimg.x,
+      cmd.setimg.y
+    );
   }
 
   private _cmd_bgload(cmd: ICommand, quickread: boolean = false): void {}
