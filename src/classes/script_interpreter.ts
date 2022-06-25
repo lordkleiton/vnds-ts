@@ -73,6 +73,24 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
   private _cmd_choice(cmd: ICommand, quickread: boolean = false): void {
     if (!cmd.choice) return;
+
+    this._vnds.graphicsEngine.flush(quickread);
+
+    const cv = this._vnds.textEngine.getChoiceView();
+
+    cv.activate();
+
+    cv.removeAllItems();
+
+    cmd.choice.options.forEach(o => {
+      const choice = this._replaceVars(o);
+
+      cv.appendText(choice);
+    });
+
+    cv.setSelectedIndex(0);
+
+    cv.setScroll(0);
   }
 
   private _cmd_setvar(cmd: ICommand, quickread: boolean = false): void {
