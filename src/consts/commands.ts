@@ -16,7 +16,7 @@ export const COMMAND_GSETVAR = "gsetvar ";
 
 export const COMMAND_IF = "if ";
 
-export const COMMAND_FI = "fi ";
+export const COMMAND_FI = "^fi$";
 
 export const COMMAND_JUMP = "jump ";
 

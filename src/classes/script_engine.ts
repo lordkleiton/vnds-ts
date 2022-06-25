@@ -189,7 +189,7 @@ export default class ScriptEngine implements IScriptEngine {
       };
     }
 
-    if (line.match(COMMAND_FI)) {
+    if (line.match(RegExp(COMMAND_FI))) {
       return {
         id: CommandType.FI,
       };
