@@ -197,16 +197,35 @@ export default class ScriptEngine implements IScriptEngine {
     }
 
     if (line.match(COMMAND_SETVAR) || line.match(COMMAND_GSETVAR)) {
+      const match = line.match(COMMAND_SETVAR)
+        ? COMMAND_SETVAR
+        : COMMAND_GSETVAR;
+      const split = splitLine(line, match);
+      const data = toData(split[1]);
+
       return {
         id: line.match(COMMAND_SETVAR)
           ? CommandType.SETVAR
           : CommandType.GSETVAR,
+        setvar: {
+          name: data[0],
+          op: data[1],
+          value: data[2],
+        },
       };
     }
 
     if (line.match(COMMAND_IF)) {
+      const split = splitLine(line, COMMAND_IF);
+      const data = toData(split[1]);
+
       return {
         id: CommandType.IF,
+        vif: {
+          expr1: data[0],
+          expr2: data[2],
+          op: data[1],
+        },
       };
     }
 
