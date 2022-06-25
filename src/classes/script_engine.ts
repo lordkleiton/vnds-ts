@@ -92,7 +92,9 @@ export default class ScriptEngine implements IScriptEngine {
       .map(command => command.trim())
       .filter(command => !!command);
 
-    console.log(commands);
+    this._commands = commands.map(c => this._parseCommand(c));
+
+    console.log(this._commands);
   }
 
   private _parseCommand(line: string): ICommand {
@@ -110,9 +112,16 @@ export default class ScriptEngine implements IScriptEngine {
 
     if (line.match(COMMAND_SETIMG)) {
       const split = line.split(COMMAND_SETIMG, 2);
+      const data = split[1].split(/\s/gi);
+      const path = data.shift();
 
       return {
         id: CommandType.SETIMG,
+        setimg: {
+          path,
+          x: parseInt(data[0]),
+          y: parseInt(data[1]),
+        },
       };
     }
 
