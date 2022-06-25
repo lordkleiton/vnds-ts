@@ -28,9 +28,7 @@ export default interface ICommand {
   };
 
   choice?: {
-    optionsL?: number;
-    optionsOffset?: number;
-    optionsBuffer?: number;
+    options: string[];
   };
 
   setvar?: {
