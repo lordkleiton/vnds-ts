@@ -49,7 +49,7 @@ export default interface ICommand {
   };
 
   delay?: {
-    time?: number;
+    time: number;
   };
 
   label?: {

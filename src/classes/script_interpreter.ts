@@ -159,6 +159,12 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
   private _cmd_delay(cmd: ICommand, quickread: boolean = false): void {
     if (!cmd.delay) return;
+
+    if (!quickread) {
+      this._vnds.graphicsEngine.flush(quickread);
+
+      this._vnds.setDelay(cmd.delay.time);
+    }
   }
 
   private _cmd_random(cmd: ICommand, quickread: boolean = false): void {
