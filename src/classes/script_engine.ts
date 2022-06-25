@@ -101,7 +101,7 @@ export default class ScriptEngine implements IScriptEngine {
 
     this._commands = commands.map(c => this._parseCommand(c));
 
-    console.log(this._commands);
+    //console.log(this._commands);
   }
 
   private _parseCommand(line: string): ICommand {
