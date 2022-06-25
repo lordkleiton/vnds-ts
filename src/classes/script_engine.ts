@@ -30,6 +30,7 @@ import {
   SC_NEW_LINE,
 } from "~/consts";
 import { FileReaderUtils } from "~/utils";
+import ScriptInterpreter from "./script_interpreter";
 
 export default class ScriptEngine implements IScriptEngine {
   private _interpreter: IScriptInterpreter;
@@ -47,7 +48,7 @@ export default class ScriptEngine implements IScriptEngine {
   private _eof: boolean = false;
 
   constructor(private readonly _vnds: IVNDS) {
-    this._interpreter = {} as IScriptInterpreter;
+    this._interpreter = new ScriptInterpreter(_vnds);
 
     this.reset();
   }
