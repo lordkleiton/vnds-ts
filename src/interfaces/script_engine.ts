@@ -6,7 +6,7 @@ export default interface IScriptEngine {
   quickRead(): void;
   skipCommands(num: number): void;
   skipTextCommands(num: number): void;
-  jumpToLabel(lbl: number): boolean;
+  jumpToLabel(lbl: string): boolean;
 
   getCommand(offset: number): ICommand;
   getOpenFile(): File;

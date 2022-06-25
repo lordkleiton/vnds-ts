@@ -11,20 +11,20 @@ export default interface ICommand {
   setimg?: {
     x?: number;
     y?: number;
-    path?: number;
+    path?: string;
   };
 
   sound?: {
     repeats?: number;
-    path?: number;
+    path?: string;
   };
 
   music?: {
-    path?: number;
+    path?: string;
   };
 
   text?: {
-    text?: number;
+    text?: string;
   };
 
   choice?: {
@@ -46,20 +46,20 @@ export default interface ICommand {
   };
 
   jump?: {
-    path?: number;
-    label?: number;
+    path?: string;
+    label?: string;
   };
 
   delay?: {
-    time?: number;
+    time?: string;
   };
 
   label?: {
-    label?: number;
+    label?: string;
   };
 
   lgoto?: {
-    label?: number;
+    label?: string;
   };
 
   clearText?: {
