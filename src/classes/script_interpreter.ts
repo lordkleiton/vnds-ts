@@ -143,7 +143,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
   /* interface stuff */
 
-  cmdText(cmd: ICommand, skipread: boolean): void {
+  cmdText(cmd: ICommand, quickread: boolean, skipread: boolean): void {
     if (!cmd.text) return;
 
     if (!skipread) {
@@ -172,13 +172,15 @@ export default class ScriptInterpreter implements IScriptInterpreter {
       }
     }
 
-    console.log(output, wait_input);
+    const result = this._replaceVars(output || "");
+
+    console.log(result, wait_input);
   }
 
   execute(cmd: ICommand, quickread: boolean): void {
     switch (cmd.id) {
       case CommandType.TEXT:
-        this.cmdText(cmd, false);
+        this.cmdText(cmd, quickread, false);
         return;
       case CommandType.SETIMG:
         this._cmd_setimg(cmd, quickread);
