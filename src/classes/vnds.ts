@@ -13,6 +13,7 @@ import Variable from "./variable";
 import ScriptEngine from "./script_engine";
 import GraphicsEngine from "./graphics_engine";
 import TextEngine from "./text_engine";
+import SoundEngine from "./sound_engine";
 
 export default class VNDS implements IVNDS {
   private _quit: boolean = false;
@@ -24,7 +25,7 @@ export default class VNDS implements IVNDS {
   textEngine: ITextEngine;
   graphicsEngine: IGraphicsEngine;
   scriptEngine: IScriptEngine;
-  soundEngine: ISoundEngine = {} as ISoundEngine;
+  soundEngine: ISoundEngine;
 
   constructor(novelInfo: INovelInfo) {
     this.scriptEngine = new ScriptEngine(this);
@@ -32,6 +33,8 @@ export default class VNDS implements IVNDS {
     this.graphicsEngine = new GraphicsEngine();
 
     this.textEngine = new TextEngine();
+
+    this.soundEngine = new SoundEngine();
   }
 
   private _copy(v: IVariable): any {
