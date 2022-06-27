@@ -2,41 +2,53 @@ import { IVariable } from "~/interfaces";
 import { VarType } from "~/enums";
 
 export default class Variable implements IVariable {
-  _strval: string = "";
+  _str: string = "";
+  _num: number = 0;
+  _type: VarType = VarType.VT_null;
 
-  get type(): VarType {
-    if (!this.str) return VarType.VT_null;
+  get num(): number {
+    if (this._type != VarType.VT_int) return parseInt(this._str) || 0;
 
-    return isNaN(this.num) ? VarType.VT_string : VarType.VT_int;
+    return this._num;
+  }
+
+  set num(v: number) {
+    this._num = v;
   }
 
   get str(): string {
-    return this._strval;
+    if (this._type != VarType.VT_string) return this.num.toString();
+
+    return this._str;
   }
 
-  set str(value: string) {
-    this._strval = value;
+  set str(v: string) {
+    this._str = v;
   }
 
-  get num(): number {
-    if (!this.str) return 0;
-
-    return parseInt(this.str);
+  get type(): VarType {
+    return this._type;
   }
 
-  set num(value: number) {
-    if (typeof value != "number") return;
+  constructor(value: string | number) {
+    if (typeof value == "number") {
+      this._type = VarType.VT_int;
 
-    this.str = value.toString();
-  }
+      this._num = value;
+    }
 
-  constructor(value: string) {
-    const parsed = parseFloat(value);
+    if (typeof value == "string") {
+      const parsed = parseInt(value);
 
-    if (isNaN(parsed)) {
-      this.str = value.replace(/\"/gi, "");
-    } else {
-      this.num = parsed;
+      if (isNaN(parsed)) {
+        this._type = VarType.VT_string;
+
+        this._str = value;
+      } else {
+        this._type = VarType.VT_int;
+
+        this._num = parsed;
+      }
     }
   }
 
