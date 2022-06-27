@@ -11,3 +11,5 @@ export const SC_TILDE = "~";
 export const SC_EXCLAMATION = "!";
 
 export const SC_AT = "@";
+
+export const SC_QUOTE = '"';
