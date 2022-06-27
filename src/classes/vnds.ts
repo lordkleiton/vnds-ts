@@ -7,7 +7,7 @@ import {
   IVariable,
   IVNDS,
 } from "~/interfaces";
-import { SC_TILDE } from "~/consts";
+import { SC_QUOTE, SC_TILDE } from "~/consts";
 import { VarType } from "~/enums";
 import Variable from "./variable";
 import ScriptEngine from "./script_engine";
@@ -34,109 +34,92 @@ export default class VNDS implements IVNDS {
     this.textEngine = new TextEngine();
   }
 
+  private _copy(v: IVariable): any {
+    return JSON.parse(JSON.stringify({ str: v.str, num: v.num, type: v.type }));
+  }
+
+  private _getVariables(name: string): IVariable | undefined {
+    const local = this.variables[name];
+
+    if (local) return local;
+
+    const global = this.globals[name];
+
+    if (global) return global;
+  }
+
   private _setVariable(
     obj: Record<string, IVariable>,
     name: string,
     op: string,
     value: string
   ): void {
-    console.log(name, op, value);
-
     if (op == SC_TILDE) {
       obj = {};
 
       return;
     }
 
-    let right: Variable;
+    const clean_right_value = value.replace(RegExp(SC_QUOTE, "gi"), "");
 
-    if (this.variables[value]) {
-      right = this.variables[value];
-    } else {
-      if (this.globals[value]) {
-        right = this.globals[value];
-      } else {
-        right = new Variable(value);
-      }
-    }
+    const right: IVariable =
+      this._getVariables(clean_right_value) || new Variable(clean_right_value);
 
-    let left: Variable;
+    const exists = obj[name];
+    const left = !!exists
+      ? exists
+      : new Variable(right.type == VarType.VT_int ? 0 : "");
 
-    if (obj[name]) {
-      left = obj[name];
-    } else {
-      const aux = new Variable("");
-
-      aux.strval = aux.strval;
-
-      left = aux;
-    }
-
-    console.log(right.intval, right.strval);
-    console.log(left.intval, left.strval);
+    console.log("right", this._copy(right));
+    console.log("left", this._copy(left));
 
     switch (left.type) {
       case VarType.VT_int:
         switch (op) {
           case "+":
-            left.intval! += right.intval!;
+            left.num += right.num;
             break;
           case "-":
-            left.intval! -= right.intval!;
+            left.num -= right.num;
             break;
           case "=":
-            left.intval! = right.intval!;
+            left.num = right.num;
             break;
           default:
             console.log(
               "setvar :: Unsupported operator '%c' for target type int",
               op
             );
-
             return;
         }
-
-        console.log(right.intval, right.strval);
-        console.log(left.intval, left.strval);
-
-        left.strval = left.intval!.toString();
-
         break;
       case VarType.VT_string:
         switch (op) {
           case "+":
-            left.strval += right.strval;
-
+            left.str += right.str;
             break;
           case "=":
-            left.strval = right.strval;
-
+            left.str = right.str;
             break;
           default:
             console.log(
               "setvar :: Unsupported operator '%c' for target type string",
               op
             );
-
             return;
         }
-
-        const parsed = parseInt(left.strval);
-
-        left.intval = parsed;
-
         break;
       case VarType.VT_null:
         // noop
-
         break;
     }
 
-    console.log("-------");
-
-    //console.log("(g)setvar %s %c %s", name, op, right.strval);
-
     obj[name] = left;
+
+    console.log("right", this._copy(right));
+    console.log("left", this._copy(left));
+
+    console.log("-------");
   }
 
   /* interface stuff */
@@ -188,10 +171,14 @@ export default class VNDS implements IVNDS {
   }
 
   setVariable(name: string, op: string, value: string): void {
+    console.log("set_variable", name, op, value);
+
     this._setVariable(this.variables, name, op, value);
   }
 
   setGlobal(name: string, op: string, value: string): void {
+    console.log("g_set_variable", name, op, value);
+
     this._setVariable(this.globals, name, op, value);
   }
 }
