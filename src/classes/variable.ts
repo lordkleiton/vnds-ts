@@ -2,33 +2,41 @@ import { IVariable } from "~/interfaces";
 import { VarType } from "~/enums";
 
 export default class Variable implements IVariable {
-  strval: string = "";
+  _strval: string = "";
 
   get type(): VarType {
-    if (!this.strval) return VarType.VT_null;
+    if (!this.str) return VarType.VT_null;
 
-    return isNaN(this.intval) ? VarType.VT_string : VarType.VT_int;
+    return isNaN(this.num) ? VarType.VT_string : VarType.VT_int;
   }
 
-  get intval(): number {
-    return parseInt(this.strval);
+  get str(): string {
+    return this._strval;
   }
 
-  set intval(value: number) {
+  set str(value: string) {
+    this._strval = value;
+  }
+
+  get num(): number {
+    if (!this.str) return 0;
+
+    return parseInt(this.str);
+  }
+
+  set num(value: number) {
     if (typeof value != "number") return;
 
-    this.strval = value.toString();
+    this.str = value.toString();
   }
 
   constructor(value: string) {
-    if (!value) return;
-
     const parsed = parseFloat(value);
 
     if (isNaN(parsed)) {
-      this.strval = value.replace(/\"/gi, "");
+      this.str = value.replace(/\"/gi, "");
     } else {
-      this.intval = parsed;
+      this.num = parsed;
     }
   }
 
@@ -36,10 +44,10 @@ export default class Variable implements IVariable {
 
   equal(other: IVariable): boolean {
     if (this.type == VarType.VT_int && other.type == VarType.VT_int) {
-      return this.intval == other.intval;
+      return this.num == other.num;
     }
 
-    return this.strval == other.strval;
+    return this.str == other.str;
   }
 
   diff(other: IVariable): boolean {
@@ -56,17 +64,17 @@ export default class Variable implements IVariable {
 
   gt(other: IVariable): boolean {
     if (this.type == VarType.VT_int && other.type == VarType.VT_int) {
-      return this.intval > other.intval;
+      return this.num > other.num;
     }
 
-    return this.strval > this.strval;
+    return this.str > this.str;
   }
 
   lt(other: IVariable): boolean {
     if (this.type == VarType.VT_int && other.type == VarType.VT_int) {
-      return this.intval < other.intval;
+      return this.num < other.num;
     }
 
-    return this.strval < this.strval;
+    return this.str < this.str;
   }
 }

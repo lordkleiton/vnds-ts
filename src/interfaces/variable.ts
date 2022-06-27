@@ -2,8 +2,8 @@ import { VarType } from "~/enums";
 
 export default interface IVariable {
   type: VarType;
-  intval: number;
-  strval: string;
+  str: string;
+  num: number;
 
   equal(other: IVariable): boolean;
   diff(other: IVariable): boolean;
