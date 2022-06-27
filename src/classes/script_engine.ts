@@ -367,7 +367,7 @@ export default class ScriptEngine implements IScriptEngine {
   }
 
   async skipCommands(num: number): Promise<void> {
-    while (this._commands.length <= num) {
+    while (this._commands.length < num) {
       this._readNextCommands();
     }
 
