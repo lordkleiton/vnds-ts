@@ -53,11 +53,7 @@ export default class Variable implements IVariable {
   /* interface stuff */
 
   equal(other: IVariable): boolean {
-    if (this.type == VarType.VT_int && other.type == VarType.VT_int) {
-      return this.num == other.num;
-    }
-
-    return this.str == other.str;
+    return this.num == other.num || this.str == other.str;
   }
 
   diff(other: IVariable): boolean {
@@ -73,18 +69,10 @@ export default class Variable implements IVariable {
   }
 
   gt(other: IVariable): boolean {
-    if (this.type == VarType.VT_int && other.type == VarType.VT_int) {
-      return this.num > other.num;
-    }
-
-    return this.str > this.str;
+    return this.num > other.num || this.str > this.str;
   }
 
   lt(other: IVariable): boolean {
-    if (this.type == VarType.VT_int && other.type == VarType.VT_int) {
-      return this.num < other.num;
-    }
-
-    return this.str < this.str;
+    return this.num < other.num || this.str < this.str;
   }
 }
