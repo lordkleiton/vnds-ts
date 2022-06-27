@@ -2,8 +2,13 @@ import { IVariable } from "~/interfaces";
 import { VarType } from "~/enums";
 
 export default class Variable implements IVariable {
-  type: VarType = VarType.VT_null;
   strval: string = "";
+
+  get type(): VarType {
+    if (!this.strval) return VarType.VT_null;
+
+    return isNaN(this.intval) ? VarType.VT_string : VarType.VT_int;
+  }
 
   get intval(): number {
     return parseInt(this.strval);
@@ -21,12 +26,8 @@ export default class Variable implements IVariable {
     const parsed = parseFloat(value);
 
     if (isNaN(parsed)) {
-      this.type = VarType.VT_string;
-
       this.strval = value.replace(/\"/gi, "");
     } else {
-      this.type = VarType.VT_int;
-
       this.intval = parsed;
     }
   }
