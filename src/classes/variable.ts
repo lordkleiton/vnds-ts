@@ -13,6 +13,8 @@ export default class Variable implements IVariable {
   }
 
   set num(v: number) {
+    this._type = VarType.VT_int;
+
     this._num = v;
   }
 
@@ -23,6 +25,8 @@ export default class Variable implements IVariable {
   }
 
   set str(v: string) {
+    this._type = VarType.VT_string;
+
     this._str = v;
   }
 
@@ -32,22 +36,16 @@ export default class Variable implements IVariable {
 
   constructor(value: string | number) {
     if (typeof value == "number") {
-      this._type = VarType.VT_int;
-
-      this._num = value;
+      this.num = value;
     }
 
     if (typeof value == "string") {
       const parsed = parseInt(value);
 
       if (isNaN(parsed)) {
-        this._type = VarType.VT_string;
-
-        this._str = value;
+        this.str = value;
       } else {
-        this._type = VarType.VT_int;
-
-        this._num = parsed;
+        this.num = parsed;
       }
     }
   }
