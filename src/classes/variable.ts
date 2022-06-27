@@ -3,8 +3,17 @@ import { VarType } from "~/enums";
 
 export default class Variable implements IVariable {
   type: VarType = VarType.VT_null;
-  intval?: number;
   strval: string = "";
+
+  get intval(): number {
+    return parseInt(this.strval);
+  }
+
+  set intval(value: number) {
+    if (typeof value != "number") return;
+
+    this.strval = value.toString();
+  }
 
   constructor(value: string) {
     if (!value) return;
@@ -19,8 +28,6 @@ export default class Variable implements IVariable {
       this.type = VarType.VT_int;
 
       this.intval = parsed;
-
-      this.strval = parsed.toString();
     }
   }
 
