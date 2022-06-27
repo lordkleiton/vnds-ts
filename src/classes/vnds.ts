@@ -40,6 +40,8 @@ export default class VNDS implements IVNDS {
     op: string,
     value: string
   ): void {
+    console.log(name, op, value);
+
     if (op == SC_TILDE) {
       obj = {};
 
@@ -64,12 +66,10 @@ export default class VNDS implements IVNDS {
       right = obj[name];
     } else {
       const aux = new Variable("");
-      const type_str = left.type == VarType.VT_string;
 
       aux.type = left.type;
 
-      aux.intval = type_str ? undefined : 0;
-      aux.strval = type_str ? "" : aux.intval!.toString();
+      aux.strval = aux.strval;
 
       right = aux;
     }
@@ -95,6 +95,9 @@ export default class VNDS implements IVNDS {
             return;
         }
 
+        console.log(left.intval, left.strval);
+        console.log(right.intval, right.strval);
+
         right.strval = right.intval!.toString();
 
         break;
@@ -119,7 +122,7 @@ export default class VNDS implements IVNDS {
 
         const parsed = parseInt(right.strval);
 
-        right.intval = isNaN(parsed) ? undefined : parsed;
+        right.intval = parsed;
 
         break;
       case VarType.VT_null:
@@ -127,6 +130,8 @@ export default class VNDS implements IVNDS {
 
         break;
     }
+
+    console.log("-------");
 
     //console.log("(g)setvar %s %c %s", name, op, right.strval);
 
