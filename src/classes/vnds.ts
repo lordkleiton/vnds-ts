@@ -168,14 +168,10 @@ export default class VNDS implements IVNDS {
   }
 
   setVariable(name: string, op: string, value: string): void {
-    console.log("set_variable", name, op, value);
-
     this._setVariable(this.variables, name, op, value);
   }
 
   setGlobal(name: string, op: string, value: string): void {
-    console.log("g_set_variable", name, op, value);
-
     this._setVariable(this.globals, name, op, value);
   }
 }
