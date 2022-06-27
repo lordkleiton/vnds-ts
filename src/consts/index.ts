@@ -39,6 +39,7 @@ import {
   SC_EXCLAMATION,
   SC_TILDE,
   SC_QUOTE,
+  SC_DOLLAR,
 } from "./special_chars";
 
 export { CMD_OPTIONS_BUFFER_LENGTH, CMD_OPTIONS_MAX_OPTIONS, CMD_TEXT_LENGTH };
@@ -57,6 +58,7 @@ export {
   SC_EXCLAMATION,
   SC_TILDE,
   SC_QUOTE,
+  SC_DOLLAR,
 };
 
 export {

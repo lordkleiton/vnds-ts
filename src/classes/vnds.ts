@@ -7,7 +7,7 @@ import {
   IVariable,
   IVNDS,
 } from "~/interfaces";
-import { SC_QUOTE, SC_TILDE } from "~/consts";
+import { SC_DOLLAR, SC_QUOTE, SC_TILDE } from "~/consts";
 import { VarType } from "~/enums";
 import Variable from "./variable";
 import ScriptEngine from "./script_engine";
@@ -60,7 +60,9 @@ export default class VNDS implements IVNDS {
       return;
     }
 
-    const clean_right_value = value.replace(RegExp(SC_QUOTE, "gi"), "");
+    const clean_right_value = value
+      .replace(RegExp(SC_QUOTE, "gi"), "")
+      .replace(SC_DOLLAR, "");
 
     const right: IVariable =
       this._getVariables(clean_right_value) || new Variable(clean_right_value);
@@ -70,10 +72,13 @@ export default class VNDS implements IVNDS {
       ? exists
       : new Variable(right.type == VarType.VT_int ? 0 : "");
 
-    console.log("right", this._copy(right));
-    console.log("left", this._copy(left));
+    let inferredType = VarType.VT_int;
 
-    switch (left.type) {
+    if (left.type == VarType.VT_string || right.type == VarType.VT_string) {
+      inferredType = VarType.VT_string;
+    }
+
+    switch (inferredType) {
       case VarType.VT_int:
         switch (op) {
           case "+":
@@ -109,17 +114,9 @@ export default class VNDS implements IVNDS {
             return;
         }
         break;
-      case VarType.VT_null:
-        // noop
-        break;
     }
 
     obj[name] = left;
-
-    console.log("right", this._copy(right));
-    console.log("left", this._copy(left));
-
-    console.log("-------");
   }
 
   /* interface stuff */
