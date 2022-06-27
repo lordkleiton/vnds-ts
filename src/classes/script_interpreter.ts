@@ -116,7 +116,9 @@ export default class ScriptInterpreter implements IScriptInterpreter {
   private async _cmd_if(cmd: ICommand): Promise<void> {
     if (!cmd.vif) return;
 
-    if (!this._evaluateIf(cmd.vif.expr1, cmd.vif.op, cmd.vif.expr2)) {
+    const result = this._evaluateIf(cmd.vif.expr1, cmd.vif.op, cmd.vif.expr2);
+
+    if (!result) {
       let nesting = 1;
 
       let next_cmd: ICommand;
@@ -226,7 +228,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     const left: IVariable = left_var ? left_var : new Variable(expr1);
     const right: IVariable = right_var ? right_var : new Variable(expr2);
 
-    console.log("eval_if ", expr1, op, expr2);
+    console.log("eval_if", expr1, op, expr2);
 
     switch (op) {
       case Operations.EQUAL:
@@ -313,6 +315,8 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     this._vnds.textEngine.getTextPane()?.appendText(result);
 
     this._vnds.setWaitForInput(wait_input);
+
+    console.log(result);
   }
 
   execute(cmd: ICommand, quickread: boolean): void {

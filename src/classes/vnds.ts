@@ -128,7 +128,7 @@ export default class VNDS implements IVNDS {
         break;
     }
 
-    console.log("(g)setvar %s %c %s", name, op, right.strval);
+    //console.log("(g)setvar %s %c %s", name, op, right.strval);
 
     obj[name] = right;
   }
