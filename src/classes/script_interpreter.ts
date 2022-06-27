@@ -228,8 +228,6 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     const left: IVariable = left_var ? left_var : new Variable(expr1);
     const right: IVariable = right_var ? right_var : new Variable(expr2);
 
-    console.log("eval_if", expr1, op, expr2);
-
     switch (op) {
       case Operations.EQUAL:
         return left.equal(right);
