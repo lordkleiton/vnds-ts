@@ -261,7 +261,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
       const name = m.replace(SC_LEFT_BRACE, "").replace(SC_RIGHT_BRACE, "");
       const variable = this._getVariables(name);
 
-      if (variable) result = result.replace(m, variable.strval);
+      if (variable) result = result.replace(m, variable.str);
     });
 
     const normal_matches = text.match(RegExp(REGEX_MATCH_VAR_SIMPLE, "gi"));
@@ -269,7 +269,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     normal_matches?.forEach(m => {
       const variable = this._getVariables(m);
 
-      if (variable) result = result.replace(m, variable.strval);
+      if (variable) result = result.replace(m, variable.str);
     });
 
     return result;
