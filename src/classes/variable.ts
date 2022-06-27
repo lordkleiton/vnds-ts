@@ -56,17 +56,17 @@ export default class Variable implements IVariable {
 
   gt(other: IVariable): boolean {
     if (this.type == VarType.VT_int && other.type == VarType.VT_int) {
-      return this.intval! > other.intval!;
+      return this.intval > other.intval;
     }
 
-    return this.strval! > this.strval!;
+    return this.strval > this.strval;
   }
 
   lt(other: IVariable): boolean {
     if (this.type == VarType.VT_int && other.type == VarType.VT_int) {
-      return this.intval! < other.intval!;
+      return this.intval < other.intval;
     }
 
-    return this.strval! < this.strval!;
+    return this.strval < this.strval;
   }
 }
