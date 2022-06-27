@@ -67,8 +67,6 @@ export default class VNDS implements IVNDS {
     } else {
       const aux = new Variable("");
 
-      aux.type = left.type;
-
       aux.strval = aux.strval;
 
       right = aux;
