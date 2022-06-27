@@ -48,41 +48,44 @@ export default class VNDS implements IVNDS {
       return;
     }
 
-    let left: Variable;
+    let right: Variable;
 
     if (this.variables[value]) {
-      left = this.variables[value];
+      right = this.variables[value];
     } else {
       if (this.globals[value]) {
-        left = this.globals[value];
+        right = this.globals[value];
       } else {
-        left = new Variable(value);
+        right = new Variable(value);
       }
     }
 
-    let right: Variable;
+    let left: Variable;
 
     if (obj[name]) {
-      right = obj[name];
+      left = obj[name];
     } else {
       const aux = new Variable("");
 
       aux.strval = aux.strval;
 
-      right = aux;
+      left = aux;
     }
 
-    switch (right.type) {
+    console.log(right.intval, right.strval);
+    console.log(left.intval, left.strval);
+
+    switch (left.type) {
       case VarType.VT_int:
         switch (op) {
           case "+":
-            right.intval! += left.intval!;
+            left.intval! += right.intval!;
             break;
           case "-":
-            right.intval! -= left.intval!;
+            left.intval! -= right.intval!;
             break;
           case "=":
-            right.intval! = left.intval!;
+            left.intval! = right.intval!;
             break;
           default:
             console.log(
@@ -93,20 +96,20 @@ export default class VNDS implements IVNDS {
             return;
         }
 
-        console.log(left.intval, left.strval);
         console.log(right.intval, right.strval);
+        console.log(left.intval, left.strval);
 
-        right.strval = right.intval!.toString();
+        left.strval = left.intval!.toString();
 
         break;
       case VarType.VT_string:
         switch (op) {
           case "+":
-            right.strval += left.strval;
+            left.strval += right.strval;
 
             break;
           case "=":
-            right.strval = left.strval;
+            left.strval = right.strval;
 
             break;
           default:
@@ -118,9 +121,9 @@ export default class VNDS implements IVNDS {
             return;
         }
 
-        const parsed = parseInt(right.strval);
+        const parsed = parseInt(left.strval);
 
-        right.intval = parsed;
+        left.intval = parsed;
 
         break;
       case VarType.VT_null:
@@ -133,7 +136,7 @@ export default class VNDS implements IVNDS {
 
     //console.log("(g)setvar %s %c %s", name, op, right.strval);
 
-    obj[name] = right;
+    obj[name] = left;
   }
 
   /* interface stuff */
