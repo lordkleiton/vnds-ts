@@ -21,6 +21,18 @@ export default class VNDS implements IVNDS {
   private _waitForInput: boolean = false;
   private _delay: number = 0;
 
+  private _root_folder?: FileSystemDirectoryHandle;
+
+  get root_folder() {
+    if (!this._root_folder) throw new Error("no root folder set");
+
+    return this._root_folder;
+  }
+
+  set root_folder(folder: FileSystemDirectoryHandle) {
+    this._root_folder = folder;
+  }
+
   globals: Record<string, IVariable> = {};
   variables: Record<string, IVariable> = {};
   textEngine: ITextEngine;

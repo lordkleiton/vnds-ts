@@ -5,6 +5,7 @@ import ITextEngine from "./text_engine";
 import IVariable from "./variable";
 
 export default interface IVNDS {
+  root_folder: FileSystemDirectoryHandle;
   globals: Record<string, IVariable>;
   variables: Record<string, IVariable>;
 
