@@ -1,6 +1,6 @@
 import { INovelInfo } from "~/shared/interfaces";
 import VNDS from "~/core/classes/vnds";
-import Logger from "~/core/classes/logger";
+import Logger from "~shared/other/logger";
 import { FILE_MAIN } from "~/shared/consts/files";
 import { ZipReaderUtils } from "~/shared/utils";
 import * as zip from "@zip.js/zip.js";
