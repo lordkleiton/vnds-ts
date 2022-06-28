@@ -1,5 +1,10 @@
-import { CommandType, Operations } from "~/enums";
-import { ICommand, IScriptInterpreter, IVariable, IVNDS } from "~/interfaces";
+import { CommandType, Operations } from "~/shared/enums";
+import {
+  ICommand,
+  IScriptInterpreter,
+  IVariable,
+  IVNDS,
+} from "~/shared/interfaces";
 import {
   FOLDER_BG,
   FOLDER_FG,
@@ -14,7 +19,7 @@ import {
   SC_TILDE,
 } from "~/consts";
 import Variable from "./variable";
-import { NumberUtils } from "~/utils";
+import { NumberUtils } from "~/shared/utils";
 import Logger from "./logger";
 
 export default class ScriptInterpreter implements IScriptInterpreter {

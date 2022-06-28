@@ -1,9 +1,9 @@
-import { ScriptEngine } from "~/classes";
-import { INovelInfo } from "~/interfaces";
-import VNDS from "~/classes/vnds";
-import Logger from "~/classes/logger";
+import { ScriptEngine } from "~/core/classes";
+import { INovelInfo } from "~/shared/interfaces";
+import VNDS from "~/core/classes/vnds";
+import Logger from "~/core/classes/logger";
 import { FILE_MAIN } from "~/consts/files";
-import { ZipReaderUtils } from "~/utils";
+import { ZipReaderUtils } from "~/shared/utils";
 import * as zip from "@zip.js/zip.js";
 
 const file_name = FILE_MAIN;

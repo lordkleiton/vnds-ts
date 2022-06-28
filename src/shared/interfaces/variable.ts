@@ -1,4 +1,4 @@
-import { VarType } from "~/enums";
+import { VarType } from "~/shared/enums";
 
 export default interface IVariable {
   type: VarType;

@@ -1,79 +1,72 @@
-import { ITextEngine } from "~/interfaces";
+import { ISoundEngine } from "~/shared/interfaces";
 
-export default class TextEngine implements ITextEngine {
-  constructor() {}
-
+export default class SoundEngine implements ISoundEngine {
   reset(): void {
     return;
-
     throw new Error("Method not implemented.");
   }
 
-  showMenu(): void {
+  update(): void {
     return;
 
     throw new Error("Method not implemented.");
   }
 
-  showLoadMenu(): void {
+  setMusic(path: string): void {
     return;
 
     throw new Error("Method not implemented.");
   }
 
-  showSaveMenu(): void {
+  stopMusic(): void {
     return;
 
     throw new Error("Method not implemented.");
   }
 
-  setTexture(textureI: number): void {
+  playSound(path: string, times?: number | undefined): void {
     return;
 
     throw new Error("Method not implemented.");
   }
 
-  update(
-    down: number,
-    held: number,
-    touchPosition: { x: number; y: number }
-  ): void {
+  stopSound(): void {
     return;
 
     throw new Error("Method not implemented.");
   }
 
-  onButtonPressed(button: any): void {
+  replaySound(): void {
     return;
 
     throw new Error("Method not implemented.");
   }
 
-  drawBackground(): void {
+  setMuted(m: boolean): void {
     return;
 
     throw new Error("Method not implemented.");
   }
 
-  drawForeground(): void {
+  isMuted(): boolean {
+    return false;
+
+    throw new Error("Method not implemented.");
+  }
+
+  getMusicPath(): string {
+    return "";
+
+    throw new Error("Method not implemented.");
+  }
+
+  setSoundVolume(v: number): void {
     return;
 
     throw new Error("Method not implemented.");
   }
 
-  getTextPane() {
-    return;
-
-    throw new Error("Method not implemented.");
-  }
-
-  getChoiceView() {
-    return;
-
-    throw new Error("Method not implemented.");
-  }
-
-  setBackgroundColor(c: number): void {
+  setMusicVolume(v: number): void {
     return;
 
     throw new Error("Method not implemented.");

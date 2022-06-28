@@ -1,10 +1,10 @@
-import { CommandType } from "~/enums";
+import { CommandType } from "~/shared/enums";
 import {
   ICommand,
   IScriptEngine,
   IScriptInterpreter,
   IVNDS,
-} from "~/interfaces";
+} from "~/shared/interfaces";
 import {
   CC_NEW_LINE,
   CMD_OPTIONS_BUFFER_LENGTH,
@@ -29,7 +29,7 @@ import {
   SCRIPT_READ_BUFFER_SIZE,
   SC_NEW_LINE,
 } from "~/consts";
-import { FileReaderUtils } from "~/utils";
+import { FileReaderUtils } from "~/shared/utils";
 import ScriptInterpreter from "./script_interpreter";
 import Logger from "./logger";
 

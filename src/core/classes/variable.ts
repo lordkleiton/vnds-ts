@@ -1,5 +1,5 @@
-import { IVariable } from "~/interfaces";
-import { VarType } from "~/enums";
+import { IVariable } from "~/shared/interfaces";
+import { VarType } from "~/shared/enums";
 
 export default class Variable implements IVariable {
   _str: string = "";

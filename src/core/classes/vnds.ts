@@ -6,9 +6,9 @@ import {
   ITextEngine,
   IVariable,
   IVNDS,
-} from "~/interfaces";
+} from "~/shared/interfaces";
 import { SC_DOLLAR, SC_QUOTE, SC_TILDE } from "~/consts";
-import { VarType } from "~/enums";
+import { VarType } from "~/shared/enums";
 import Variable from "./variable";
 import ScriptEngine from "./script_engine";
 import GraphicsEngine from "./graphics_engine";

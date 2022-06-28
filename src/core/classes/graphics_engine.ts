@@ -1,72 +1,63 @@
-import { ISoundEngine } from "~interfaces";
+import { IGraphicsEngine } from "~/shared/interfaces";
 
-export default class SoundEngine implements ISoundEngine {
-  reset(): void {
-    return;
-    throw new Error("Method not implemented.");
-  }
+export default class GraphicsEngine implements IGraphicsEngine {
+  constructor() {}
 
-  update(): void {
-    return;
-
-    throw new Error("Method not implemented.");
-  }
-
-  setMusic(path: string): void {
-    return;
-
-    throw new Error("Method not implemented.");
-  }
-
-  stopMusic(): void {
-    return;
-
-    throw new Error("Method not implemented.");
-  }
-
-  playSound(path: string, times?: number | undefined): void {
-    return;
-
-    throw new Error("Method not implemented.");
-  }
-
-  stopSound(): void {
-    return;
-
-    throw new Error("Method not implemented.");
-  }
-
-  replaySound(): void {
-    return;
-
-    throw new Error("Method not implemented.");
-  }
-
-  setMuted(m: boolean): void {
-    return;
-
-    throw new Error("Method not implemented.");
-  }
-
-  isMuted(): boolean {
+  isImageCached(path: string): boolean {
     return false;
 
     throw new Error("Method not implemented.");
   }
 
-  getMusicPath(): string {
+  getBackgroundPath(): string {
     return "";
 
     throw new Error("Method not implemented.");
   }
 
-  setSoundVolume(v: number): void {
+  getSprites() {
     return;
 
     throw new Error("Method not implemented.");
   }
 
-  setMusicVolume(v: number): void {
+  getNumberOfSprites(): number {
+    return 0;
+
+    throw new Error("Method not implemented.");
+  }
+
+  reset(): void {
+    return;
+
+    throw new Error("Method not implemented.");
+  }
+
+  flush(quickread: boolean): void {
+    return;
+
+    throw new Error("Method not implemented.");
+  }
+
+  clearCache(): void {
+    return;
+
+    throw new Error("Method not implemented.");
+  }
+
+  isBackgroundChanged(): boolean {
+    return false;
+
+    throw new Error("Method not implemented.");
+  }
+
+  setBackground(filename: string, fadeTime?: number): void {
+    return;
+
+    throw new Error("Method not implemented.");
+  }
+
+  setForeground(filename: string, x: number, y: number): void {
     return;
 
     throw new Error("Method not implemented.");
