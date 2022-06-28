@@ -15,6 +15,7 @@ import {
 } from "~/consts";
 import Variable from "./variable";
 import { NumberUtils } from "~/utils";
+import Logger from "./logger";
 
 export default class ScriptInterpreter implements IScriptInterpreter {
   constructor(private readonly _vnds: IVNDS) {}
@@ -84,21 +85,21 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
     this._vnds.graphicsEngine.flush(quickread);
 
-    const cv = this._vnds.textEngine.getChoiceView();
+    // const cv = this._vnds.textEngine.getChoiceView();
 
-    cv.activate();
+    // cv.activate();
 
-    cv.removeAllItems();
+    // cv.removeAllItems();
 
     cmd.choice.options.forEach(o => {
       const choice = this._replaceVars(o);
 
-      cv.appendText(choice);
+      // cv.appendText(choice);
     });
 
-    cv.setSelectedIndex(0);
+    // cv.setSelectedIndex(0);
 
-    cv.setScroll(0);
+    // cv.setScroll(0);
   }
 
   private _cmd_setvar(cmd: ICommand): void {
@@ -124,6 +125,8 @@ export default class ScriptInterpreter implements IScriptInterpreter {
       let next_cmd: ICommand;
 
       do {
+        Logger.log("while cmd_if");
+
         next_cmd = await this._vnds.scriptEngine.getCommand(0);
 
         if (next_cmd.id == CommandType.IF) {
@@ -135,7 +138,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
           this._vnds.scriptEngine.skipCommands(1);
         }
-      } while (nesting > 0 && cmd.id != CommandType.END_OF_FILE);
+      } while (nesting > 0 && next_cmd.id != CommandType.END_OF_FILE);
 
       if (nesting > 0) {
         console.log(
