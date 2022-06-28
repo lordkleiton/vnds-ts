@@ -31,6 +31,7 @@ import {
 } from "~/consts";
 import { FileReaderUtils } from "~/utils";
 import ScriptInterpreter from "./script_interpreter";
+import Logger from "./logger";
 
 export default class ScriptEngine implements IScriptEngine {
   private _interpreter: IScriptInterpreter;
@@ -71,7 +72,8 @@ export default class ScriptEngine implements IScriptEngine {
     if (this._eof || !this._file) {
       console.log("eof reached");
 
-      this._commands.push(this._eofCommand);
+      if (!this._commands.find(c => c.id == CommandType.END_OF_FILE))
+        this._commands.push(this._eofCommand);
 
       return;
     }
@@ -101,7 +103,7 @@ export default class ScriptEngine implements IScriptEngine {
 
     this._commands = commands.map(c => this._parseCommand(c));
 
-    //console.log(this._commands);
+    console.log(this._commands);
   }
 
   private _parseCommand(line: string): ICommand {
@@ -368,6 +370,8 @@ export default class ScriptEngine implements IScriptEngine {
 
   async skipCommands(num: number): Promise<void> {
     while (this._commands.length < num) {
+      Logger.log("while skipcommands");
+
       this._readNextCommands();
     }
 
@@ -378,6 +382,8 @@ export default class ScriptEngine implements IScriptEngine {
 
   async skipTextCommands(num: number): Promise<void> {
     while (this._textSkip < num) {
+      Logger.log("while skiptextcommands");
+
       if (this._commands.length <= 0) {
         this._readNextCommands();
       }
@@ -402,6 +408,8 @@ export default class ScriptEngine implements IScriptEngine {
     let c: ICommand;
 
     while (true) {
+      Logger.log("while jumptolabel");
+
       c = await this._vnds.scriptEngine.getCommand(0);
 
       if (c.id == CommandType.LABEL && c.label?.label == lbl) {
@@ -420,6 +428,8 @@ export default class ScriptEngine implements IScriptEngine {
 
   async getCommand(offset: number): Promise<ICommand> {
     while (this._commands.length <= offset) {
+      Logger.log("while getcommand");
+
       await this._readNextCommands();
     }
 
