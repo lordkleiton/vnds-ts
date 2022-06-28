@@ -15,9 +15,5 @@ button.onclick = () => {
     const file = await file_handle.getFile();
 
     await engine.setScriptFile(file);
-
-    do {
-      await engine.executeNextCommand(false);
-    } while (engine["_commands"].length);
   });
 };
