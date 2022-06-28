@@ -1,3 +1,5 @@
+export const FILE_SCRIPT_MAIN = "script/main.scr";
+
 export const FILE_MAIN = "main.scr";
 
 export const FILE_SCRIPT = "script.zip";

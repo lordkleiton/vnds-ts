@@ -18,6 +18,14 @@ import {
   COMMAND_TEXT,
   COMMAND_MUSIC,
 } from "./commands";
+import {
+  FILE_BG,
+  FILE_FG,
+  FILE_MAIN,
+  FILE_SCRIPT,
+  FILE_SCRIPT_MAIN,
+  FILE_SOUND,
+} from "./files";
 import { FOLDER_BG, FOLDER_FG, FOLDER_SCRIPT, FOLDER_SOUND } from "./folders";
 import { REGEX_MATCH_VAR_CURLY_BRACES, REGEX_MATCH_VAR_SIMPLE } from "./regex";
 import {
@@ -86,3 +94,12 @@ export { REGEX_MATCH_VAR_CURLY_BRACES, REGEX_MATCH_VAR_SIMPLE };
 export { SC_LEFT_BRACE, SC_RIGHT_BRACE };
 
 export { FOLDER_BG, FOLDER_FG, FOLDER_SCRIPT, FOLDER_SOUND };
+
+export {
+  FILE_BG,
+  FILE_FG,
+  FILE_MAIN,
+  FILE_SCRIPT,
+  FILE_SCRIPT_MAIN,
+  FILE_SOUND,
+};
