@@ -1,10 +1,8 @@
 import { INovelInfo } from "~/shared/interfaces";
 import VNDS from "~/core/classes/vnds";
 import { Logger } from "~/app/other";
-import { FILE_MAIN } from "~/shared/consts/files";
 import { ScriptEngine } from "~/app/engines";
-
-const file_name = FILE_MAIN;
+import { FileReaderUtils } from "~/shared/utils";
 
 const button = document.querySelector("#botao") as HTMLButtonElement;
 
@@ -19,11 +17,14 @@ button.onclick = async () => {
   vnds.root_folder = dir_handle;
 
   try {
-    const file_handle = await dir_handle.getFileHandle(file_name);
-    const file = await file_handle.getFile();
+    const file = await FileReaderUtils.getInitialScript(dir_handle);
 
-    await engine.setScriptFile(file);
+    if (file) {
+      await engine.setScriptFile(file);
+    } else {
+      throw new Error("couldnt find 'main.scr'");
+    }
   } catch (e) {
-    Logger.error(`Cannot find '${file_name}':`, e);
+    Logger.error(e);
   }
 };
