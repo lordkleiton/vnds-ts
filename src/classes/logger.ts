@@ -3,23 +3,19 @@ type ConsoleMethods = "log" | "warn" | "error";
 export default abstract class Logger {
   static enabled = true;
 
-  private static _handle(
-    method: ConsoleMethods,
-    message?: any,
-    ...optionalParams: any[]
-  ) {
-    if (this.enabled) console[method](message, optionalParams);
+  private static _wrapper(method: ConsoleMethods) {
+    return this.enabled ? console[method] : () => {};
   }
 
-  static log(message?: any, ...optionalParams: any[]): void {
-    this._handle("log", message, optionalParams);
+  static log(...params: any[]): void {
+    this._wrapper("log")(...params);
   }
 
-  static warn(message?: any, ...optionalParams: any[]): void {
-    this._handle("warn", message, optionalParams);
+  static warn(...params: any[]): void {
+    this._wrapper("warn")(...params);
   }
 
-  static error(message?: any, ...optionalParams: any[]): void {
-    this._handle("error", message, optionalParams);
+  static error(...params: any[]): void {
+    this._wrapper("error")(...params);
   }
 }
