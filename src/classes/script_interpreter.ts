@@ -3,7 +3,7 @@ import { ICommand, IScriptInterpreter, IVariable, IVNDS } from "~/interfaces";
 import {
   FOLDER_BG,
   FOLDER_FG,
-  FOLDER_SCRIPTS,
+  FOLDER_SCRIPT,
   FOLDER_SOUND,
   REGEX_MATCH_VAR_CURLY_BRACES,
   REGEX_MATCH_VAR_SIMPLE,
@@ -156,7 +156,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     if (!cmd.jump) return;
 
     const path = this._replaceVars(cmd.jump.path);
-    const full_path = `${FOLDER_SCRIPTS}/${path}`;
+    const full_path = `${FOLDER_SCRIPT}/${path}`;
 
     //this._vnds.scriptEngine.setScriptFile(full_path);
 

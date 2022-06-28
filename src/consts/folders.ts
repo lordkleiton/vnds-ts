@@ -1,4 +1,4 @@
-export const FOLDER_SCRIPTS = "scripts";
+export const FOLDER_SCRIPT = "script";
 
 export const FOLDER_SOUND = "sound";
 
