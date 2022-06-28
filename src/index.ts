@@ -2,7 +2,7 @@ import { ScriptEngine } from "~/core/classes";
 import { INovelInfo } from "~/shared/interfaces";
 import VNDS from "~/core/classes/vnds";
 import Logger from "~/core/classes/logger";
-import { FILE_MAIN } from "~/consts/files";
+import { FILE_MAIN } from "~/shared/consts/files";
 import { ZipReaderUtils } from "~/shared/utils";
 import * as zip from "@zip.js/zip.js";
 

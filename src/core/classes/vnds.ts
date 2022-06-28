@@ -7,7 +7,7 @@ import {
   IVariable,
   IVNDS,
 } from "~/shared/interfaces";
-import { SC_DOLLAR, SC_QUOTE, SC_TILDE } from "~/consts";
+import { SC_DOLLAR, SC_QUOTE, SC_TILDE } from "~/shared/consts";
 import { VarType } from "~/shared/enums";
 import Variable from "./variable";
 import ScriptEngine from "./script_engine";

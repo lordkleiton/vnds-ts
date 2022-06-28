@@ -17,7 +17,7 @@ import {
   SC_LEFT_BRACE,
   SC_RIGHT_BRACE,
   SC_TILDE,
-} from "~/consts";
+} from "~/shared/consts";
 import Variable from "./variable";
 import { NumberUtils } from "~/shared/utils";
 import Logger from "./logger";

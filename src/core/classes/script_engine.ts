@@ -28,7 +28,7 @@ import {
   COMMAND_TEXT,
   SCRIPT_READ_BUFFER_SIZE,
   SC_NEW_LINE,
-} from "~/consts";
+} from "~/shared/consts";
 import { FileReaderUtils } from "~/shared/utils";
 import ScriptInterpreter from "./script_interpreter";
 import Logger from "./logger";
