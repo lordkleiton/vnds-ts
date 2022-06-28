@@ -25,4 +25,6 @@ export default interface IVNDS {
   setWaitForInput(b: boolean): void;
   setVariable(name: string, op: string, value: string): void;
   setGlobal(name: string, op: string, value: string): void;
+
+  getBgFile(filename: string): Promise<File | undefined>;
 }
