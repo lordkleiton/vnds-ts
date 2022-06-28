@@ -14,6 +14,7 @@ import ScriptEngine from "./script_engine";
 import GraphicsEngine from "./graphics_engine";
 import TextEngine from "./text_engine";
 import SoundEngine from "./sound_engine";
+import Logger from "./logger";
 
 export default class VNDS implements IVNDS {
   private _quit: boolean = false;
@@ -93,7 +94,7 @@ export default class VNDS implements IVNDS {
             left.num = right.num;
             break;
           default:
-            console.log(
+            Logger.log(
               "setvar :: Unsupported operator for target type int",
               op
             );
@@ -109,7 +110,7 @@ export default class VNDS implements IVNDS {
             left.str = right.str;
             break;
           default:
-            console.log(
+            Logger.log(
               "setvar :: Unsupported operator for target type string",
               op
             );

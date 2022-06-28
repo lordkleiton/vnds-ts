@@ -70,7 +70,7 @@ export default class ScriptEngine implements IScriptEngine {
 
   private async _readNextCommands(): Promise<void> {
     if (this._eof || !this._file) {
-      console.log("eof reached");
+      Logger.log("eof reached");
 
       if (!this._commands.find(c => c.id == CommandType.END_OF_FILE))
         this._commands.push(this._eofCommand);
@@ -103,7 +103,7 @@ export default class ScriptEngine implements IScriptEngine {
 
     this._commands = commands.map(c => this._parseCommand(c));
 
-    console.log(this._commands);
+    Logger.log(this._commands);
   }
 
   private _parseCommand(line: string): ICommand {
@@ -184,13 +184,13 @@ export default class ScriptEngine implements IScriptEngine {
       const data = toChoiceData(split[1]);
 
       if (data.length >= CMD_OPTIONS_MAX_OPTIONS) {
-        console.log("too many choices", line);
+        Logger.log("too many choices", line);
 
         return { id: CommandType.SKIP };
       }
 
       if (data.some(c => c.length > CMD_OPTIONS_BUFFER_LENGTH)) {
-        console.log("choices are too large", line);
+        Logger.log("choices are too large", line);
 
         return { id: CommandType.SKIP };
       }
@@ -325,7 +325,7 @@ export default class ScriptEngine implements IScriptEngine {
       };
     }
 
-    console.log("unknow method", line);
+    Logger.log("unknow method", line);
 
     return { id: CommandType.SKIP };
   }
@@ -417,7 +417,7 @@ export default class ScriptEngine implements IScriptEngine {
       } else if (c.id == CommandType.TEXT) {
         this._textSkip++;
       } else if (c.id == CommandType.END_OF_FILE) {
-        console.log("goto cannot find label", lbl);
+        Logger.log("goto cannot find label", lbl);
 
         return false;
       }
@@ -464,20 +464,20 @@ export default class ScriptEngine implements IScriptEngine {
     const third = this._readBuffer[2];
 
     if (this._readBufferLength >= 2 && first == 0xfe && second == 0xff) {
-      console.log("Script encoding is UTF-16 BE. Only UTF-8 is supported.");
+      Logger.log("Script encoding is UTF-16 BE. Only UTF-8 is supported.");
 
       return;
     }
 
     if (this._readBufferLength >= 2 && first == 0xff && second == 0xfe) {
-      console.log("Script encoding is UTF-16 LE. Only UTF-8 is supported.");
+      Logger.log("Script encoding is UTF-16 LE. Only UTF-8 is supported.");
 
       return;
     }
 
     this._file = file;
 
-    console.log("script set", file.name);
+    Logger.log("script set", file.name);
 
     if (
       this._readBufferLength >= 3 &&

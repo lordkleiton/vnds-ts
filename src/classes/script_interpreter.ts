@@ -141,7 +141,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
       } while (nesting > 0 && next_cmd.id != CommandType.END_OF_FILE);
 
       if (nesting > 0) {
-        console.log(
+        Logger.log(
           "Invalid nesting of if's. Reached the end of the file before encountering the required number of fi's"
         );
       }
@@ -245,7 +245,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
       case Operations.LT:
         return left.lt(right);
       default:
-        console.log("unknown operator", op);
+        Logger.log("unknown operator", op);
 
         return false;
     }
@@ -317,7 +317,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
     this._vnds.setWaitForInput(wait_input);
 
-    console.log(result);
+    Logger.log(result);
   }
 
   execute(cmd: ICommand, quickread: boolean): void {
