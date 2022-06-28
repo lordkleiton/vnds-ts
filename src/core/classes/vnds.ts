@@ -10,11 +10,9 @@ import {
 import { SC_DOLLAR, SC_QUOTE, SC_TILDE } from "~/shared/consts";
 import { VarType } from "~/shared/enums";
 import Variable from "./variable";
-import ScriptEngine from "./script_engine";
-import GraphicsEngine from "../../app/engines/graphics_engine";
-import TextEngine from "../../app/engines/text_engine";
-import SoundEngine from "../../app/engines/sound_engine";
 import Logger from "./logger";
+import { TextEngine, SoundEngine, GraphicsEngine } from "~/app/engines";
+import ScriptEngine from "./script_engine";
 
 export default class VNDS implements IVNDS {
   private _quit: boolean = false;
