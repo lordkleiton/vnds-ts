@@ -17,7 +17,7 @@ import {
   ScriptEngine,
 } from "~/app/engines";
 import { Logger } from "~/app/other";
-import { ZipReaderUtils } from "~/shared/utils";
+import { StringUtils, ZipReaderUtils } from "~/shared/utils";
 
 export default class VNDS implements IVNDS {
   private _quit: boolean = false;
@@ -197,7 +197,20 @@ export default class VNDS implements IVNDS {
     const bg = await this.root_folder.getFileHandle("background.zip");
     const read = ZipReaderUtils.readZippedFile(await bg.getFile());
     const entries = await read.getEntries();
-    const entry = entries.find(e => e.filename == filename);
+    const entry = entries.find(e => StringUtils.equals(e.filename, filename));
+
+    if (entry) {
+      const result = await ZipReaderUtils.getFile(entry);
+
+      return result;
+    }
+  }
+
+  async getFgFile(filename: string): Promise<File | undefined> {
+    const bg = await this.root_folder.getFileHandle("foreground.zip");
+    const read = ZipReaderUtils.readZippedFile(await bg.getFile());
+    const entries = await read.getEntries();
+    const entry = entries.find(e => StringUtils.equals(e.filename, filename));
 
     if (entry) {
       const result = await ZipReaderUtils.getFile(entry);
