@@ -16,7 +16,7 @@ import {
   GraphicsEngine,
   ScriptEngine,
 } from "~/app/engines";
-import Logger from "~/shared/other/logger";
+import { Logger } from "~/app/other";
 
 export default class VNDS implements IVNDS {
   private _quit: boolean = false;

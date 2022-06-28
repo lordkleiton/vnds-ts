@@ -31,7 +31,7 @@ import {
 } from "~/shared/consts";
 import { FileReaderUtils } from "~/shared/utils";
 import { ScriptInterpreter } from "~/core/classes";
-import Logger from "~/shared/other/logger";
+import { Logger } from "~/app/other";
 
 export default class ScriptEngine implements IScriptEngine {
   private _interpreter: IScriptInterpreter;

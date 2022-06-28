@@ -20,7 +20,7 @@ import {
 } from "~/shared/consts";
 import Variable from "./variable";
 import { NumberUtils } from "~/shared/utils";
-import Logger from "~/shared/other/logger";
+import { Logger } from "~/app/other";
 
 export default class ScriptInterpreter implements IScriptInterpreter {
   constructor(private readonly _vnds: IVNDS) {}
