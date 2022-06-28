@@ -27,4 +27,5 @@ export default interface IVNDS {
   setGlobal(name: string, op: string, value: string): void;
 
   getBgFile(filename: string): Promise<File | undefined>;
+  getFgFile(filename: string): Promise<File | undefined>;
 }

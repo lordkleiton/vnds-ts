@@ -73,7 +73,24 @@ export default class GraphicsEngine implements IGraphicsEngine {
     }
   }
 
-  setForeground(filename: string, x: number, y: number): void {
+  async setForeground(filename: string, x: number, y: number): Promise<void> {
+    const file = await this._vnds.getFgFile(filename);
+
+    if (file) {
+      const url = window.URL;
+      const ctx = this._canvas.getContext("2d");
+
+      if (ctx) {
+        const img = new Image();
+
+        img.src = url.createObjectURL(file);
+
+        img.onload = () => {
+          ctx.drawImage(img, x, y);
+        };
+      }
+    }
+
     return;
 
     throw new Error("Method not implemented.");
