@@ -18,6 +18,6 @@ button.onclick = () => {
 
     do {
       await engine.executeNextCommand(false);
-    } while (!engine["_eof"] && engine["_commands"].length > 1);
+    } while (engine["_commands"].length);
   });
 };
