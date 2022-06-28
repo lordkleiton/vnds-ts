@@ -12,7 +12,7 @@ import { VarType } from "~/shared/enums";
 import Variable from "./variable";
 import Logger from "./logger";
 import { TextEngine, SoundEngine, GraphicsEngine } from "~/app/engines";
-import ScriptEngine from "./script_engine";
+import ScriptEngine from "../../app/engines/script_engine";
 
 export default class VNDS implements IVNDS {
   private _quit: boolean = false;

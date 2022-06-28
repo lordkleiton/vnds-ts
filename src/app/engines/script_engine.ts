@@ -30,8 +30,8 @@ import {
   SC_NEW_LINE,
 } from "~/shared/consts";
 import { FileReaderUtils } from "~/shared/utils";
-import ScriptInterpreter from "./script_interpreter";
-import Logger from "./logger";
+import ScriptInterpreter from "../../core/classes/script_interpreter";
+import Logger from "../../core/classes/logger";
 
 export default class ScriptEngine implements IScriptEngine {
   private _interpreter: IScriptInterpreter;
