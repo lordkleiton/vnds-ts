@@ -74,14 +74,13 @@ export default class VNDS implements IVNDS {
     const left = !!exists
       ? exists
       : new Variable(right.type == VarType.VT_int ? 0 : "");
+    const work_with_strings =
+      left.type == VarType.VT_string || right.type == VarType.VT_string;
+    const inferred_type = work_with_strings
+      ? VarType.VT_string
+      : VarType.VT_int;
 
-    let inferredType = VarType.VT_int;
-
-    if (left.type == VarType.VT_string || right.type == VarType.VT_string) {
-      inferredType = VarType.VT_string;
-    }
-
-    switch (inferredType) {
+    switch (inferred_type) {
       case VarType.VT_int:
         switch (op) {
           case "+":
@@ -95,7 +94,7 @@ export default class VNDS implements IVNDS {
             break;
           default:
             console.log(
-              "setvar :: Unsupported operator '%c' for target type int",
+              "setvar :: Unsupported operator for target type int",
               op
             );
             return;
@@ -111,7 +110,7 @@ export default class VNDS implements IVNDS {
             break;
           default:
             console.log(
-              "setvar :: Unsupported operator '%c' for target type string",
+              "setvar :: Unsupported operator for target type string",
               op
             );
             return;
