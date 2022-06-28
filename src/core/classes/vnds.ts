@@ -45,11 +45,11 @@ export default class VNDS implements IVNDS {
   constructor(novelInfo: INovelInfo) {
     this.scriptEngine = new ScriptEngine(this);
 
-    this.graphicsEngine = new GraphicsEngine();
+    this.graphicsEngine = new GraphicsEngine(this);
 
-    this.textEngine = new TextEngine();
+    this.textEngine = new TextEngine(this);
 
-    this.soundEngine = new SoundEngine();
+    this.soundEngine = new SoundEngine(this);
   }
 
   private _copy(v: IVariable): any {

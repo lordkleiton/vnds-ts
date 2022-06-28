@@ -1,6 +1,8 @@
-import { ISoundEngine } from "~/shared/interfaces";
+import { ISoundEngine, IVNDS } from "~/shared/interfaces";
 
 export default class SoundEngine implements ISoundEngine {
+  constructor(private readonly _vnds: IVNDS) {}
+
   reset(): void {
     return;
     throw new Error("Method not implemented.");

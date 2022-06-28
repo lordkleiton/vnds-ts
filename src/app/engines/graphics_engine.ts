@@ -1,7 +1,7 @@
-import { IGraphicsEngine } from "~/shared/interfaces";
+import { IGraphicsEngine, IVNDS } from "~/shared/interfaces";
 
 export default class GraphicsEngine implements IGraphicsEngine {
-  constructor() {}
+  constructor(private readonly _vnds: IVNDS) {}
 
   isImageCached(path: string): boolean {
     return false;

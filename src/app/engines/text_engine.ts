@@ -1,7 +1,7 @@
-import { ITextEngine } from "~/shared/interfaces";
+import { ITextEngine, IVNDS } from "~/shared/interfaces";
 
 export default class TextEngine implements ITextEngine {
-  constructor() {}
+  constructor(private readonly _vnds: IVNDS) {}
 
   reset(): void {
     return;
