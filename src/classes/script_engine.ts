@@ -40,7 +40,6 @@ export default class ScriptEngine implements IScriptEngine {
   private _fileLine: number = 0;
   private _textSkip: number = 0;
 
-  private _readBuffer: Uint8Array = new Uint8Array();
   private _readBufferOffset: number = 0;
 
   private _eofCommand: ICommand = { id: CommandType.END_OF_FILE } as ICommand;
@@ -54,15 +53,13 @@ export default class ScriptEngine implements IScriptEngine {
     this.reset();
   }
 
-  private get _readBufferLength(): number {
-    return this._readBuffer.length;
-  }
+  private async _readFileChunk(file?: File): Promise<ArrayBuffer> {
+    if (!file && !this._file) throw new Error("no file to read");
 
-  private async _readFileChunk(): Promise<ArrayBuffer> {
-    if (!this._file) throw new Error("no file to read");
+    const file_to_read = file ? file : this._file;
 
     return await FileReaderUtils.read(
-      this._file,
+      file_to_read!,
       this._readBufferOffset,
       this._readBufferOffset + SCRIPT_READ_BUFFER_SIZE
     );
@@ -339,8 +336,6 @@ export default class ScriptEngine implements IScriptEngine {
 
     this._textSkip = 0;
 
-    this._readBuffer = new Uint8Array();
-
     this._readBufferOffset = 0;
 
     this._commands = [];
@@ -453,23 +448,20 @@ export default class ScriptEngine implements IScriptEngine {
   async setScriptFile(file: File): Promise<void> {
     this.reset();
 
-    const buffer = await file.arrayBuffer();
+    const chunk = await this._readFileChunk(file);
+    const buffer = new Uint8Array(chunk);
 
-    const slice = buffer.slice(this._readBufferOffset, SCRIPT_READ_BUFFER_SIZE);
+    const first = buffer[0];
+    const second = buffer[1];
+    const third = buffer[2];
 
-    this._readBuffer = new Uint8Array(slice);
-
-    const first = this._readBuffer[0];
-    const second = this._readBuffer[1];
-    const third = this._readBuffer[2];
-
-    if (this._readBufferLength >= 2 && first == 0xfe && second == 0xff) {
+    if (buffer.length >= 2 && first == 0xfe && second == 0xff) {
       Logger.log("Script encoding is UTF-16 BE. Only UTF-8 is supported.");
 
       return;
     }
 
-    if (this._readBufferLength >= 2 && first == 0xff && second == 0xfe) {
+    if (buffer.length >= 2 && first == 0xff && second == 0xfe) {
       Logger.log("Script encoding is UTF-16 LE. Only UTF-8 is supported.");
 
       return;
@@ -480,7 +472,7 @@ export default class ScriptEngine implements IScriptEngine {
     Logger.log("script set", file.name);
 
     if (
-      this._readBufferLength >= 3 &&
+      buffer.length >= 3 &&
       first == 0xef &&
       second == 0xbb &&
       third == 0xbf
