@@ -21,6 +21,16 @@ button.onclick = async () => {
 
     if (file) {
       await engine.setScriptFile(file);
+
+      const body = document.querySelector("body");
+
+      if (body) {
+        body.onkeyup = e => {
+          if (e.key == "Enter") {
+            engine.executeNextCommand(false);
+          }
+        };
+      }
     } else {
       throw new Error("couldnt find 'main.scr'");
     }
