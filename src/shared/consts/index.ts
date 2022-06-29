@@ -50,6 +50,11 @@ import {
   SC_DOLLAR,
 } from "./special_chars";
 import { SIZE_CANVAS_WIDTH, SIZE_CANVAS_HEIGHT } from "./sizes";
+import {
+  ELEMENT_CANVAS,
+  ELEMENT_TEXT_CURRENT,
+  ELEMENT_TEXT_HISTORY,
+} from "./elements";
 
 export { CMD_OPTIONS_BUFFER_LENGTH, CMD_OPTIONS_MAX_OPTIONS, CMD_TEXT_LENGTH };
 
@@ -106,3 +111,5 @@ export {
 };
 
 export { SIZE_CANVAS_WIDTH, SIZE_CANVAS_HEIGHT };
+
+export { ELEMENT_CANVAS, ELEMENT_TEXT_CURRENT, ELEMENT_TEXT_HISTORY };
