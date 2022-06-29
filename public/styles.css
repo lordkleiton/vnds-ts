@@ -1,0 +1,15 @@
+#history-text-area,
+#current-text-area {
+  width: 640px;
+  height: 480px;
+  display: block;
+  position: absolute;
+  overflow: hidden;
+}
+
+#canvas {
+  width: 640px;
+  height: 480px;
+  display: block;
+  position: absolute;
+}
