@@ -49,6 +49,7 @@ import {
   SC_QUOTE,
   SC_DOLLAR,
 } from "./special_chars";
+import { SIZE_CANVAS_WIDTH, SIZE_CANVAS_HEIGHT } from "./sizes";
 
 export { CMD_OPTIONS_BUFFER_LENGTH, CMD_OPTIONS_MAX_OPTIONS, CMD_TEXT_LENGTH };
 
@@ -103,3 +104,5 @@ export {
   FILE_SCRIPT_MAIN,
   FILE_SOUND,
 };
+
+export { SIZE_CANVAS_WIDTH, SIZE_CANVAS_HEIGHT };
