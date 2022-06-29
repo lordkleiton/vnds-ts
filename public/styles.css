@@ -10,15 +10,15 @@
   color: white;
 }
 
-#history-text-area,
-#current-text-area,
-#canvas {
+.history-text-area,
+.current-text-area,
+.canvas {
   display: block;
   position: absolute;
 }
 
-#history-text-area,
-#current-text-area {
+.history-text-area,
+.current-text-area {
   width: calc(100% - var(--double-padding));
   height: calc(100% - var(--double-padding));
   padding: var(--padding);
@@ -26,7 +26,11 @@
   background-color: rgba(0, 0, 0, 0.3);
 }
 
-#history-text-area p,
-#current-text-area p {
+.history-text-area p,
+.current-text-area p {
   margin: 0.1rem 0;
+}
+
+.hide {
+  display: none;
 }
