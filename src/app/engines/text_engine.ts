@@ -81,7 +81,7 @@ export default class TextEngine implements ITextEngine {
   }
 
   appendText(text: string): void {
-    const text_container = DomUtils.getCurrentPane();
+    const text_container = DomUtils.getTextPane();
     const history_container = DomUtils.getHistoryPane();
 
     const element = document.createElement("p");
