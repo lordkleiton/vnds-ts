@@ -17,6 +17,12 @@ button.onclick = async () => {
   vnds.root_folder = dir_handle;
 
   try {
+    const file = await FileReaderUtils.getFont(dir_handle);
+
+    if (file) DomUtils.setFont(file);
+  } catch {}
+
+  try {
     const file = await FileReaderUtils.getInitialScript(dir_handle);
 
     if (file) {
