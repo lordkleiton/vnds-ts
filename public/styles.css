@@ -1,6 +1,7 @@
 :root {
   --padding: 1rem;
   --double-padding: calc(var(--padding) * 2);
+  --text-animation-duration: 1s;
 }
 
 #play-area {
@@ -28,6 +29,10 @@
   margin: 0.1rem 0.5rem;
 }
 
+.current-text-area p {
+  animation: fadeIn var(--text-animation-duration);
+}
+
 .hide {
   visibility: hidden;
   opacity: 0;
@@ -41,4 +46,15 @@
   inset: var(--padding);
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* animations */
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
