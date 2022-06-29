@@ -94,7 +94,9 @@ export default class TextEngine implements ITextEngine {
 
     element.innerHTML = text || "&nbsp;";
 
+    const element_2 = element.cloneNode(true);
+
     text_container.append(element);
-    history_container.append(element);
+    history_container.append(element_2);
   }
 }
