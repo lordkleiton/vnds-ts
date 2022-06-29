@@ -1,6 +1,7 @@
 import {
   ELEMENT_CANVAS,
   ELEMENT_PLAY_AREA,
+  ELEMENT_TEXT_AREA,
   ELEMENT_TEXT_CURRENT,
   ELEMENT_TEXT_HISTORY,
 } from "~/shared/consts";
@@ -10,12 +11,8 @@ export default abstract class DomUtils {
     return !this.getTextPane().classList.contains("hide");
   }
 
-  private static get _history_panel_shown(): boolean {
-    return !this.getHistoryPane().classList.contains("hide");
-  }
-
   static get text_area_shown(): boolean {
-    return this._text_panel_shown || this._history_panel_shown;
+    return !this.getTextArea().classList.contains("hide");
   }
 
   private static _getDomElement<T>(selector: string): T | null {
@@ -106,6 +103,12 @@ export default abstract class DomUtils {
     this._togglePanes(show, hide);
   }
 
+  static getTextArea(): HTMLDivElement {
+    const element = this._getElement<HTMLDivElement>(ELEMENT_TEXT_AREA, "div");
+
+    return element as HTMLDivElement;
+  }
+
   static async setFont(font: File): Promise<void> {
     const font_family = "custom novel font";
     const font_face = new FontFace(
@@ -129,12 +132,12 @@ export default abstract class DomUtils {
   }
 
   static toggleTextArea(): void {
-    if (this._text_panel_shown || this._history_panel_shown) {
-      this._hideHistoryPane();
+    const element = this.getTextArea();
 
-      this._hideTextPane();
+    if (this.text_area_shown) {
+      this._addClassHide(element);
     } else {
-      this.showTextPane();
+      this._removeClassHide(element);
     }
   }
 }
