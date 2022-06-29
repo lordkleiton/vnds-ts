@@ -1,3 +1,4 @@
+import DomUtils from "./dom";
 import FileReaderUtils from "./file_reader";
 import FolderUtils from "./folder";
 import NumberUtils from "./number";
@@ -10,4 +11,5 @@ export {
   FolderUtils,
   ZipReaderUtils,
   StringUtils,
+  DomUtils,
 };
