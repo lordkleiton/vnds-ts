@@ -36,7 +36,7 @@ button.onclick = async () => {
             engine.executeNextCommand(false);
           }
 
-          if (e.key == "ArrowUp" && !DomUtils.text_area_shown) {
+          if (e.key == "ArrowUp") {
             DomUtils.toggleTextPane();
           }
 
