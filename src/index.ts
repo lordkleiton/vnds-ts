@@ -2,7 +2,7 @@ import { INovelInfo } from "~/shared/interfaces";
 import VNDS from "~/core/classes/vnds";
 import { Logger } from "~/app/other";
 import { ScriptEngine } from "~/app/engines";
-import { FileReaderUtils } from "~/shared/utils";
+import { DomUtils, FileReaderUtils } from "~/shared/utils";
 
 const button = document.querySelector("#botao") as HTMLButtonElement;
 
@@ -28,6 +28,14 @@ button.onclick = async () => {
         body.onkeyup = e => {
           if (e.key == "Enter") {
             engine.executeNextCommand(false);
+          }
+
+          if (e.key == "Escape") {
+            if (DomUtils.text_panel_shown) {
+              DomUtils.showHistoryPane();
+            } else {
+              DomUtils.showTextPane();
+            }
           }
         };
       }

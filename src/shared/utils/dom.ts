@@ -5,6 +5,10 @@ import {
 } from "~/shared/consts";
 
 export default abstract class DomUtils {
+  static get text_panel_shown(): boolean {
+    return !this.getTextPane().classList.contains("hide");
+  }
+
   private static _getDomElement<T>(selector: string): T | null {
     const selected = document.querySelector(selector);
 
@@ -33,7 +37,7 @@ export default abstract class DomUtils {
     return element as HTMLDivElement;
   }
 
-  static getCurrentPane(): HTMLDivElement {
+  static getTextPane(): HTMLDivElement {
     const element = this._getElement<HTMLDivElement>(
       ELEMENT_TEXT_CURRENT,
       "div"
@@ -49,5 +53,32 @@ export default abstract class DomUtils {
     );
 
     return element as HTMLCanvasElement;
+  }
+
+  private static _addClassHide(element: HTMLElement): void {
+    element.classList.add("hide");
+  }
+
+  private static _removeClassHide(element: HTMLElement): void {
+    element.classList.remove("hide");
+  }
+
+  private static _togglePanes(show: HTMLElement, hide: HTMLElement): void {
+    this._addClassHide(hide);
+    this._removeClassHide(show);
+  }
+
+  static showHistoryPane(): void {
+    const show = this.getHistoryPane();
+    const hide = this.getTextPane();
+
+    this._togglePanes(show, hide);
+  }
+
+  static showTextPane(): void {
+    const show = this.getTextPane();
+    const hide = this.getHistoryPane();
+
+    this._togglePanes(show, hide);
   }
 }
