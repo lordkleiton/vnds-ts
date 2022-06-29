@@ -1,5 +1,6 @@
 import {
   ELEMENT_CANVAS,
+  ELEMENT_PLAY_AREA,
   ELEMENT_TEXT_CURRENT,
   ELEMENT_TEXT_HISTORY,
 } from "~/shared/consts";
@@ -55,6 +56,12 @@ export default abstract class DomUtils {
     return element as HTMLCanvasElement;
   }
 
+  static getPlayArea(): HTMLDivElement {
+    const element = this._getElement<HTMLDivElement>(ELEMENT_PLAY_AREA, "div");
+
+    return element as HTMLDivElement;
+  }
+
   private static _addClassHide(element: HTMLElement): void {
     element.classList.add("hide");
   }
@@ -89,8 +96,10 @@ export default abstract class DomUtils {
       `url(${window.URL.createObjectURL(font)})`
     );
     const loaded_face = await font_face.load();
+    const play_area = this.getPlayArea();
 
     document.fonts.add(loaded_face);
-    document.body.style.fontFamily = `"${font_family}", Arial`;
+
+    play_area.style.fontFamily = `"${font_family}", Arial`;
   }
 }
