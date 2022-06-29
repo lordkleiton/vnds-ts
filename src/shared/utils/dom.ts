@@ -81,4 +81,16 @@ export default abstract class DomUtils {
 
     this._togglePanes(show, hide);
   }
+
+  static async setFont(font: File): Promise<void> {
+    const font_family = "custom novel font";
+    const font_face = new FontFace(
+      font_family,
+      `url(${window.URL.createObjectURL(font)})`
+    );
+    const loaded_face = await font_face.load();
+
+    document.fonts.add(loaded_face);
+    document.body.style.fontFamily = `"${font_family}", Arial`;
+  }
 }
