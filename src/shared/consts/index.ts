@@ -21,6 +21,7 @@ import {
 import {
   FILE_BG,
   FILE_FG,
+  FILE_FONT,
   FILE_MAIN,
   FILE_SCRIPT,
   FILE_SCRIPT_MAIN,
@@ -108,6 +109,7 @@ export {
   FILE_SCRIPT,
   FILE_SCRIPT_MAIN,
   FILE_SOUND,
+  FILE_FONT,
 };
 
 export { SIZE_CANVAS_WIDTH, SIZE_CANVAS_HEIGHT };
