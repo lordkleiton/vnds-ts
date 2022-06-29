@@ -7,6 +7,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <link rel="stylesheet" href="./styles.css">
+
   <!-- carregando o bundle -->
   <script async src="./bundle.js"></script>
 
@@ -16,11 +18,13 @@
 <body>
   <button id="botao">clica aí</button>
 
-  <div id="history-text-area"></div>
+  <div id="play-area">
+    <canvas id="canvas" width="640" height="480"></canvas>
 
-  <div id="current-text-area"></div>
+    <div id="history-text-area"></div>
 
-  <canvas id="canvas" width="640" height="480"></canvas>
+    <div id="current-text-area"></div>
+  </div>
 </body>
 
 </html>
