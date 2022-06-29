@@ -6,8 +6,16 @@ import {
 } from "~/shared/consts";
 
 export default abstract class DomUtils {
-  static get text_panel_shown(): boolean {
+  private static get _text_panel_shown(): boolean {
     return !this.getTextPane().classList.contains("hide");
+  }
+
+  private static get _history_panel_shown(): boolean {
+    return !this.getHistoryPane().classList.contains("hide");
+  }
+
+  static get text_area_shown(): boolean {
+    return this._text_panel_shown || this._history_panel_shown;
   }
 
   private static _getDomElement<T>(selector: string): T | null {
@@ -72,7 +80,16 @@ export default abstract class DomUtils {
 
   private static _togglePanes(show: HTMLElement, hide: HTMLElement): void {
     this._addClassHide(hide);
+
     this._removeClassHide(show);
+  }
+
+  private static _hideHistoryPane(): void {
+    this._addClassHide(this.getHistoryPane());
+  }
+
+  private static _hideTextPane(): void {
+    this._addClassHide(this.getTextPane());
   }
 
   static showHistoryPane(): void {
@@ -101,5 +118,23 @@ export default abstract class DomUtils {
     document.fonts.add(loaded_face);
 
     play_area.style.fontFamily = `"${font_family}", Arial`;
+  }
+
+  static toggleTextPane(): void {
+    if (this._text_panel_shown) {
+      DomUtils.showHistoryPane();
+    } else {
+      DomUtils.showTextPane();
+    }
+  }
+
+  static toggleTextArea(): void {
+    if (this._text_panel_shown || this._history_panel_shown) {
+      this._hideHistoryPane();
+
+      this._hideTextPane();
+    } else {
+      this.showTextPane();
+    }
   }
 }

@@ -36,12 +36,12 @@ button.onclick = async () => {
             engine.executeNextCommand(false);
           }
 
+          if (e.key == "ArrowUp" && !DomUtils.text_area_shown) {
+            DomUtils.toggleTextPane();
+          }
+
           if (e.key == "Escape") {
-            if (DomUtils.text_panel_shown) {
-              DomUtils.showHistoryPane();
-            } else {
-              DomUtils.showTextPane();
-            }
+            DomUtils.toggleTextArea();
           }
         };
       }
