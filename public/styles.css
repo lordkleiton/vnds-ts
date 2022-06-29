@@ -8,6 +8,7 @@
   height: 480px;
   position: relative;
   color: white;
+  border: 1px solid black;
 }
 
 .history-text-area,
@@ -19,11 +20,7 @@
 
 .history-text-area,
 .current-text-area {
-  width: calc(100% - var(--double-padding));
-  height: calc(100% - var(--double-padding));
-  padding: var(--padding);
   overflow: hidden;
-  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .history-text-area p,
@@ -33,4 +30,13 @@
 
 .hide {
   display: none;
+}
+
+.text-area {
+  position: relative;
+  width: calc(100% - var(--double-padding));
+  height: calc(100% - var(--double-padding));
+  inset: var(--padding);
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.3);
 }
