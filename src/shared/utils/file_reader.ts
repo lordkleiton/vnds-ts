@@ -1,4 +1,5 @@
 import {
+  FILE_FONT,
   FILE_MAIN,
   FILE_SCRIPT,
   FILE_SCRIPT_MAIN,
@@ -65,5 +66,18 @@ export default abstract class FileReaderUtils {
     }
 
     return zip;
+  }
+
+  static async getFont(
+    dir_handle: FileSystemDirectoryHandle
+  ): Promise<File | undefined> {
+    try {
+      const file_handle = await dir_handle.getFileHandle(FILE_FONT);
+      const file = await file_handle.getFile();
+
+      return file;
+    } catch {
+      return;
+    }
   }
 }
