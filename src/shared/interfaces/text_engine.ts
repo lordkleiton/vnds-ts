@@ -17,4 +17,6 @@ export default interface ITextEngine {
   getChoiceView(): any;
 
   setBackgroundColor(c: number): void;
+
+  appendText(text: string): void;
 }
