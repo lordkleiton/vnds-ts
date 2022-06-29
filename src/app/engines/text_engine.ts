@@ -1,4 +1,5 @@
 import { ITextEngine, IVNDS } from "~/shared/interfaces";
+import { DomUtils } from "~/shared/utils";
 
 export default class TextEngine implements ITextEngine {
   constructor(private readonly _vnds: IVNDS) {}
@@ -80,15 +81,8 @@ export default class TextEngine implements ITextEngine {
   }
 
   appendText(text: string): void {
-    const text_container_name = "#history-text-area";
-    const history_container_name = "#current-text-area";
-
-    const text_container = document.querySelector(
-      text_container_name
-    ) as HTMLDivElement;
-    const history_container = document.querySelector(
-      history_container_name
-    ) as HTMLDivElement;
+    const text_container = DomUtils.getCurrentPane();
+    const history_container = DomUtils.getHistoryPane();
 
     const element = document.createElement("p");
 
