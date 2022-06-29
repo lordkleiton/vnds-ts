@@ -318,7 +318,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
     const result = this._replaceVars(output || "");
 
-    this._vnds.textEngine.getTextPane()?.appendText(result);
+    this._vnds.textEngine.appendText(result);
 
     this._vnds.setWaitForInput(wait_input);
 
