@@ -3,10 +3,9 @@ const Dotenv = require("dotenv-webpack");
 const CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = {
-  mode: "development",
+  mode: "production",
   plugins: [new CompressionPlugin(), new Dotenv()],
   entry: "./src/index.ts",
-  devtool: "inline-source-map",
   module: {
     rules: [
       {

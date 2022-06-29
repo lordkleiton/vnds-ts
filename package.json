@@ -5,7 +5,7 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --mode=production",
+    "build": "webpack --config webpack.prod.config.js",
     "start": "yarn run serve",
     "serve": "webpack serve --mode=development --watch-files ./dist/bundle.js --compress --no-client-overlay"
   },
