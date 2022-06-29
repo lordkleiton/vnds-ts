@@ -1,8 +1,9 @@
 import { IGraphicsEngine, IVNDS } from "~/shared/interfaces";
 import { SIZE_CANVAS_HEIGHT, SIZE_CANVAS_WIDTH } from "~/shared/consts";
+import { DomUtils } from "~/shared/utils";
 
 export default class GraphicsEngine implements IGraphicsEngine {
-  private _canvas = document.querySelector("#canvas") as HTMLCanvasElement;
+  private _canvas = DomUtils.getCanvas();
 
   constructor(private readonly _vnds: IVNDS) {}
 

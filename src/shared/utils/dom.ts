@@ -1,4 +1,8 @@
-import { ELEMENT_TEXT_CURRENT, ELEMENT_TEXT_HISTORY } from "~/shared/consts";
+import {
+  ELEMENT_CANVAS,
+  ELEMENT_TEXT_CURRENT,
+  ELEMENT_TEXT_HISTORY,
+} from "~/shared/consts";
 
 export default abstract class DomUtils {
   private static _getDomElement<T>(selector: string): T | null {
@@ -40,7 +44,7 @@ export default abstract class DomUtils {
 
   static getCanvas(): HTMLCanvasElement {
     const element = this._getElement<HTMLCanvasElement>(
-      ELEMENT_TEXT_CURRENT,
+      ELEMENT_CANVAS,
       "canvas"
     );
 
