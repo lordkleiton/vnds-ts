@@ -1,5 +1,5 @@
 import { IGraphicsEngine, IVNDS } from "~/shared/interfaces";
-import { ZipReaderUtils } from "~/shared/utils";
+import { SIZE_CANVAS_HEIGHT, SIZE_CANVAS_WIDTH } from "~/shared/consts";
 
 export default class GraphicsEngine implements IGraphicsEngine {
   private _canvas = document.querySelector("#canvas") as HTMLCanvasElement;
@@ -67,7 +67,7 @@ export default class GraphicsEngine implements IGraphicsEngine {
         img.src = url.createObjectURL(file);
 
         img.onload = () => {
-          ctx.drawImage(img, 0, 0, 500, 300);
+          ctx.drawImage(img, 0, 0, SIZE_CANVAS_WIDTH, SIZE_CANVAS_HEIGHT);
         };
       }
     }
@@ -90,9 +90,5 @@ export default class GraphicsEngine implements IGraphicsEngine {
         };
       }
     }
-
-    return;
-
-    throw new Error("Method not implemented.");
   }
 }
