@@ -126,4 +126,20 @@ export default abstract class FileReaderUtils {
       return;
     }
   }
+
+  static async getFavicon(
+    dir_handle: FileSystemDirectoryHandle
+  ): Promise<File | undefined> {
+    const file = await this.getFileFromFolder(dir_handle, "icon.png");
+
+    return file;
+  }
+
+  static async getInfoFile(
+    dir_handle: FileSystemDirectoryHandle
+  ): Promise<File | undefined> {
+    const file = await this.getFileFromFolder(dir_handle, "info.txt");
+
+    return file;
+  }
 }
