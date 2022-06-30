@@ -1,6 +1,6 @@
 import {
   ELEMENT_CANVAS,
-  ELEMENT_PLAY_AREA,
+  ELEMENT_GAME_AREA,
   ELEMENT_TEXT_AREA,
   ELEMENT_TEXT_CURRENT,
   ELEMENT_TEXT_HISTORY,
@@ -61,8 +61,8 @@ export default abstract class DomUtils {
     return element as HTMLCanvasElement;
   }
 
-  static getPlayArea(): HTMLDivElement {
-    const element = this._getElement<HTMLDivElement>(ELEMENT_PLAY_AREA, "div");
+  private static _getGameArea(): HTMLDivElement {
+    const element = this._getElement<HTMLDivElement>(ELEMENT_GAME_AREA, "div");
 
     return element as HTMLDivElement;
   }
@@ -116,7 +116,7 @@ export default abstract class DomUtils {
       `url(${window.URL.createObjectURL(font)})`
     );
     const loaded_face = await font_face.load();
-    const play_area = this.getPlayArea();
+    const play_area = this._getGameArea();
 
     document.fonts.add(loaded_face);
 
