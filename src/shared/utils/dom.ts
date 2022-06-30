@@ -176,4 +176,20 @@ export default abstract class DomUtils {
 
     this.showTextArea();
   }
+
+  static changeFavicon(url: string): void {
+    const icon = document.querySelector('link[rel="icon"]') as HTMLLinkElement;
+
+    if (icon) {
+      icon.href = url;
+    } else {
+      const new_icon = document.createElement("link");
+
+      new_icon.rel = "icon";
+
+      new_icon.href = url;
+
+      document.head.append(new_icon);
+    }
+  }
 }
