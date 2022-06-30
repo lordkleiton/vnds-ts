@@ -19,7 +19,7 @@ import {
   SC_TILDE,
 } from "~/shared/consts";
 import Variable from "./variable";
-import { NumberUtils } from "~/shared/utils";
+import { DomUtils, NumberUtils } from "~/shared/utils";
 import { Logger } from "~/app/other";
 
 export default class ScriptInterpreter implements IScriptInterpreter {
@@ -90,21 +90,34 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
     this._vnds.graphicsEngine.flush(quickread);
 
-    // const cv = this._vnds.textEngine.getChoiceView();
+    const choice_area = DomUtils.getChoiceArea();
 
-    // cv.activate();
+    console.log(choice_area);
 
-    // cv.removeAllItems();
-
-    cmd.choice.options.forEach(o => {
+    cmd.choice.options.forEach((o, i) => {
       const choice = this._replaceVars(o);
+      const button = document.createElement("a");
 
-      // cv.appendText(choice);
+      button.href = "#";
+
+      button.onclick = e => {
+        e.preventDefault();
+
+        const choice = i + 1;
+
+        this._vnds.setVariable("selected", "=", choice.toString());
+      };
+
+      button.classList.add("choice-btn");
+
+      button.innerHTML = choice;
+
+      choice_area.append(button);
     });
 
-    // cv.setSelectedIndex(0);
+    DomUtils.showChoiceArea();
 
-    // cv.setScroll(0);
+    this._vnds.setVariable("selected", "=", "0");
   }
 
   private _cmd_setvar(cmd: ICommand): void {
@@ -157,21 +170,24 @@ export default class ScriptInterpreter implements IScriptInterpreter {
     // noop
   }
 
-  private _cmd_jump(cmd: ICommand): void {
+  private async _cmd_jump(cmd: ICommand): Promise<void> {
     if (!cmd.jump) return;
 
     const path = this._replaceVars(cmd.jump.path);
     const full_path = `${FOLDER_SCRIPT}/${path}`;
+    const file = await this._vnds.getScriptFile(full_path);
 
-    //this._vnds.scriptEngine.setScriptFile(full_path);
+    if (file) {
+      this._vnds.scriptEngine.setScriptFile(file);
 
-    if (cmd.jump.label) {
-      const command = {
-        id: CommandType.GOTO,
-        lgoto: { label: cmd.jump.label },
-      } as ICommand;
+      if (cmd.jump.label) {
+        const command = {
+          id: CommandType.GOTO,
+          lgoto: { label: cmd.jump.label },
+        } as ICommand;
 
-      this._cmd_goto(command);
+        this._cmd_goto(command);
+      }
     }
   }
 
