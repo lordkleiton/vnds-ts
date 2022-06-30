@@ -53,23 +53,27 @@ export default abstract class FileReaderUtils {
   }
 
   private static async _getScriptZip(
-    dir_handle: FileSystemDirectoryHandle
+    dir_handle: FileSystemDirectoryHandle,
+    zipname: string,
+    filename: string
   ): Promise<File | undefined> {
     try {
-      const zipped = await this._getFileFromFolder(dir_handle, FILE_SCRIPT);
+      const zipped = await this._getFileFromFolder(dir_handle, zipname);
 
       if (zipped) {
-        return await this._getFileFromZip(zipped, FILE_SCRIPT_MAIN);
+        return await this._getFileFromZip(zipped, filename);
       }
     } catch {}
   }
 
-  private static async _getScriptFolder(
-    dir_handle: FileSystemDirectoryHandle
+  private static async _getFileFromSubfolder(
+    dir_handle: FileSystemDirectoryHandle,
+    subfolder: string,
+    filename: string
   ): Promise<File | undefined> {
     try {
-      const script_handler = await dir_handle.getDirectoryHandle(FOLDER_SCRIPT);
-      const file = await this._getFileFromFolder(script_handler, FILE_MAIN);
+      const script_handler = await dir_handle.getDirectoryHandle(subfolder);
+      const file = await this._getFileFromFolder(script_handler, filename);
 
       return file;
     } catch {
@@ -80,10 +84,18 @@ export default abstract class FileReaderUtils {
   static async getInitialScript(
     dir_handle: FileSystemDirectoryHandle
   ): Promise<File | undefined> {
-    const zipped = await this._getScriptZip(dir_handle);
+    const zipped = await this._getScriptZip(
+      dir_handle,
+      FILE_SCRIPT,
+      FILE_SCRIPT_MAIN
+    );
 
     if (!zipped) {
-      return await this._getScriptFolder(dir_handle);
+      return await this._getFileFromSubfolder(
+        dir_handle,
+        FOLDER_SCRIPT,
+        FILE_MAIN
+      );
     }
 
     return zipped;
