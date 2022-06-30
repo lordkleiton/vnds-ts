@@ -52,7 +52,7 @@ export default abstract class FileReaderUtils {
     } catch {}
   }
 
-  private static async _getScriptZip(
+  private static async _getZipFile(
     dir_handle: FileSystemDirectoryHandle,
     zipname: string,
     filename: string
@@ -84,7 +84,7 @@ export default abstract class FileReaderUtils {
   static async getInitialScript(
     dir_handle: FileSystemDirectoryHandle
   ): Promise<File | undefined> {
-    const zipped = await this._getScriptZip(
+    const zipped = await this._getZipFile(
       dir_handle,
       FILE_SCRIPT,
       FILE_SCRIPT_MAIN
