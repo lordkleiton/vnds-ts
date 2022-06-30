@@ -81,24 +81,30 @@ export default abstract class FileReaderUtils {
     }
   }
 
-  static async getInitialScript(
-    dir_handle: FileSystemDirectoryHandle
+  static async getScriptFile(
+    dir_handle: FileSystemDirectoryHandle,
+    path: string
   ): Promise<File | undefined> {
-    const zipped = await this._getZipFile(
-      dir_handle,
-      FILE_SCRIPT,
-      FILE_SCRIPT_MAIN
-    );
+    const zipped = await this._getZipFile(dir_handle, FILE_SCRIPT, path);
 
     if (!zipped) {
+      const split = path.split("/", 2);
+      const filename = split[1];
+
       return await this._getFileFromSubfolder(
         dir_handle,
         FOLDER_SCRIPT,
-        FILE_MAIN
+        filename
       );
     }
 
     return zipped;
+  }
+
+  static async getInitialScript(
+    dir_handle: FileSystemDirectoryHandle
+  ): Promise<File | undefined> {
+    return await this.getScriptFile(dir_handle, FILE_SCRIPT_MAIN);
   }
 
   static async getFont(
