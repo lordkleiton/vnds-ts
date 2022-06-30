@@ -17,11 +17,15 @@
 .canvas {
   display: block;
   position: absolute;
+  height: 100%;
 }
 
-.history-text-area,
 .current-text-area {
   overflow: hidden;
+}
+
+.history-text-area {
+  overflow: auto;
 }
 
 .history-text-area p,

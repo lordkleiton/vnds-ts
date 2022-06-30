@@ -92,5 +92,7 @@ export default class TextEngine implements ITextEngine {
 
     text_container.append(element);
     history_container.append(element_2);
+
+    history_container.scrollTo({ top: history_container.scrollHeight });
   }
 }
