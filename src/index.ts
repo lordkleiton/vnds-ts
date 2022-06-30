@@ -2,7 +2,7 @@ import { INovelInfo } from "~/shared/interfaces";
 import VNDS from "~/core/classes/vnds";
 import { Logger } from "~/app/other";
 import { ScriptEngine } from "~/app/engines";
-import { DomUtils, FileReaderUtils } from "~/shared/utils";
+import { DomUtils, FileReaderUtils, StringUtils } from "~/shared/utils";
 
 const button = document.querySelector("#botao") as HTMLButtonElement;
 
@@ -32,15 +32,15 @@ button.onclick = async () => {
 
       if (body) {
         body.onkeyup = e => {
-          if (e.key == "Enter") {
+          if (StringUtils.equals(e.key, "enter")) {
             engine.executeNextCommand(false);
           }
 
-          if (e.key == "ArrowUp") {
+          if (StringUtils.equals(e.key, "h")) {
             DomUtils.toggleTextPane();
           }
 
-          if (e.key == "Escape") {
+          if (StringUtils.equals(e.key, "escape")) {
             DomUtils.toggleTextArea();
           }
         };
