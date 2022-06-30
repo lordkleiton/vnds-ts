@@ -41,10 +41,10 @@ export default abstract class FileReaderUtils {
     dir_handle: FileSystemDirectoryHandle
   ): Promise<File | undefined> {
     try {
-      const file = await this._getFile(dir_handle, FILE_SCRIPT);
+      const zipped = await this._getFile(dir_handle, FILE_SCRIPT);
 
-      if (file) {
-        const read = ZipReaderUtils.readZippedFile(file);
+      if (zipped) {
+        const read = ZipReaderUtils.readZippedFile(zipped);
         const entries = await read.getEntries();
         const entry = entries.find(e => e.filename == FILE_SCRIPT_MAIN);
 
@@ -71,13 +71,13 @@ export default abstract class FileReaderUtils {
   static async getInitialScript(
     dir_handle: FileSystemDirectoryHandle
   ): Promise<File | undefined> {
-    const zip = await this._getScriptZip(dir_handle);
+    const zipped = await this._getScriptZip(dir_handle);
 
-    if (!zip) {
+    if (!zipped) {
       return await this._getScriptFolder(dir_handle);
     }
 
-    return zip;
+    return zipped;
   }
 
   static async getFont(
