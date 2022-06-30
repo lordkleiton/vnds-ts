@@ -40,7 +40,7 @@ button.onclick = async () => {
       const title = split[1];
 
       if (title) {
-        document.title = `${document.title}: ${title}`;
+        document.title = `VNDS: ${title}`;
       }
     }
   } catch {}
