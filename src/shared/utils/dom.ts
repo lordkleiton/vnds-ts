@@ -1,5 +1,6 @@
 import {
   ELEMENT_CANVAS,
+  ELEMENT_CHOICE_AREA,
   ELEMENT_GAME_AREA,
   ELEMENT_TEXT_AREA,
   ELEMENT_TEXT_CURRENT,
@@ -132,12 +133,47 @@ export default abstract class DomUtils {
   }
 
   static toggleTextArea(): void {
+    if (this.text_area_shown) {
+      this.hideTextArea();
+    } else {
+      this.showTextArea();
+    }
+  }
+
+  static hideTextArea(): void {
     const element = this.getTextArea();
 
-    if (this.text_area_shown) {
-      this._addClassHide(element);
-    } else {
-      this._removeClassHide(element);
-    }
+    this._addClassHide(element);
+  }
+
+  static showTextArea(): void {
+    const element = this.getTextArea();
+
+    this._removeClassHide(element);
+  }
+
+  static getChoiceArea(): HTMLDivElement {
+    const element = this._getElement<HTMLDivElement>(
+      ELEMENT_CHOICE_AREA,
+      "div"
+    );
+
+    return element as HTMLDivElement;
+  }
+
+  static showChoiceArea(): void {
+    const element = this.getChoiceArea();
+
+    this.hideTextArea();
+
+    this._removeClassHide(element);
+  }
+
+  static hideChoiceArea(): void {
+    const element = this.getChoiceArea();
+
+    this._addClassHide(element);
+
+    this.showTextArea();
   }
 }
