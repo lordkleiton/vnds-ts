@@ -83,6 +83,7 @@ export default class TextEngine implements ITextEngine {
   appendText(text: string): void {
     const text_container = DomUtils.getTextPane();
     const history_container = DomUtils.getHistoryPane();
+    const text_container_bounding = text_container.getBoundingClientRect();
 
     const element = document.createElement("p");
 
@@ -92,6 +93,16 @@ export default class TextEngine implements ITextEngine {
 
     text_container.append(element);
     history_container.append(element_2);
+
+    const element_bounding = element.getBoundingClientRect();
+
+    if (element_bounding.bottom >= text_container_bounding.bottom) {
+      while (text_container.childElementCount > 1) {
+        const child = text_container.firstChild;
+
+        if (child) text_container.removeChild(child);
+      }
+    }
 
     history_container.scrollTo({ top: history_container.scrollHeight });
   }
