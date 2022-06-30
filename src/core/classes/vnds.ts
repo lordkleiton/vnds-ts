@@ -17,7 +17,7 @@ import {
   ScriptEngine,
 } from "~/app/engines";
 import { Logger } from "~/app/other";
-import { StringUtils, ZipReaderUtils } from "~/shared/utils";
+import { FileReaderUtils, StringUtils, ZipReaderUtils } from "~/shared/utils";
 
 export default class VNDS implements IVNDS {
   private _quit: boolean = false;
@@ -217,5 +217,11 @@ export default class VNDS implements IVNDS {
 
       return result;
     }
+  }
+
+  async getScriptFile(path: string): Promise<File | undefined> {
+    const file = await FileReaderUtils.getScriptFile(this.root_folder, path);
+
+    return file;
   }
 }
