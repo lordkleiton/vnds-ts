@@ -81,14 +81,21 @@ export default abstract class FileReaderUtils {
     }
   }
 
+  static async getFileFromFolder(
+    dir_handle: FileSystemDirectoryHandle,
+    filename: string
+  ) {
+    return await this._getFileFromFolder(dir_handle, filename);
+  }
+
   static async getScriptFile(
     dir_handle: FileSystemDirectoryHandle,
-    path: string
+    file_path: string
   ): Promise<File | undefined> {
-    const zipped = await this._getZipFile(dir_handle, FILE_SCRIPT, path);
+    const zipped = await this._getZipFile(dir_handle, FILE_SCRIPT, file_path);
 
     if (!zipped) {
-      const split = path.split("/", 2);
+      const split = file_path.split("/", 2);
       const filename = split[1];
 
       return await this._getFileFromSubfolder(
