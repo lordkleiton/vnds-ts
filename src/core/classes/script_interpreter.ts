@@ -92,8 +92,6 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
     const choice_area = DomUtils.getChoiceArea();
 
-    console.log(choice_area);
-
     cmd.choice.options.forEach((o, i) => {
       const choice = this._replaceVars(o);
       const button = document.createElement("a");
@@ -106,6 +104,8 @@ export default class ScriptInterpreter implements IScriptInterpreter {
         const choice = i + 1;
 
         this._vnds.setVariable("selected", "=", choice.toString());
+
+        DomUtils.hideChoiceArea();
       };
 
       button.classList.add("choice-btn");
