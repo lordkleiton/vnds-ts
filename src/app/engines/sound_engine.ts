@@ -1,11 +1,14 @@
 import { ISoundEngine, IVNDS } from "~/shared/interfaces";
 
 export default class SoundEngine implements ISoundEngine {
+  private _musicAudio?: HTMLAudioElement;
+  private _soundAudio?: HTMLAudioElement;
+
   constructor(private readonly _vnds: IVNDS) {}
 
   reset(): void {
-    return;
-    throw new Error("Method not implemented.");
+    this._musicAudio = undefined;
+    this._soundAudio = undefined;
   }
 
   update(): void {
@@ -14,28 +17,79 @@ export default class SoundEngine implements ISoundEngine {
     throw new Error("Method not implemented.");
   }
 
-  setMusic(path: string): void {
-    return;
+  private _stopAudio(audio?: HTMLAudioElement) {
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+  }
 
-    throw new Error("Method not implemented.");
+  private _pathContainsStop(path: string): boolean {
+    // For music and sound, if the file is ~ means it must stop execution.
+    return path.split("/")[1] === "~";
+  }
+
+  /* interface stuff */
+
+  setMusic(path: string): void {
+    if (this._pathContainsStop(path)) {
+      this.stopMusic();
+      return;
+    }
+
+    this._vnds.getAudioFile(path).then(audioFile => {
+      if (audioFile) {
+        this.stopMusic();
+
+        const musicUrl = window.URL.createObjectURL(audioFile);
+
+        this._musicAudio = new Audio(musicUrl);
+        this._musicAudio.play();
+      }
+    });
   }
 
   stopMusic(): void {
-    return;
-
-    throw new Error("Method not implemented.");
+    this._stopAudio(this._musicAudio);
   }
 
   playSound(path: string, times?: number | undefined): void {
-    return;
+    if (this._pathContainsStop(path)) {
+      this.stopSound();
+      return;
+    }
 
-    throw new Error("Method not implemented.");
+    this._vnds.getAudioFile(path).then(audioFile => {
+      if (audioFile) {
+        this.stopSound();
+
+        const soundUrl = window.URL.createObjectURL(audioFile);
+
+        this._soundAudio = new Audio(soundUrl);
+
+        if (times) {
+          this._soundAudio.loop = true;
+
+          if (times > 0) {
+            let playbackCount = 0;
+            this._soundAudio.onended = () => {
+              if (times && playbackCount < times) {
+                playbackCount += 1;
+              } else {
+                this.stopSound();
+              }
+            };
+          }
+        }
+
+        this._soundAudio.play();
+      }
+    });
   }
 
   stopSound(): void {
-    return;
-
-    throw new Error("Method not implemented.");
+    // Not tested.
+    this._stopAudio(this._soundAudio);
   }
 
   replaySound(): void {
@@ -63,14 +117,14 @@ export default class SoundEngine implements ISoundEngine {
   }
 
   setSoundVolume(v: number): void {
-    return;
-
-    throw new Error("Method not implemented.");
+    // Not tested.
+    if (!this._soundAudio) return;
+    this._soundAudio.volume = v;
   }
 
   setMusicVolume(v: number): void {
-    return;
-
-    throw new Error("Method not implemented.");
+    // Not tested.
+    if (!this._musicAudio) return;
+    this._musicAudio.volume = v;
   }
 }
