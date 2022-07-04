@@ -1,14 +1,23 @@
 import { ISoundEngine, IVNDS } from "~/shared/interfaces";
+import { Logger } from "~/app/other";
 
 export default class SoundEngine implements ISoundEngine {
   private _musicAudio?: HTMLAudioElement;
   private _soundAudio?: HTMLAudioElement;
 
+  private _musicPath: string = "\0";
+  private _soundPath: string = "\0";
+
+  private _mute: boolean = false;
+
   constructor(private readonly _vnds: IVNDS) {}
 
   reset(): void {
+    this.stopMusic();
+    this.stopSound();
     this._musicAudio = undefined;
     this._soundAudio = undefined;
+    this._musicPath = "\0";
   }
 
   update(): void {
@@ -34,86 +43,99 @@ export default class SoundEngine implements ISoundEngine {
   setMusic(path: string): void {
     if (this._pathContainsStop(path)) {
       this.stopMusic();
+      this._musicPath = "\0";
       return;
     }
 
-    this._vnds.getAudioFile(path).then(audioFile => {
-      if (audioFile) {
-        this.stopMusic();
+    this._vnds
+      .getAudioFile(path)
+      .then(audioFile => {
+        if (audioFile) {
+          this.stopMusic();
 
-        const musicUrl = window.URL.createObjectURL(audioFile);
+          this._musicPath = path;
+          const musicUrl = window.URL.createObjectURL(audioFile);
 
-        this._musicAudio = new Audio(musicUrl);
-        this._musicAudio.play();
-      }
-    });
+          this._musicAudio = new Audio(musicUrl);
+          this._musicAudio.play();
+
+          Logger.log("Starting music: ", path);
+        }
+      })
+      .catch(_ => {
+        Logger.error("Can't find music file: ", path);
+      });
   }
 
   stopMusic(): void {
     this._stopAudio(this._musicAudio);
+    Logger.log("Stoping music: ", this._musicPath);
   }
 
   playSound(path: string, times?: number | undefined): void {
     if (this._pathContainsStop(path)) {
       this.stopSound();
+      this._soundPath = "\0";
       return;
     }
 
-    this._vnds.getAudioFile(path).then(audioFile => {
-      if (audioFile) {
-        this.stopSound();
+    this._vnds
+      .getAudioFile(path)
+      .then(audioFile => {
+        if (audioFile) {
+          this.stopSound();
 
-        const soundUrl = window.URL.createObjectURL(audioFile);
+          this._soundPath = path;
+          const soundUrl = window.URL.createObjectURL(audioFile);
+          this._soundAudio = new Audio(soundUrl);
 
-        this._soundAudio = new Audio(soundUrl);
+          if (times) {
+            this._soundAudio.loop = true;
 
-        if (times) {
-          this._soundAudio.loop = true;
-
-          if (times > 0) {
-            let playbackCount = 0;
-            this._soundAudio.onended = () => {
-              if (times && playbackCount < times) {
-                playbackCount += 1;
-              } else {
-                this.stopSound();
-              }
-            };
+            if (times > 0) {
+              let playbackCount = 0;
+              this._soundAudio.onended = () => {
+                if (times && playbackCount < times) {
+                  playbackCount += 1;
+                } else {
+                  this.stopSound();
+                }
+              };
+            }
           }
-        }
 
-        this._soundAudio.play();
-      }
-    });
+          this._soundAudio.play();
+          Logger.log("Playing sound: ", path, times);
+        }
+      })
+      .catch(_ => {
+        Logger.error("Can't find sound file: ", path);
+      });
   }
 
   stopSound(): void {
-    // Not tested.
     this._stopAudio(this._soundAudio);
+    Logger.log("Stopping sound: ", this._soundPath);
   }
 
   replaySound(): void {
-    return;
-
-    throw new Error("Method not implemented.");
+    this.stopSound();
+    this.setMuted(false);
+    this.playSound(this._soundPath);
   }
 
   setMuted(m: boolean): void {
-    return;
-
-    throw new Error("Method not implemented.");
+    this._mute = m;
+    this.setSoundVolume(m ? 0 : 0.5);
+    this.setMusicVolume(m ? 0 : 0.5);
   }
 
   isMuted(): boolean {
-    return false;
-
-    throw new Error("Method not implemented.");
+    return this._mute;
   }
 
   getMusicPath(): string {
-    return "";
-
-    throw new Error("Method not implemented.");
+    return this._musicPath;
   }
 
   setSoundVolume(v: number): void {
