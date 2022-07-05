@@ -76,34 +76,23 @@ export default class GraphicsEngine implements IGraphicsEngine {
     const ctx = this._canvas.getContext("2d")!;
     const img = new Image();
     const fill_color = "black";
-    const half = Math.floor(fadeTime / 2);
-
-    img.src = url.createObjectURL(bg);
 
     ctx.fillStyle = fill_color;
 
     this._executeEveryFrame(fadeTime, remaining => {
-      if (remaining > half) {
-        const opacity = this._normalize(remaining, fadeTime, half);
+      const opacity = this._normalize(remaining, fadeTime, 0);
 
-        ctx.globalAlpha = 1 - opacity;
+      ctx.globalAlpha = 1 - opacity;
 
+      img.onload = () => {
         ctx.fillStyle = fill_color;
 
         ctx.fillRect(0, 0, SIZE_CANVAS_WIDTH, SIZE_CANVAS_HEIGHT);
-      } else {
-        const opacity = this._normalize(remaining, half, 0);
 
-        ctx.globalAlpha = 1 - opacity;
+        ctx.drawImage(img, 0, 0, SIZE_CANVAS_WIDTH, SIZE_CANVAS_HEIGHT);
+      };
 
-        img.onload = () => {
-          ctx.fillStyle = fill_color;
-
-          ctx.fillRect(0, 0, SIZE_CANVAS_WIDTH, SIZE_CANVAS_HEIGHT);
-
-          ctx.drawImage(img, 0, 0, SIZE_CANVAS_WIDTH, SIZE_CANVAS_HEIGHT);
-        };
-      }
+      img.src = url.createObjectURL(bg);
     });
   }
 
