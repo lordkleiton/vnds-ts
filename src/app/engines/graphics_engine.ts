@@ -75,15 +75,22 @@ export default class GraphicsEngine implements IGraphicsEngine {
     const url = window.URL;
     const ctx = this._canvas.getContext("2d")!;
     const img = new Image();
+    const fillStyle = "black";
+
+    ctx.fillStyle = fillStyle;
+
+    ctx.fillRect(0, 0, 640, 480);
 
     this._executeEveryFrame(fadeTime, remaining => {
       const opacity = this._normalize(remaining, fadeTime, 0);
 
       ctx.globalAlpha = 1 - opacity;
 
-      console.log(ctx.globalAlpha);
-
       img.onload = () => {
+        ctx.fillStyle = fillStyle;
+
+        ctx.fillRect(0, 0, 640, 480);
+
         ctx.drawImage(img, 0, 0, SIZE_CANVAS_WIDTH, SIZE_CANVAS_HEIGHT);
       };
 
