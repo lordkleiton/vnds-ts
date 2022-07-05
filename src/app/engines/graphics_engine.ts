@@ -78,6 +78,8 @@ export default class GraphicsEngine implements IGraphicsEngine {
     const fill_color = "black";
     const half = Math.floor(fadeTime / 2);
 
+    img.src = url.createObjectURL(bg);
+
     ctx.fillStyle = fill_color;
 
     this._executeEveryFrame(fadeTime, remaining => {
@@ -101,8 +103,6 @@ export default class GraphicsEngine implements IGraphicsEngine {
 
           ctx.drawImage(img, 0, 0, SIZE_CANVAS_WIDTH, SIZE_CANVAS_HEIGHT);
         };
-
-        img.src = url.createObjectURL(bg);
       }
     });
   }
