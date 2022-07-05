@@ -117,7 +117,7 @@ export default class ScriptEngine implements IScriptEngine {
 
       return {
         id: CommandType.BGLOAD,
-        bgload: { path, fadeTime: parseInt(data[0]) || 16 },
+        bgload: { path, fadeTime: parseInt(data[0]) || 120 },
       };
     }
 
