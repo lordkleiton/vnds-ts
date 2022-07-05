@@ -74,7 +74,7 @@ export default class GraphicsEngine implements IGraphicsEngine {
   private _fadeBg(bg: File, fadeTime: number) {
     const url = window.URL;
     const ctx = this._canvas.getContext("2d")!;
-
+    const img_src = url.createObjectURL(bg);
     const new_img = new Image();
     const old_img = new Image();
 
@@ -93,7 +93,7 @@ export default class GraphicsEngine implements IGraphicsEngine {
         ctx.drawImage(new_img, 0, 0, SIZE_CANVAS_WIDTH, SIZE_CANVAS_HEIGHT);
       };
 
-      new_img.src = url.createObjectURL(bg);
+      new_img.src = img_src;
     });
   }
 
