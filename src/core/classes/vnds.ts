@@ -224,4 +224,15 @@ export default class VNDS implements IVNDS {
 
     return file;
   }
+
+  async getAudioFile(path: string): Promise<File | undefined> {
+    const sound = await this.root_folder.getFileHandle("sound.zip");
+    const read = ZipReaderUtils.readZippedFile(await sound.getFile());
+    const entries = await read.getEntries();
+    const entry = entries.find(e => StringUtils.equals(e.filename, path));
+
+    if (entry) {
+      return await ZipReaderUtils.getFile(entry);
+    }
+  }
 }

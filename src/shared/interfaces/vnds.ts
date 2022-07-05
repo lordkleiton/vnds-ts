@@ -29,4 +29,5 @@ export default interface IVNDS {
   getBgFile(filename: string): Promise<File | undefined>;
   getFgFile(filename: string): Promise<File | undefined>;
   getScriptFile(path: string): Promise<File | undefined>;
+  getAudioFile(path: string): Promise<File | undefined>;
 }
