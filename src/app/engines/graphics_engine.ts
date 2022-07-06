@@ -128,17 +128,15 @@ export default class GraphicsEngine implements IGraphicsEngine {
 
     if (file) {
       const url = window.URL;
-      const ctx = this._canvas.getContext("2d");
+      const ctx = this._canvas.getContext("2d")!;
 
-      if (ctx) {
-        const img = new Image();
+      const img = new Image();
 
-        img.src = url.createObjectURL(file);
+      img.src = url.createObjectURL(file);
 
-        img.onload = () => {
-          ctx.drawImage(img, x, y);
-        };
-      }
+      img.onload = () => {
+        ctx.drawImage(img, x, y);
+      };
     }
   }
 }
