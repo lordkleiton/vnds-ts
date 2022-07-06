@@ -32,7 +32,7 @@ export default abstract class DomUtils {
   ): T | HTMLElement {
     const element = this._getDomElement<T>(selector);
 
-    return element || document.createElement(fallback);
+    return element!;
   }
 
   static getHistoryPane(): HTMLDivElement {
