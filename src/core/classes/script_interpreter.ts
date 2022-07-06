@@ -322,7 +322,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
       wait_input = false;
     } else {
       if (first_char == SC_EXCLAMATION) {
-        output = undefined;
+        output = "";
 
         wait_input = true;
       } else {
@@ -332,7 +332,7 @@ export default class ScriptInterpreter implements IScriptInterpreter {
       }
     }
 
-    const result = this._replaceVars(output || "");
+    const result = this._replaceVars(output);
 
     this._vnds.textEngine.appendText(result);
 
