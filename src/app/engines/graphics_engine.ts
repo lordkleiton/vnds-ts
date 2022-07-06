@@ -1,6 +1,6 @@
 import { IGraphicsEngine, IVNDS } from "~/shared/interfaces";
 import { SIZE_CANVAS_HEIGHT, SIZE_CANVAS_WIDTH } from "~/shared/consts";
-import { DomUtils } from "~/shared/utils";
+import { DomUtils, NumberUtils } from "~/shared/utils";
 
 export default class GraphicsEngine implements IGraphicsEngine {
   private _canvas = DomUtils.getCanvas();
@@ -67,10 +67,6 @@ export default class GraphicsEngine implements IGraphicsEngine {
     }
   }
 
-  private _normalize(val: number, max: number, min: number) {
-    return (val - min) / (max - min);
-  }
-
   private _fadeBg(bg: File, fadeTime: number) {
     const url = window.URL;
     const ctx = this._canvas.getContext("2d")!;
@@ -81,7 +77,7 @@ export default class GraphicsEngine implements IGraphicsEngine {
     old_img.src = this._canvas.toDataURL();
 
     this._executeEveryFrame(fadeTime, remaining => {
-      const opacity = this._normalize(remaining, fadeTime, 0);
+      const opacity = NumberUtils.normalize(remaining, fadeTime, 0);
 
       new_img.onload = () => {
         ctx.globalAlpha = opacity;
