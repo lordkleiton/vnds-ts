@@ -2,8 +2,14 @@ import { INovelInfo } from "~/shared/interfaces";
 import VNDS from "~/core/classes/vnds";
 import { Logger } from "~/app/other";
 import { ScriptEngine } from "~/app/engines";
-import { DomUtils, FileReaderUtils, StringUtils } from "~/shared/utils";
+import {
+  DomUtils,
+  FileReaderUtils,
+  ScreenUtils,
+  StringUtils,
+} from "~/shared/utils";
 import { CC_NEW_LINE, SCRIPT_READ_BUFFER_SIZE } from "~/shared/consts";
+import { KeyboardUtils } from "~/app/utils";
 
 const button = document.querySelector("#botao") as HTMLButtonElement;
 
@@ -12,10 +18,16 @@ const vnds = new VNDS({} as INovelInfo);
 Object.assign(window, { engine: vnds.scriptEngine });
 
 button.onclick = async () => {
+  await ScreenUtils.setFps();
+
   const dir_handle = await window.showDirectoryPicker();
   const engine: ScriptEngine = vnds.scriptEngine as ScriptEngine;
 
   vnds.root_folder = dir_handle;
+
+  const fps = ScreenUtils.frametime;
+
+  console.log(fps);
 
   // título
 
@@ -79,21 +91,23 @@ button.onclick = async () => {
 
       const body = document.querySelector("body");
 
-      if (body) {
-        body.onkeyup = e => {
-          if (StringUtils.equals(e.key, "enter")) {
-            engine.executeNextCommand(false);
-          }
+      KeyboardUtils.setKeyboardHandler(body!);
 
-          if (StringUtils.equals(e.key, "h")) {
-            DomUtils.toggleTextPane();
-          }
+      // if (body) {
+      //   body.onkeyup = e => {
+      //     if (StringUtils.equals(e.key, "enter")) {
+      //       engine.executeNextCommand(false);
+      //     }
 
-          if (StringUtils.equals(e.key, "escape")) {
-            DomUtils.toggleTextArea();
-          }
-        };
-      }
+      //     if (StringUtils.equals(e.key, "h")) {
+      //       DomUtils.toggleTextPane();
+      //     }
+
+      //     if (StringUtils.equals(e.key, "escape")) {
+      //       DomUtils.toggleTextArea();
+      //     }
+      //   };
+      // }
     } else {
       throw new Error("couldnt find 'main.scr'");
     }
