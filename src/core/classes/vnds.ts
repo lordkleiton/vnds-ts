@@ -137,6 +137,12 @@ export default class VNDS implements IVNDS {
     obj[name] = left;
   }
 
+  private _update(): void {
+    if (this._delay > 0) {
+      this._delay--;
+    }
+  }
+
   /* interface stuff */
 
   continue(quickread: boolean): void {
@@ -165,8 +171,12 @@ export default class VNDS implements IVNDS {
     this._quit = true;
   }
 
-  run(): void {
-    throw new Error("Method not implemented.");
+  async run(): Promise<void> {
+    this._quit = false;
+
+    while (!this._quit) {
+      this._update();
+    }
   }
 
   isWaitingForInput(): boolean {
