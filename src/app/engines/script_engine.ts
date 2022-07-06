@@ -28,6 +28,7 @@ import {
   COMMAND_TEXT,
   SCRIPT_READ_BUFFER_SIZE,
   SC_NEW_LINE,
+  VAR_DEFAULT_BG_FADETIME,
 } from "~/shared/consts";
 import { FileReaderUtils } from "~/shared/utils";
 import { ScriptInterpreter } from "~/core/classes";
@@ -117,7 +118,10 @@ export default class ScriptEngine implements IScriptEngine {
 
       return {
         id: CommandType.BGLOAD,
-        bgload: { path, fadeTime: parseInt(data[0]) || 120 },
+        bgload: {
+          path,
+          fadeTime: parseInt(data[0]) || VAR_DEFAULT_BG_FADETIME,
+        },
       };
     }
 

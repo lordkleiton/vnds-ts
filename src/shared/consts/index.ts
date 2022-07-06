@@ -38,6 +38,7 @@ import {
   VAR_OP_LENGTH,
   VAR_STRING_LENGTH,
   READ_BUFFER_SIZE,
+  VAR_DEFAULT_BG_FADETIME,
 } from "./script_engine";
 import {
   SC_LEFT_BRACE,
@@ -78,6 +79,7 @@ export {
   SC_TILDE,
   SC_QUOTE,
   SC_DOLLAR,
+  VAR_DEFAULT_BG_FADETIME,
 };
 
 export {
