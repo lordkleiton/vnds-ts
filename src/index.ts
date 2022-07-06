@@ -43,7 +43,9 @@ button.onclick = async () => {
         document.title = `VNDS: ${title}`;
       }
     }
-  } catch {}
+  } catch {
+    Logger.error("couldnt find info.txt");
+  }
 
   // favicon
 
@@ -55,7 +57,9 @@ button.onclick = async () => {
 
       DomUtils.changeFavicon(url);
     }
-  } catch {}
+  } catch {
+    Logger.error("couldnt find icon.png");
+  }
 
   // fonte
 
