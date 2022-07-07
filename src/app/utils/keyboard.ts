@@ -24,7 +24,7 @@ export default abstract class KeyboardUtils {
 
   static setKeyboardHandler(element: HTMLElement): void {
     element.onkeydown = e => {
-      const code = e.code;
+      const { code } = e;
 
       if (this._hasKey(code)) return;
 
@@ -32,7 +32,7 @@ export default abstract class KeyboardUtils {
     };
 
     element.onkeyup = e => {
-      const code = e.code;
+      const { code } = e;
 
       if (!this._hasKey(code)) return;
 
