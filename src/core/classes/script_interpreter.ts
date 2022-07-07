@@ -92,6 +92,10 @@ export default class ScriptInterpreter implements IScriptInterpreter {
 
     const choice_area = DomUtils.getChoiceArea();
 
+    while (choice_area.hasChildNodes()) {
+      choice_area.removeChild(choice_area.firstChild!);
+    }
+
     cmd.choice.options.forEach((o, i) => {
       const choice = this._replaceVars(o);
       const button = document.createElement("a");
