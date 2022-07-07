@@ -5,11 +5,11 @@ import { ScriptEngine } from "~/app/engines";
 import {
   DomUtils,
   FileReaderUtils,
+  KeyboardUtils,
   ScreenUtils,
   StringUtils,
 } from "~/shared/utils";
 import { CC_NEW_LINE, SCRIPT_READ_BUFFER_SIZE } from "~/shared/consts";
-import { KeyboardUtils } from "~/app/utils";
 
 const button = document.querySelector("#botao") as HTMLButtonElement;
 
