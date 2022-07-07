@@ -7,6 +7,7 @@ import IVNDS from "./vnds";
 import ITextEngine from "./text_engine";
 import IGraphicsEngine from "./graphics_engine";
 import ISoundEngine from "./sound_engine";
+import IVNChoice from "./vnchoice";
 
 export {
   ICommand,
@@ -18,4 +19,5 @@ export {
   ITextEngine,
   IGraphicsEngine,
   ISoundEngine,
+  IVNChoice,
 };
