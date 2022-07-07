@@ -16,6 +16,10 @@ export default abstract class DomUtils {
     return !this.getTextArea().classList.contains("hide");
   }
 
+  static get choice_area_shown(): boolean {
+    return !this.getChoiceArea().classList.contains("hide");
+  }
+
   private static _getDomElement<T>(selector: string): T | null {
     const selected = document.querySelector(selector);
 
