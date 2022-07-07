@@ -182,6 +182,12 @@ export default class VNDS implements IVNDS {
       return;
     }
 
+    if (key == Keys.TOGGLE_BG) {
+      DomUtils.toggleTextArea();
+
+      return;
+    }
+
     if (!DomUtils.choice_area_shown) {
       if (!this._waitForInput) {
         await this.continue(fast_forward);
@@ -189,8 +195,9 @@ export default class VNDS implements IVNDS {
         return;
       }
 
-      if (false) {
-        //mostrar o texto se o historico tiver aberto
+      if (key == Keys.TOGGLE_HISTORY) {
+        DomUtils.toggleTextPane();
+
         return;
       }
 
