@@ -13,7 +13,7 @@ export default abstract class KeyboardUtils {
     const frametime = ScreenUtils.frametime;
     const delta = Date.now() - this._timestamp;
 
-    if (delta > frametime * 10) return;
+    if (delta > frametime) return;
 
     return this._last_let_go;
   }
@@ -29,8 +29,6 @@ export default abstract class KeyboardUtils {
       if (this._hasKey(code)) return;
 
       this._pressed.push(code);
-
-      console.log(this.last_pressed);
     };
 
     element.onkeyup = e => {
