@@ -13,7 +13,7 @@ export default abstract class KeyboardUtils {
     const frametime = ScreenUtils.frametime;
     const delta = Date.now() - this._timestamp;
 
-    if (delta > frametime) return;
+    if (delta > frametime * 10) return;
 
     return this._last_let_go;
   }
