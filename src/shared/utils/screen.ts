@@ -7,6 +7,8 @@ export default abstract class ScreenUtils {
 
   static get frametime(): number {
     if (!this.fps) {
+      this.setFps();
+
       return 0;
     }
 
