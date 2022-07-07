@@ -18,6 +18,7 @@ import {
 } from "~/app/engines";
 import { Logger } from "~/app/other";
 import {
+  DomUtils,
   FileReaderUtils,
   KeyboardUtils,
   StringUtils,
@@ -147,6 +148,8 @@ export default class VNDS implements IVNDS {
 
     console.log(this._waitForInput);
 
+    if (key == "KeyQ") this.quit();
+
     if (this._delay > 0) {
       this._delay--;
 
@@ -158,7 +161,7 @@ export default class VNDS implements IVNDS {
     } else {
       if (key == "x" || key == "start") {
         // menu stuff
-      } else if (true) {
+      } else if (!DomUtils.choice_area_shown) {
         //checar se as escolhas tão inativas e o texto ta ativo
         if (!this._waitForInput) {
           await this.continue(key == "y");
@@ -214,7 +217,7 @@ export default class VNDS implements IVNDS {
   async run(): Promise<void> {
     this._quit = false;
 
-    this._execute(100);
+    this._execute(50000);
   }
 
   isWaitingForInput(): boolean {
