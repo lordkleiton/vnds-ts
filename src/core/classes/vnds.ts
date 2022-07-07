@@ -168,7 +168,7 @@ export default class VNDS implements IVNDS {
         } else {
           if (false) {
             //mostrar o texto se o historico tiver aberto
-          } else if (true) {
+          } else if (key == "Space" || key == "y") {
             await this.continue(key == "y");
           }
         }
