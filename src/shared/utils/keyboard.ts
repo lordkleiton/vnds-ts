@@ -9,6 +9,10 @@ export default abstract class KeyboardUtils {
     return [...this._pressed];
   }
 
+  static get last_held(): string | undefined {
+    return this._pressed.at(-1);
+  }
+
   static get last_pressed(): string | undefined {
     const frametime = ScreenUtils.frametime;
     const delta = Date.now() - this._timestamp;
