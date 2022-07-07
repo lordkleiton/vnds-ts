@@ -168,7 +168,7 @@ export default class VNDS implements IVNDS {
         } else {
           if (false) {
             //mostrar o texto se o historico tiver aberto
-          } else if (key == "Space" || key == "y") {
+          } else if (key == "Space" || key == "Enter" || key == "y") {
             await this.continue(key == "y");
           }
         }
@@ -204,12 +204,16 @@ export default class VNDS implements IVNDS {
     this._quit = true;
   }
 
-  private _execute(max: number) {
+  private _execute() {
     requestAnimationFrame(async () => {
-      if (!this._quit && max) {
+      if (!this._quit) {
         await this._update();
 
-        requestAnimationFrame(() => this._execute(max - 1));
+        requestAnimationFrame(() => this._execute());
+      } else {
+        this.reset();
+
+        console.log("quitting game");
       }
     });
   }
@@ -217,7 +221,7 @@ export default class VNDS implements IVNDS {
   async run(): Promise<void> {
     this._quit = false;
 
-    this._execute(50000);
+    this._execute();
   }
 
   isWaitingForInput(): boolean {
