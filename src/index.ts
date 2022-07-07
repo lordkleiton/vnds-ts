@@ -89,9 +89,9 @@ button.onclick = async () => {
     if (file) {
       await engine.setScriptFile(file);
 
-      const body = document.querySelector("body");
+      const body = document.querySelector("body")!;
 
-      KeyboardUtils.setKeyboardHandler(body!);
+      KeyboardUtils.setKeyboardHandler(body);
 
       // if (body) {
       //   body.onkeyup = e => {
