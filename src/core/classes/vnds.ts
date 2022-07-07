@@ -148,7 +148,9 @@ export default class VNDS implements IVNDS {
 
     if (key == Keys.QUIT) this.quit();
 
-    const fast_forward = key == Keys.FAST_FORWARD;
+    const last_held = KeyboardUtils.last_held;
+    const fast_forward =
+      key == Keys.FAST_FORWARD || last_held == Keys.FAST_FORWARD;
     const _continue = key == Keys.SPACE || key == Keys.ENTER || fast_forward;
 
     if (this._delay > 0) {
