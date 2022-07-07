@@ -146,7 +146,11 @@ export default class VNDS implements IVNDS {
   private async _update(): Promise<void> {
     const key = KeyboardUtils.last_pressed;
 
-    if (key == Keys.QUIT) this.quit();
+    if (key == Keys.QUIT) {
+      this.quit();
+
+      return;
+    }
 
     const last_held = KeyboardUtils.last_held;
     const fast_forward =
@@ -156,25 +160,42 @@ export default class VNDS implements IVNDS {
     if (this._delay > 0) {
       this._delay--;
 
-      if (key) this._delay = 0;
-    } else if (key == "right") {
+      if (key) {
+        this._delay = 0;
+      } else {
+        return;
+      }
+    }
+
+    if (key == "right") {
       // r stuff
-    } else if (key == "left") {
+      return;
+    }
+
+    if (key == "left") {
       // l stuff
-    } else {
-      if (key == "x" || key == "start") {
-        // menu stuff
-      } else if (!DomUtils.choice_area_shown) {
-        //checar se as escolhas tão inativas e o texto ta ativo
-        if (!this._waitForInput) {
-          await this.continue(key == "y");
-        } else {
-          if (false) {
-            //mostrar o texto se o historico tiver aberto
-          } else if (_continue) {
-            await this.continue(fast_forward);
-          }
-        }
+      return;
+    }
+
+    if (key == "x" || key == "start") {
+      // menu stuff
+      return;
+    }
+
+    if (!DomUtils.choice_area_shown) {
+      if (!this._waitForInput) {
+        await this.continue(fast_forward);
+
+        return;
+      }
+
+      if (false) {
+        //mostrar o texto se o historico tiver aberto
+        return;
+      }
+
+      if (_continue) {
+        await this.continue(fast_forward);
       }
     }
   }
