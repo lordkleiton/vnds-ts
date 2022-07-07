@@ -93,6 +93,8 @@ button.onclick = async () => {
 
       KeyboardUtils.setKeyboardHandler(body);
 
+      vnds.run();
+
       // if (body) {
       //   body.onkeyup = e => {
       //     if (StringUtils.equals(e.key, "enter")) {

@@ -2,7 +2,7 @@ import ICommand from "./command";
 
 export default interface IScriptEngine {
   reset(): void;
-  executeNextCommand(quickread: boolean): void;
+  executeNextCommand(quickread: boolean): Promise<void>;
   quickRead(): void;
   skipCommands(num: number): void;
   skipTextCommands(num: number): void;

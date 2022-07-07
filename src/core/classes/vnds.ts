@@ -17,7 +17,12 @@ import {
   ScriptEngine,
 } from "~/app/engines";
 import { Logger } from "~/app/other";
-import { FileReaderUtils, StringUtils, ZipReaderUtils } from "~/shared/utils";
+import {
+  FileReaderUtils,
+  KeyboardUtils,
+  StringUtils,
+  ZipReaderUtils,
+} from "~/shared/utils";
 
 export default class VNDS implements IVNDS {
   private _quit: boolean = false;
@@ -137,20 +142,45 @@ export default class VNDS implements IVNDS {
     obj[name] = left;
   }
 
-  private _update(): void {
+  private async _update(): Promise<void> {
+    const key = KeyboardUtils.last_pressed;
+
+    console.log(this._waitForInput);
+
     if (this._delay > 0) {
       this._delay--;
+
+      if (key) this._delay = 0;
+    } else if (key == "right") {
+      // r stuff
+    } else if (key == "left") {
+      // l stuff
+    } else {
+      if (key == "x" || key == "start") {
+        // menu stuff
+      } else if (true) {
+        //checar se as escolhas tão inativas e o texto ta ativo
+        if (!this._waitForInput) {
+          await this.continue(key == "y");
+        } else {
+          if (false) {
+            //mostrar o texto se o historico tiver aberto
+          } else if (true) {
+            await this.continue(key == "y");
+          }
+        }
+      }
     }
   }
 
   /* interface stuff */
 
-  continue(quickread: boolean): void {
+  async continue(quickread: boolean): Promise<void> {
     this._delay = 0;
 
     this._waitForInput = false;
 
-    this.scriptEngine.executeNextCommand(quickread);
+    await this.scriptEngine.executeNextCommand(quickread);
   }
 
   reset(): void {
@@ -171,12 +201,20 @@ export default class VNDS implements IVNDS {
     this._quit = true;
   }
 
+  private _execute(max: number) {
+    requestAnimationFrame(async () => {
+      if (!this._quit && max) {
+        await this._update();
+
+        requestAnimationFrame(() => this._execute(max - 1));
+      }
+    });
+  }
+
   async run(): Promise<void> {
     this._quit = false;
 
-    while (!this._quit) {
-      this._update();
-    }
+    this._execute(100);
   }
 
   isWaitingForInput(): boolean {
