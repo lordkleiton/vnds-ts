@@ -8,7 +8,7 @@ import {
   IVNDS,
 } from "~/shared/interfaces";
 import { SC_DOLLAR, SC_QUOTE, SC_TILDE } from "~/shared/consts";
-import { VarType } from "~/shared/enums";
+import { Keys, VarType } from "~/shared/enums";
 import Variable from "./variable";
 import {
   TextEngine,
@@ -146,9 +146,10 @@ export default class VNDS implements IVNDS {
   private async _update(): Promise<void> {
     const key = KeyboardUtils.last_pressed;
 
-    console.log(this._waitForInput);
+    if (key == Keys.QUIT) this.quit();
 
-    if (key == "KeyQ") this.quit();
+    const fast_forward = key == Keys.FAST_FORWARD;
+    const _continue = key == Keys.SPACE || key == Keys.ENTER || fast_forward;
 
     if (this._delay > 0) {
       this._delay--;
@@ -168,8 +169,8 @@ export default class VNDS implements IVNDS {
         } else {
           if (false) {
             //mostrar o texto se o historico tiver aberto
-          } else if (key == "Space" || key == "Enter" || key == "y") {
-            await this.continue(key == "y");
+          } else if (_continue) {
+            await this.continue(fast_forward);
           }
         }
       }
