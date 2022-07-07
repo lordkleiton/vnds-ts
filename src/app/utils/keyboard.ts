@@ -1,5 +1,8 @@
+import { ScreenUtils } from "~/shared/utils";
+
 export default abstract class KeyboardUtils {
   private static _pressed: string[] = [];
+  private static _last_let_go?: string;
   private static _timestamp: number = 0;
 
   static get keys_pressed() {
@@ -7,7 +10,12 @@ export default abstract class KeyboardUtils {
   }
 
   static get last_pressed(): string | undefined {
-    return this._pressed.at(-1);
+    const frametime = ScreenUtils.frametime;
+    const delta = Date.now() - this._timestamp;
+
+    if (delta > frametime * 10) return;
+
+    return this._last_let_go;
   }
 
   private static _hasKey(key: string): boolean {
@@ -22,7 +30,7 @@ export default abstract class KeyboardUtils {
 
       this._pressed.push(code);
 
-      this._timestamp = Date.now();
+      console.log(this.last_pressed);
     };
 
     element.onkeyup = e => {
@@ -30,9 +38,11 @@ export default abstract class KeyboardUtils {
 
       if (!this._hasKey(code)) return;
 
-      this._pressed.splice(this._pressed.indexOf(code));
+      const pressed = this._pressed.splice(this._pressed.indexOf(code));
 
-      console.log(this.last_pressed);
+      this._timestamp = Date.now();
+
+      this._last_let_go = pressed[0];
     };
   }
 }
