@@ -55,88 +55,96 @@ export default class GraphicsEngine implements IGraphicsEngine {
     throw new Error("Method not implemented.");
   }
 
-  async setBackground(filename: string, fadeTime: number): Promise<void> {
-    const file = await this._vnds.getBgFile(filename);
-
-    if (file) {
-      DomUtils.hideTextArea();
-
-      this._fadeBg(file, fadeTime);
-
-      this._executeAfterNFrames(fadeTime, () => DomUtils.showTextArea());
-    }
+  setBackground(filename: string, fadeTime?: number): void {
+    throw new Error("Method not implemented.");
   }
 
-  private _fadeBg(bg: File, fadeTime: number) {
-    const url = window.URL;
-    const ctx = this._canvas.getContext("2d")!;
-    const img_src = url.createObjectURL(bg);
-    const new_img = new Image();
-    const old_img = new Image();
-
-    old_img.src = this._canvas.toDataURL();
-
-    this._executeEveryFrame(fadeTime, remaining => {
-      const opacity = NumberUtils.normalize(remaining, fadeTime, 0);
-
-      new_img.onload = () => {
-        ctx.globalAlpha = opacity;
-
-        ctx.drawImage(old_img, 0, 0, SIZE_CANVAS_WIDTH, SIZE_CANVAS_HEIGHT);
-
-        ctx.globalAlpha = 1 - opacity;
-
-        ctx.drawImage(new_img, 0, 0, SIZE_CANVAS_WIDTH, SIZE_CANVAS_HEIGHT);
-      };
-
-      new_img.src = img_src;
-    });
+  setForeground(filename: string, x: number, y: number): void {
+    throw new Error("Method not implemented.");
   }
 
-  private _executeEveryFrame(
-    frames_remaining: number,
-    callback: (frames_remaining: number) => void
-  ) {
-    callback(frames_remaining);
+  // async setBackground(filename: string, fadeTime: number): Promise<void> {
+  //   const file = await this._vnds.getBgFile(filename);
 
-    if (frames_remaining == 0) {
-      return;
-    } else {
-      requestAnimationFrame(() => {
-        this._executeEveryFrame(frames_remaining - 1, callback);
-      });
-    }
-  }
+  //   if (file) {
+  //     DomUtils.hideTextArea();
 
-  private _executeAfterNFrames(
-    frames_remaining: number,
-    end_callback: () => void
-  ) {
-    if (frames_remaining == 0) {
-      end_callback();
+  //     this._fadeBg(file, fadeTime);
 
-      return;
-    }
+  //     this._executeAfterNFrames(fadeTime, () => DomUtils.showTextArea());
+  //   }
+  // }
 
-    requestAnimationFrame(() =>
-      this._executeAfterNFrames(frames_remaining - 1, end_callback)
-    );
-  }
+  // private _fadeBg(bg: File, fadeTime: number) {
+  //   const url = window.URL;
+  //   const ctx = this._canvas.getContext("2d")!;
+  //   const img_src = url.createObjectURL(bg);
+  //   const new_img = new Image();
+  //   const old_img = new Image();
 
-  async setForeground(filename: string, x: number, y: number): Promise<void> {
-    const file = await this._vnds.getFgFile(filename);
+  //   old_img.src = this._canvas.toDataURL();
 
-    if (file) {
-      const url = window.URL;
-      const ctx = this._canvas.getContext("2d")!;
+  //   this._executeEveryFrame(fadeTime, remaining => {
+  //     const opacity = NumberUtils.normalize(remaining, fadeTime, 0);
 
-      const img = new Image();
+  //     new_img.onload = () => {
+  //       ctx.globalAlpha = opacity;
 
-      img.src = url.createObjectURL(file);
+  //       ctx.drawImage(old_img, 0, 0, SIZE_CANVAS_WIDTH, SIZE_CANVAS_HEIGHT);
 
-      img.onload = () => {
-        ctx.drawImage(img, x, y);
-      };
-    }
-  }
+  //       ctx.globalAlpha = 1 - opacity;
+
+  //       ctx.drawImage(new_img, 0, 0, SIZE_CANVAS_WIDTH, SIZE_CANVAS_HEIGHT);
+  //     };
+
+  //     new_img.src = img_src;
+  //   });
+  // }
+
+  // private _executeEveryFrame(
+  //   frames_remaining: number,
+  //   callback: (frames_remaining: number) => void
+  // ) {
+  //   callback(frames_remaining);
+
+  //   if (frames_remaining == 0) {
+  //     return;
+  //   } else {
+  //     requestAnimationFrame(() => {
+  //       this._executeEveryFrame(frames_remaining - 1, callback);
+  //     });
+  //   }
+  // }
+
+  // private _executeAfterNFrames(
+  //   frames_remaining: number,
+  //   end_callback: () => void
+  // ) {
+  //   if (frames_remaining == 0) {
+  //     end_callback();
+
+  //     return;
+  //   }
+
+  //   requestAnimationFrame(() =>
+  //     this._executeAfterNFrames(frames_remaining - 1, end_callback)
+  //   );
+  // }
+
+  // async setForeground(filename: string, x: number, y: number): Promise<void> {
+  //   const file = await this._vnds.getFgFile(filename);
+
+  //   if (file) {
+  //     const url = window.URL;
+  //     const ctx = this._canvas.getContext("2d")!;
+
+  //     const img = new Image();
+
+  //     img.src = url.createObjectURL(file);
+
+  //     img.onload = () => {
+  //       ctx.drawImage(img, x, y);
+  //     };
+  //   }
+  // }
 }
